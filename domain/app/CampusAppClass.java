@@ -1,17 +1,18 @@
 package domain.app;
 import dataStructures.*;
-import domain.entity.Service;
+import domain.entity.service.Service;
 import domain.entity.student.Student;
 
 public class CampusAppClass implements CampusApp {
-    protected ListInArray<Student> students;
-    protected ListInArray<Service> services;
+    StudentStorage students;
+    protected List<Service> services;
     public CampusAppClass() {
-
+        this.students = new StudentStorage();
+        this.services = new ListInArray<>(2500);
     }
 
     @Override
-    public void bounds(String name, long topLongitude, long topLatitude, long bottomLatitude, long bottomLongitude) {
+    public void createBounds(String name, long topLongitude, long topLatitude, long bottomLatitude, long bottomLongitude) {
 
     }
 
@@ -37,7 +38,7 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Student getStudent(String student) {
-        return null;
+        return students.getStudent(student);
     }
 
     @Override
@@ -46,18 +47,22 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void removeStudent(String studentName) {
-
+    public Student removeStudent(String studentName) {
+        return students.removeStudent(studentName);
     }
 
     @Override
     public boolean updateStudentPosition(String studentName, String service) {
-        return false;
+        Service newLocation = this.getService(service);
+
+        return students.updateStudentLocation(studentName, newLocation);
     }
 
     @Override
     public void moveHome(String studentName, String newHome) {
+        Service newHomeService = this.getService(newHome);
 
+        students.moveHome(studentName, newHomeService);
     }
 
     @Override
@@ -72,12 +77,12 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Student> listAllStudents() {
-        return null;
+        return students.getAllStudents();
     }
 
     @Override
     public Iterator<Student> listStudentsByCountry(String country) {
-        return null;
+        return students.getStudentsByCountry(country);
     }
 
     @Override
@@ -87,7 +92,7 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Service> listVisitedServices(String studentName) {
-        return null;
+        return students.listVisitedServices(studentName);
     }
 
     @Override
@@ -97,6 +102,7 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Service> listClosestServicesByStudent(int rate, ServiceType type, String studentName) {
+        // TODO add to student storage
         return null;
     }
 
@@ -107,6 +113,7 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Service findBestService(String studentName, ServiceType type) {
+        // TODO add to student storage
         return null;
     }
 }

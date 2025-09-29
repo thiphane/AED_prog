@@ -1,4 +1,4 @@
-package domain.entity;
+package domain.entity.service;
 
 import dataStructures.Iterator;
 import domain.app.Order;
@@ -14,10 +14,5 @@ public class LodgingService extends ServiceAbstract{
     @Override
     public ServiceType getType() {
         return ServiceType.LODGING;
-    }
-
-    @Override
-    public Iterator<Student> getUsers(Order order) {
-        return null;
     }
 }

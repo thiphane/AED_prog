@@ -1,17 +1,17 @@
 package domain.app;
 import dataStructures.*;
-import domain.entity.Service;
+import domain.entity.service.Service;
 import domain.entity.student.Student;
 
 public interface CampusApp {
-    void bounds(String name, long topLongitude, long topLatitude, long bottomLatitude, long bottomLongitude );
+    void createBounds(String name, long topLongitude, long topLatitude, long bottomLatitude, long bottomLongitude );
     void save();
     void load(String areaName);
     void createService(String serviceName, long latitude, long longitude, int price, int value);
     void createStudent(StudentType type, String name, String Lodging, String country);
     Student getStudent(String student);
     Service getService(String serviceName);
-    void removeStudent(String studentName);
+    Student removeStudent(String studentName);
     boolean updateStudentPosition(String studentName, String service);
     void moveHome(String studentName, String newHome);
     void rateService(int rate, String serviceName, String description);

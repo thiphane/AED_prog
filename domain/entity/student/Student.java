@@ -3,9 +3,10 @@ package domain.entity.student;
 import dataStructures.*;
 import domain.app.ServiceType;
 import domain.app.StudentType;
-import domain.entity.Service;
+import domain.entity.service.Service;
 
-public interface Student {
+public interface Student extends Comparable<Student> {
+    String getCountry();
     String getName();
     Service getLocation();
     StudentType getType();

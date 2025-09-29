@@ -1,17 +1,23 @@
-package domain.entity;
+package domain.entity.student;
 
 import dataStructures.Iterator;
 import domain.app.ServiceType;
-import domain.entity.student.Student;
+import domain.entity.service.Service;
 
 public abstract class StudentAbstract implements Student {
-    private String name;
+    private final String name;
+    private final String country;
     private Service home;
     private Service location;
-    public StudentAbstract(String name, Service home, Service location) {
+    public StudentAbstract(String name, Service home, String country) {
         this.name = name;
         this.home = home;
-        this.location = location;
+        this.location = home;
+        this.country = country;
+    }
+    @Override
+    public String getCountry() {
+        return this.country;
     }
     @Override
     public Service getHome() {
@@ -25,7 +31,7 @@ public abstract class StudentAbstract implements Student {
 
     @Override
     public void updatePosition(Service position) {
-
+        this.location = position;
     }
 
     @Override

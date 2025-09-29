@@ -1,5 +1,6 @@
-package domain.entity;
+package domain.entity.service;
 import dataStructures.*;
+import domain.app.Order;
 import domain.app.Position;
 import domain.entity.student.Student;
 
@@ -23,7 +24,6 @@ public abstract class ServiceAbstract implements Service {
     @Override
     public void addRating(int rating, String description) {
         rating+=rating;
-        rating = rating/ratingCount;
     }
     @Override
     public void addUser(Student student) {
@@ -31,7 +31,7 @@ public abstract class ServiceAbstract implements Service {
     }
     @Override
     public int getRating() {
-        return rating;
+        return rating/ratingCount;
     }
     @Override
     public int getPrice() {
@@ -53,6 +53,7 @@ public abstract class ServiceAbstract implements Service {
     public boolean hasTag(String tagName) {
         return false;
     }
+    @Override
     public TwoWayIterator<Student> getUsers(){
         return users.twoWayiterator();
     }
