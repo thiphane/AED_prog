@@ -1,7 +1,6 @@
 package domain.entity.student;
 
 import domain.app.LodgingNeedsStudent;
-import domain.app.StudentType;
 import domain.entity.service.Service;
 
 public class ThriftyStudent extends StudentAbstract implements LodgingNeedsStudent {

@@ -1,7 +1,9 @@
 package domain.app;
 import dataStructures.*;
 import domain.entity.service.Service;
+import domain.entity.service.ServiceType;
 import domain.entity.student.Student;
+import domain.entity.student.StudentType;
 
 public interface CampusApp {
     void createBounds(String name, long topLongitude, long topLatitude, long bottomLatitude, long bottomLongitude );

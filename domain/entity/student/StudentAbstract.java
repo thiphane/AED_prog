@@ -1,7 +1,7 @@
 package domain.entity.student;
 
 import dataStructures.Iterator;
-import domain.app.ServiceType;
+import domain.entity.service.ServiceType;
 import domain.entity.service.Service;
 
 public abstract class StudentAbstract implements Student {

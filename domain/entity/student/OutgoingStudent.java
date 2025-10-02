@@ -1,6 +1,5 @@
 package domain.entity.student;
 
-import domain.app.StudentType;
 import domain.entity.service.Service;
 
 public class OutgoingStudent extends StudentAbstract {

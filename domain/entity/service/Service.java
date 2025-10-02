@@ -1,7 +1,5 @@
 package domain.entity.service;
 import dataStructures.*;
-import domain.app.ServiceType;
-import domain.app.Order;
 import domain.app.Position;
 import domain.entity.student.Student;
 

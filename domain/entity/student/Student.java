@@ -1,8 +1,7 @@
 package domain.entity.student;
 
 import dataStructures.*;
-import domain.app.ServiceType;
-import domain.app.StudentType;
+import domain.entity.service.ServiceType;
 import domain.entity.service.Service;
 
 public interface Student extends Comparable<Student> {

@@ -1,7 +1,9 @@
 package domain.app;
 import dataStructures.*;
 import domain.entity.service.Service;
+import domain.entity.service.ServiceType;
 import domain.entity.student.Student;
+import domain.entity.student.StudentType;
 
 public class CampusAppClass implements CampusApp {
     StudentStorage students;
