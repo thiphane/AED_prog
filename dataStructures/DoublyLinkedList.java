@@ -108,23 +108,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
         return null;
     }
 
-   /**
-     * Removes the first node in the list.
-     * Pre-condition: the list is not empty.
-     */
-    void removeFirstNode( ) {
-        //TODO: Left as an exercise.
-
-    }
-
-    /**
-     * Removes the last node in the list.
-     * Pre-condition: the list is not empty.
-     */
-    void removeLastNode( ) {
-        //TODO: Left as an exercise.
-
-    }
+   
 
      /**
      * Returns the element at the specified position in the list.

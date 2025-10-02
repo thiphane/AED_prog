@@ -1,4 +1,6 @@
 package dataStructures;
+
+import java.io.Serializable;
 /**
  * Two-Way List
  *
@@ -7,7 +9,7 @@ package dataStructures;
  *
  * @param <E> Generic Element
  */
-public interface TwoWayList<E> extends List<E> {
+public interface TwoWayList<E> extends List<E>, Serializable {
     /**
      * Returns a two-way iterator of the elements in the list.
      *

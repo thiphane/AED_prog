@@ -84,11 +84,6 @@ public class SortedDoublyLinkedList<E extends Comparable<E>> implements SortedLi
     @Override
     public E get(E element) {
         //TODO: Left as an exercise.
-//        for(int i = 0; i < size(); i++) {
-//            if(element.getName().equals(element.getName()))
-//                return element;
-//        }return null;
-//
         return null;
     }
 
