@@ -5,7 +5,9 @@ import domain.entity.service.Service;
 import domain.entity.student.Student;
 
 public class StudentStorage {
+    // All students by order of insertion
     protected List<Student> students;
+    // All students sorted alphabetically
     protected SortedList<Student> alphabeticalStudents;
 
     public StudentStorage() {
@@ -13,35 +15,36 @@ public class StudentStorage {
         this.alphabeticalStudents = new SortedDoublyLinkedList<>();
     }
 
-    void addStudent(Student student) {
+    public void addStudent(Student student) {
         this.students.addLast(student);
         this.alphabeticalStudents.add(student);
     }
 
-    Student getStudent(String student) {
+    public Student getStudent(String student) {
         return null;
     }
 
-    Student removeStudent(String student) {
+    public Student removeStudent(String student) {
         return null;
     }
 
-    boolean updateStudentLocation(String student, Service newLocation) {
+    public boolean updateStudentLocation(String student, Service newLocation) {
         return false;
     }
 
-    void moveHome(String student, Service newHome) {
+    public void moveHome(String student, Service newHome) {
 
     }
 
-    Iterator<Student> getAllStudents() {
+    public Iterator<Student> getAllStudents() {
         return students.iterator();
     }
 
-    Iterator<Student> getStudentsByCountry(String country) {
+    public Iterator<Student> getStudentsByCountry(String country) {
         return new FilterIterator<>(alphabeticalStudents.iterator(), new ByCountryPredicate(country));
     }
-    Iterator<Service> listVisitedServices(String studentName) {
+
+    public Iterator<Service> listVisitedServices(String studentName) {
         return null;
     }
 }

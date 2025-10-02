@@ -1,5 +1,6 @@
 package domain.entity.student;
 
+import dataStructures.Iterator;
 import domain.app.LodgingNeedsStudent;
 import domain.entity.service.Service;
 
@@ -53,4 +54,9 @@ public class ThriftyStudent extends StudentAbstract implements LodgingNeedsStude
     public int compareTo(Student o) {
         return 0;
     }
-}
+
+    @Override
+    public Iterator<Service> getVisitedServices() {
+        // throw new NoVisitStoringException();
+        return null;
+    }}

@@ -7,10 +7,10 @@ import domain.entity.student.StudentType;
 
 public class CampusAppClass implements CampusApp {
     StudentStorage students;
-    protected List<Service> services;
+    ServiceStorage services;
     public CampusAppClass() {
         this.students = new StudentStorage();
-        this.services = new ListInArray<>(2500);
+        this.services = new ServiceStorage();
     }
 
     @Override
@@ -19,22 +19,22 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void save() {
+    public void saveCurrentArea() {
 
     }
 
     @Override
-    public void load(String areaName) {
+    public void loadArea(String areaName) {
 
     }
 
     @Override
-    public void createService(String serviceName, long latitude, long longitude, int price, int value) {
+    public void createService(ServiceType type, String serviceName, long latitude, long longitude, int price, int value) {
 
     }
 
     @Override
-    public void createStudent(StudentType type, String name, String Lodging, String country) {
+    public void createStudent(StudentType type, String name, String lodging, String country) {
 
     }
 

@@ -7,10 +7,10 @@ import domain.entity.student.StudentType;
 
 public interface CampusApp {
     void createBounds(String name, long topLongitude, long topLatitude, long bottomLatitude, long bottomLongitude );
-    void save();
-    void load(String areaName);
-    void createService(String serviceName, long latitude, long longitude, int price, int value);
-    void createStudent(StudentType type, String name, String Lodging, String country);
+    void saveCurrentArea();
+    void loadArea(String areaName);
+    void createService(ServiceType type, String serviceName, long latitude, long longitude, int price, int value);
+    void createStudent(StudentType type, String name, String lodging, String country);
     Student getStudent(String student);
     Service getService(String serviceName);
     Student removeStudent(String studentName);

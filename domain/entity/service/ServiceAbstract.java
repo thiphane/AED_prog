@@ -10,17 +10,17 @@ public abstract class ServiceAbstract implements Service {
     private final int price;
     private final int value;
     int rating;
-    int ratingCount;
-    private DoublyLinkedList<Student> users;
+    private TwoWayList<Student> users;
+    List<String> ratings;
     protected ServiceAbstract(String serviceName, Position position, int price, int value) {
         this.name = serviceName;
         this.price = price;
         this.value = value;
         this.rating = 4;
-        this.ratingCount = 1;
         this.position = position;
-
+        this.ratings = new DoublyLinkedList<>();
     }
+
     @Override
     public void addRating(int rating, String description) {
         rating+=rating;
@@ -30,8 +30,12 @@ public abstract class ServiceAbstract implements Service {
         users.addLast(student);
     }
     @Override
+    public void removeUser(Student student) {
+        //users.remove(student);
+    }
+    @Override
     public int getRating() {
-        return rating/ratingCount;
+        return rating/(ratings.size()+1);
     }
     @Override
     public int getPrice() {
@@ -51,6 +55,10 @@ public abstract class ServiceAbstract implements Service {
     }
     @Override
     public boolean hasTag(String tagName) {
+        Iterator<String> iter = ratings.iterator();
+        while(iter.hasNext()) {
+            if(iter.next().contains(tagName)) { return true; }
+        }
         return false;
     }
     @Override

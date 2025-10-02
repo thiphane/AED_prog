@@ -11,6 +11,7 @@ public interface Service {
     void addRating(int rating, String description);
     int getRating();
     void addUser(Student student);
+    void removeUser(Student student);
     int getPrice();
     boolean hasTag(String tagName);
 }

@@ -1,8 +1,9 @@
 package domain.entity.student;
 
+import dataStructures.Iterator;
 import domain.entity.service.Service;
 
-public class BookishStudent extends StudentAbstract {
+public class BookishStudent extends StudentAbstract implements Student {
     public BookishStudent(String name, Service home, String country) {
         super(name, home, country);
     }
@@ -46,5 +47,10 @@ public class BookishStudent extends StudentAbstract {
     @Override
     public int compareTo(Student o) {
         return 0;
+    }
+
+    @Override
+    public Iterator<Service> getVisitedServices() {
+        return null;
     }
 }
