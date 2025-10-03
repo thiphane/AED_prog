@@ -1,6 +1,8 @@
 package dataStructures;
 
 import dataStructures.exceptions.*;
+
+
 /**
  * Sorted Doubly linked list Implementation
  * @author AED  Team
@@ -8,7 +10,7 @@ import dataStructures.exceptions.*;
  * @param <E> Generic Element
  * 
  */
-public class SortedDoublyLinkedList<E extends Comparable<E>> implements SortedList<E> {
+public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
     /**
      *  Node at the head of the list.
@@ -23,12 +25,17 @@ public class SortedDoublyLinkedList<E extends Comparable<E>> implements SortedLi
      */
     private int currentSize;
     /**
+     * Comparator of elements.
+     */
+    private final Comparator<E> comparator;
+    /**
      * Constructor of an empty sorted double linked list.
      * head and tail are initialized as null.
      * currentSize is initialized as 0.
      */
-    public SortedDoublyLinkedList( ) {
+    public SortedDoublyLinkedList(Comparator<E> comparator) {
         //TODO: Left as an exercise.
+        this.comparator = comparator;
     }
 
     /**
@@ -36,8 +43,7 @@ public class SortedDoublyLinkedList<E extends Comparable<E>> implements SortedLi
      * @return true if list is empty
      */
     public boolean isEmpty() {
-        //TODO: Left as an exercise.
-        return true;
+        return currentSize==0;
     }
 
     /**
@@ -46,8 +52,7 @@ public class SortedDoublyLinkedList<E extends Comparable<E>> implements SortedLi
      */
 
     public int size() {
-        //TODO: Left as an exercise.
-        return 0;
+        return currentSize;
     }
 
     /**
@@ -81,7 +86,6 @@ public class SortedDoublyLinkedList<E extends Comparable<E>> implements SortedLi
      * Returns the first occurrence of the element equals to the given element in the list.
      * @return element in the list or null
      */
-    @Override
     public E get(E element) {
         //TODO: Left as an exercise.
         return null;
