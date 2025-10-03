@@ -1,6 +1,6 @@
-package domain.entity.service;
+package campus_app.entity.service;
 
-import domain.app.Position;
+import campus_app.app.Position;
 
 public class LeisureService extends ServiceAbstract implements VisitableService {
     protected LeisureService(String serviceName, Position position, int price, int value) {

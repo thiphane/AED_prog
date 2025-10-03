@@ -1,9 +1,9 @@
-package domain.app;
+package campus_app.app;
 import dataStructures.*;
-import domain.entity.service.Service;
-import domain.entity.service.ServiceType;
-import domain.entity.student.Student;
-import domain.entity.student.StudentType;
+import campus_app.entity.service.Service;
+import campus_app.entity.service.ServiceType;
+import campus_app.entity.student.Student;
+import campus_app.entity.student.StudentType;
 
 public class CampusAppClass implements CampusApp {
     StudentStorage students;

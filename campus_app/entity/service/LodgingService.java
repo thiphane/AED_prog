@@ -1,6 +1,6 @@
-package domain.entity.service;
+package campus_app.entity.service;
 
-import domain.app.Position;
+import campus_app.app.Position;
 
 public class LodgingService extends ServiceAbstract {
     protected LodgingService(String serviceName, Position position, int price, int value) {

@@ -1,4 +1,4 @@
-package domain.app;
+package campus_app.app;
 
 public class BoundsClass implements Bounds {
     private final String name;

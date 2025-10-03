@@ -1,8 +1,8 @@
-package domain.entity.student;
+package campus_app.entity.student;
 
 import dataStructures.Iterator;
-import domain.entity.service.ServiceType;
-import domain.entity.service.Service;
+import campus_app.entity.service.ServiceType;
+import campus_app.entity.service.Service;
 
 public abstract class StudentAbstract implements Student {
     private final String name;

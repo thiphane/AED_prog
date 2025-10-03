@@ -1,8 +1,7 @@
-package domain.entity.service;
+package campus_app.entity.service;
 import dataStructures.*;
-import domain.app.Order;
-import domain.app.Position;
-import domain.entity.student.Student;
+import campus_app.app.Position;
+import campus_app.entity.student.Student;
 
 public abstract class ServiceAbstract implements Service {
     private final String name;
@@ -35,17 +34,12 @@ public abstract class ServiceAbstract implements Service {
     }
     @Override
     public int getRating() {
-        return rating/(ratings.size()+1);
+        return Math.round(this.getRealRating());
     }
 
     @Override
-    public float getComparableRating() {
+    public float getRealRating() {
         return (float)rating / (ratings.size()+1);
-    }
-
-    @Override
-    public int compareTo(Service other) {
-        return other.getComparableRating - this.getComparableRating();
     }
 
     @Override

@@ -1,10 +1,10 @@
-package domain.entity.student;
+package campus_app.entity.student;
 
 import dataStructures.*;
-import domain.entity.service.ServiceType;
-import domain.entity.service.Service;
+import campus_app.entity.service.ServiceType;
+import campus_app.entity.service.Service;
 
-public interface Student extends Comparable<Student> {
+public interface Student {
     String getCountry();
     String getName();
     Service getLocation();

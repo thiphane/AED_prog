@@ -1,15 +1,15 @@
-package domain.entity.student;
+package campus_app.entity.student;
 
 import dataStructures.Iterator;
-import domain.entity.service.Service;
+import campus_app.entity.service.Service;
 
-public class BookishStudent extends StudentAbstract implements Student {
-    public BookishStudent(String name, Service home, String country) {
+public class OutgoingStudent extends StudentAbstract implements Student {
+    public OutgoingStudent(String name, Service home, String country) {
         super(name, home, country);
     }
 
     public StudentType getType(){
-        return StudentType.BOOKISH;
+        return StudentType.OUTGOING;
     }
 
     /**
@@ -47,6 +47,12 @@ public class BookishStudent extends StudentAbstract implements Student {
     @Override
     public int compareTo(Student o) {
         return 0;
+    }
+
+    @Override
+    public void updatePosition(Service position) {
+        super.updatePosition(position);
+        // TODO Store service if needed
     }
 
     @Override

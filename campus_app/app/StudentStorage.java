@@ -1,9 +1,8 @@
-package domain.app;
+package campus_app.app;
 
 import dataStructures.*;
-import domain.entity.service.Service;
-import domain.entity.service.ServiceType;
-import domain.entity.student.Student;
+import campus_app.entity.service.Service;
+import campus_app.entity.student.Student;
 
 public class StudentStorage {
     // All students by order of insertion
@@ -13,7 +12,7 @@ public class StudentStorage {
 
     public StudentStorage() {
         this.students = new DoublyLinkedList<>();
-        this.alphabeticalStudents = new SortedDoublyLinkedList<>();
+        this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
     }
 
     public void addStudent(Student student) {
@@ -47,9 +46,5 @@ public class StudentStorage {
 
     public Iterator<Service> listVisitedServices(String studentName) {
         return null;
-    }
-
-    public Service findBestService(String studentName, Iterator<Service> services) {
-        return this.getStudent(studentName).findBestService(services);
     }
 }

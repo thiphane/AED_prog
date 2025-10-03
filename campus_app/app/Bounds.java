@@ -1,4 +1,4 @@
-package domain.app;
+package campus_app.app;
 
 public interface Bounds {
     String getName();
