@@ -47,4 +47,8 @@ public class StudentStorage {
     public Iterator<Service> listVisitedServices(String studentName) {
         return null;
     }
+
+    public Service findBestService(String studentName, Iterator<Service> services) {
+        return this.getStudent(studentName).findBestService(services);
+    }
 }
