@@ -37,6 +37,17 @@ public abstract class ServiceAbstract implements Service {
     public int getRating() {
         return rating/(ratings.size()+1);
     }
+
+    @Override
+    public float getComparableRating() {
+        return (float)rating / (ratings.size()+1);
+    }
+
+    @Override
+    public int compareTo(Service other) {
+        return other.getComparableRating - this.getComparableRating();
+    }
+
     @Override
     public int getPrice() {
         return price;

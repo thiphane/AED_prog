@@ -23,7 +23,7 @@ public interface CampusApp {
     Iterator<Service> listAllServices();
     Iterator<Service> listVisitedServices(String studentName);
     Iterator<Service> listServicesByRanking();
-    Iterator<Service> listClosestServicesByStudent(int rate, ServiceType type, String studentName);
+    Iterator<Service> listClosestServicesByStudent(int rating, ServiceType type, String studentName);
     Iterator<Service> listServicesByTag(String tagName);
     Service findBestService(String studentName, ServiceType type);
 }

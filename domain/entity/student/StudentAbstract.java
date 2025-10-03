@@ -35,11 +35,6 @@ public abstract class StudentAbstract implements Student {
     }
 
     @Override
-    public Service findBestService(ServiceType type, Iterator<Service> services) {
-        return null;
-    }
-
-    @Override
     public String getName() {
         return this.name;
     }

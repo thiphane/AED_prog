@@ -1,21 +1,15 @@
 package domain.entity.student;
 
 import dataStructures.Iterator;
-import domain.app.LodgingNeedsStudent;
 import domain.entity.service.Service;
 
-public class ThriftyStudent extends StudentAbstract implements LodgingNeedsStudent {
+public class ThriftyStudent extends StudentAbstract {
     public ThriftyStudent(String name, Service home, String country) {
         super(name, home, country);
     }
 
     public StudentType getType(){
         return StudentType.THRIFTY;
-    }
-
-    @Override
-    public boolean canMove() {
-        return false;
     }
 
     /**
@@ -59,4 +53,10 @@ public class ThriftyStudent extends StudentAbstract implements LodgingNeedsStude
     public Iterator<Service> getVisitedServices() {
         // throw new NoVisitStoringException();
         return null;
-    }}
+    }
+
+    @Override
+    public void moveHome(Service home) {
+        // If it's more expensive, throw exception
+    }
+}

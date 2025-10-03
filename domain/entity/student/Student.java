@@ -12,6 +12,6 @@ public interface Student extends Comparable<Student> {
     Service getHome();
     void moveHome(Service home);
     void updatePosition(Service position);
-    Service findBestService(ServiceType type, Iterator<Service> services);
+    Service findBestService(Iterator<Service> services);
     Iterator<Service> getVisitedServices();
 }

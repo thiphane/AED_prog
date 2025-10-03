@@ -2,6 +2,7 @@ package domain.app;
 
 import dataStructures.*;
 import domain.entity.service.Service;
+import domain.entity.service.ServiceType;
 import domain.entity.student.Student;
 
 public class StudentStorage {
@@ -46,5 +47,9 @@ public class StudentStorage {
 
     public Iterator<Service> listVisitedServices(String studentName) {
         return null;
+    }
+
+    public Service findBestService(String studentName, Iterator<Service> services) {
+        return this.getStudent(studentName).findBestService(services);
     }
 }

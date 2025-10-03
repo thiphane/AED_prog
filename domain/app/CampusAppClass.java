@@ -110,12 +110,11 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Service> listServicesByTag(String tagName) {
-        return null;
+        return new FilterIterator<>(services.listAllServices(), new ServiceTagPredicate(tagName));
     }
 
     @Override
     public Service findBestService(String studentName, ServiceType type) {
-        // TODO add to student storage
-        return null;
+        return students.findBestService(studentName, new FilterIterator<>(services.listAllServices(), new ServiceTypePredicate(type)));
     }
 }
