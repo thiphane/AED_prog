@@ -15,6 +15,7 @@ public class Main {
             command = Command.getCommand(cmd);
             switch(command) {
                 case Command.HELP -> {
+                    in.nextLine();
                     for(Command c : Command.values()) {
                         if(!c.getDescription().isEmpty()) {
                             System.out.printf(HELP_FORMAT, c.name().toLowerCase(), c.getDescription());
