@@ -1,15 +1,37 @@
+import campus_app.app.CampusApp;
+import campus_app.app.CampusAppClass;
+import campus_app.entity.service.Service;
+import campus_app.exceptions.*;
+import dataStructures.Iterator;
 import user.Command;
 
 import java.util.Scanner;
 
 public class Main {
     public static final String HELP_FORMAT = "%s - %s\n";
-
-
+    public static final String BOUND_CREATED_FORMAT = "%s created.\n";
     public static final String EXIT_MESSAGE = "Bye!";
+    // Error Messages
+    public static final String BOUNDS_NOT_DEFINED = "System bounds not defined.";
+    public static final String NO_SERVICES = "No services yet!";
+    public static final String INVALID_SERVICE_TYPE = "Invalid service type!";
+    public static final String OUTSIDE_BOUNDS = "Invalid location!";
+    public static final String INVALID_PRICE_EATING = "Invalid menu price!";
+    public static final String INVALID_PRICE_LODGING = "Invalid room price!";
+    public static final String INVALID_PRICE_LEISURE = "Invalid ticket price!";
+    public static final String INVALID_VALUE_LEISURE = "Invalid discount price!";
+    public static final String INVALID_VALUE_CAPACITY = "Invalid capacity!";
+    public static final String SERVICE_ALREADY_EXISTS_FORMAT = "%s already exists!\n";
+    public static final String SERVICE_LIST_FORMAT = "%s: %s (%d, %d).\n";
+    public static final String SERVICE_FORMAT = "%s %s added.\n";
+    public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it.";
+    public static final String INVALID_BOUND = "Invalid bounds.";
+    public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         Command command;
+        CampusApp app = new CampusAppClass();
         do {
             String cmd = in.next();
             command = Command.getCommand(cmd);
@@ -21,6 +43,76 @@ public class Main {
                             System.out.printf(HELP_FORMAT, c.name().toLowerCase(), c.getDescription());
                         }
                     }
+                }
+                case Command.BOUNDS -> {
+                    long topLeftLat = in.nextLong();
+                    long topLeftLon = in.nextLong();
+                    long botRightLat = in.nextLong();
+                    long botRightLon = in.nextLong();
+                    String name = in.nextLine().trim();
+                    try {
+                        app.createBounds(name, topLeftLat, topLeftLon, botRightLat, botRightLon);
+                        System.out.printf(BOUND_CREATED_FORMAT, name);
+                    } catch (BoundNameExists e) {
+                        System.out.println(BOUND_NAME_EXISTS);
+                    } catch (InvalidBoundPoints e) {
+                        System.out.println(INVALID_BOUND);
+                    }
+                }
+                case Command.SERVICES -> {
+                    in.nextLine();
+                    Iterator<Service> services = app.listAllServices();
+                    if(!services.hasNext()) {
+                        System.out.println(NO_SERVICES);
+                    }
+                    while(services.hasNext()) {
+                        Service s = services.next();
+                        System.out.printf(SERVICE_LIST_FORMAT, s.getName(), s.getType().toString().toLowerCase(), s.getPosition().latitude(), s.getPosition().longitude());
+                    }
+                }
+                case Command.SERVICE -> {
+                    String type = in.next();
+                    long latitude = in.nextLong();
+                    long longitude = in.nextLong();
+                    int price = in.nextInt();
+                    int value = in.nextInt();
+                    String name = in.nextLine().trim();
+                    try {
+                        app.createService(type, name, latitude, longitude, price, value);
+                        System.out.printf(SERVICE_FORMAT, type.toLowerCase().trim(), name);
+                    } catch (InvalidValueException e) {
+                        switch(e.getType()) {
+                            case EATING, LODGING -> {
+                                System.out.println(INVALID_VALUE_CAPACITY);
+                            }
+                            case LEISURE -> {
+                                System.out.println(INVALID_VALUE_LEISURE);
+                            }
+                        }
+                    } catch (InvalidPriceException e) {
+                        switch(e.getType()) {
+                            case EATING -> {
+                                System.out.println(INVALID_PRICE_EATING);
+                            }
+                            case LEISURE -> {
+                                System.out.println(INVALID_PRICE_LEISURE);
+                            }
+                            case LODGING -> {
+                                System.out.println(INVALID_PRICE_LODGING);
+                            }
+                        }
+                    } catch (OutsideBoundsException e) {
+                        System.out.println(OUTSIDE_BOUNDS);
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    } catch (InvalidTypeException e) {
+                        System.out.println(INVALID_SERVICE_TYPE);
+                    } catch (AlreadyExistsException e) {
+                        System.out.printf(SERVICE_ALREADY_EXISTS_FORMAT, name);
+                    }
+                }
+                case Command.UNKNOWN -> {
+                    System.out.println(UNKNOWN_COMMAND);
                 }
                 case Command.EXIT -> {
                     System.out.println(EXIT_MESSAGE);

@@ -33,6 +33,10 @@ public enum Command {
     }
 
     public static Command getCommand(String text) {
-        return valueOf(text.toUpperCase().strip());
+        try {
+            return valueOf(text.toUpperCase().strip());
+        } catch (IllegalArgumentException e) {
+            return Command.UNKNOWN;
+        }
     }
 }

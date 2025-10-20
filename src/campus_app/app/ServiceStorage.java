@@ -1,6 +1,7 @@
 package campus_app.app;
 
 import campus_app.entity.service.Service;
+import campus_app.exceptions.AlreadyExistsException;
 import dataStructures.*;
 
 public class ServiceStorage {
@@ -13,7 +14,14 @@ public class ServiceStorage {
         this.servicesByStar = new SortedDoublyLinkedList<>(new ServiceStarComparator());
     }
 
-    public void addService(Service service) {
+    public void addService(Service service) throws AlreadyExistsException {
+        Iterator<Service> iter = services.iterator();
+        while(iter.hasNext()) {
+            Service cur = iter.next();
+            if(cur.getName().equals(service.getName())) {
+                throw new AlreadyExistsException();
+            }
+        }
         this.services.addLast(service);
         this.servicesByStar.add(service);
     }

@@ -1,0 +1,76 @@
+bounds - Defines the new geographic bounding rectangle
+save - Saves the current geographic bounding rectangle to a text file
+load - Load a geographic bounding rectangle from a text file
+service - Adds a new service to the current geographic bounding rectangle. The service may be eating, lodging or leisure
+services - Displays the list of services in current geographic bounding rectangle, in order of registration
+student - Adds a student to the current geographic bounding rectangle
+students - Lists all the students or those of a given country in the current geographic bounding rectangle, in alphabetical order of the student’s name
+leave - Removes a student from the the current geographic bounding rectangle
+go - Changes the location of a student to a leisure service, or eating service
+move - Changes the home of a student
+users - List all students who are in a given service (eating or lodging)
+star - Evaluates a service
+where - Locates a student
+visited - Lists locations visited by one student
+ranking - Lists services ordered by star
+ranked - Lists the service(s) of the indicated type with the given score that are closer to the student location.
+tag - ists all services that have at least one review whose description contains the specified word
+find - Finds the most relevant service of a certain type, for a specific student
+help - Shows the available commands
+exit - Terminates the execution of the program
+Costa da Caparica created.
+No services yet!
+eating NOVA FCT Canteen added.
+lodging NOVA FCT added.
+No services yet!
+leisure Egas Moniz Event added.
+eating Egas Moniz Canteen added.
+eating Crowne Plaza Caparica Restaurant added.
+lodging Praia da Riviera Camping added.
+lodging Almada Hostel added.
+eating Residencial Mar e Sol Bar added.
+leisure Top Left added.
+leisure Bottom Right added.
+leisure Top Right added.
+No services yet!
+eating Praia da Riviera Restaurant added.
+eating Museu de Almada Bar added.
+eating Solar dos Zagallos Bar added.
+leisure Praia da Riviera Party added.
+leisure Almada Hostel Conference added.
+leisure Solar dos Zagallos Event added.
+lodging Solar dos Zagallos Hotel added.
+leisure NOVA FCT Event added.
+eating Top Left Bar added.
+lodging Crowne Plaza Caparica Hotel added.
+eating Bottom Right Bar added.
+eating Top Right Bar added.
+eating Bottom Left Bar added.
+No services yet!
+lodging Egas Moniz added.
+lodging Residencial Mar e Sol added.
+leisure Crowne Plaza Caparica Event added.
+leisure Residencial Mar e Sol Event added.
+leisure Bottom Left added.
+No services yet!
+bounds - Defines the new geographic bounding rectangle
+save - Saves the current geographic bounding rectangle to a text file
+load - Load a geographic bounding rectangle from a text file
+service - Adds a new service to the current geographic bounding rectangle. The service may be eating, lodging or leisure
+services - Displays the list of services in current geographic bounding rectangle, in order of registration
+student - Adds a student to the current geographic bounding rectangle
+students - Lists all the students or those of a given country in the current geographic bounding rectangle, in alphabetical order of the student’s name
+leave - Removes a student from the the current geographic bounding rectangle
+go - Changes the location of a student to a leisure service, or eating service
+move - Changes the home of a student
+users - List all students who are in a given service (eating or lodging)
+star - Evaluates a service
+where - Locates a student
+visited - Lists locations visited by one student
+ranking - Lists services ordered by star
+ranked - Lists the service(s) of the indicated type with the given score that are closer to the student location.
+tag - ists all services that have at least one review whose description contains the specified word
+find - Finds the most relevant service of a certain type, for a specific student
+help - Shows the available commands
+exit - Terminates the execution of the program
+Bye!
