@@ -16,7 +16,9 @@ public class Main {
             switch(command) {
                 case Command.HELP -> {
                     for(Command c : Command.values()) {
-                        System.out.printf(HELP_FORMAT, c.name().toLowerCase(), c.getDescription());
+                        if(!c.getDescription().isEmpty()) {
+                            System.out.printf(HELP_FORMAT, c.name().toLowerCase(), c.getDescription());
+                        }
                     }
                 }
                 case Command.EXIT -> {
