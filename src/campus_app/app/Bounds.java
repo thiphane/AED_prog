@@ -40,4 +40,8 @@ public interface Bounds {
     Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate);
 
     void addStudent(Student student);
+
+    Service getService(String lodging);
+
+    boolean studentExists(String name);
 }

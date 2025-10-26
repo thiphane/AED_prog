@@ -134,4 +134,14 @@ public class BoundsClass implements Bounds, Serializable {
     public void addStudent(Student student) {
         students.addStudent(student);
     }
+
+    @Override
+    public Service getService(String lodging) {
+        return services.getService(lodging);
+    }
+
+    @Override
+    public boolean studentExists(String name) {
+        return students.getStudent(name) != null;
+    }
 }

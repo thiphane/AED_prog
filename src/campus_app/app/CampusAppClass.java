@@ -1,8 +1,8 @@
 package campus_app.app;
 import campus_app.entity.service.*;
+import campus_app.entity.student.*;
 import campus_app.exceptions.*;
 import dataStructures.*;
-import campus_app.entity.student.Student;
 import dataStructures.exceptions.NoSuchElementException;
 
 import java.nio.file.Files;
@@ -75,8 +75,45 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void createStudent(String type, String name, String lodging, String country) {
+    public void createStudent(String type, String name, String lodging, String country) throws InvalidTypeException, AlreadyExistsException, NoSuchElementException, ServiceIsFullException {
+        StudentType studentType;
+        try {
+            studentType = StudentType.getType(type);
+        } catch (Exception e) {
+            throw new InvalidTypeException();
+        }
+        Service serviceObj = currentBounds.getService(lodging);
+        if(!(serviceObj instanceof LodgingService home)) {
+            throw new NoSuchElementException();
+        }
+        // TODO lançar a exceção no código nas classes que implementam Service que adicionam o estudante à lista de estudantes no serviço
+        /*if(home.isFull()) {
+            throw new ServiceIsFullException();
+        }*/
 
+        // TODO talvez criar o objeto de estudante antes de verificar se existe, assim não
+        //  é preciso tar a criar um objeto estudante só com o nome para encontrar um com o mesmo nome
+        //  em StudentStorage.getStudent
+        if(currentBounds.studentExists(name)) {
+            throw new AlreadyExistsException(name);
+        }
+
+        Student student;
+        switch(studentType) {
+            case StudentType.BOOKISH -> {
+                student = new BookishStudent(name, home, country);
+            }
+            case THRIFTY -> {
+                student = new ThriftyStudent(name, home, country);
+            }
+            case OUTGOING -> {
+                student = new OutgoingStudent(name, home, country);
+            }
+            default -> {
+                throw new InvalidTypeException();
+            }
+        }
+        this.currentBounds.addStudent(student);
     }
 
     @Override
@@ -140,12 +177,6 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Service> listServicesByRanking() {
-        return null;
-    }
-
-    @Override
-    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) {
-        // TODO add to student storage
         return null;
     }
 

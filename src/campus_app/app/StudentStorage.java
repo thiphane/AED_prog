@@ -24,7 +24,7 @@ public class StudentStorage implements Serializable {
     }
 
     public Student getStudent(String student) {
-        return null;
+        return alphabeticalStudents.get(new BookishStudent(student, null, ""));
     }
 
     public Student removeStudent(String student) {

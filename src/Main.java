@@ -21,6 +21,7 @@ public class Main {
     public static final String BOUNDS_NOT_DEFINED = "System bounds not defined.";
     public static final String NO_SERVICES = "No services yet!";
     public static final String INVALID_SERVICE_TYPE = "Invalid service type!";
+    public static final String INVALID_STUDENT_TYPE = "Invalid student type!";
     public static final String OUTSIDE_BOUNDS = "Invalid location!";
     public static final String INVALID_PRICE_EATING = "Invalid menu price!";
     public static final String INVALID_PRICE_LODGING = "Invalid room price!";
@@ -35,13 +36,8 @@ public class Main {
     public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services!\n";
     public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s services with average!\n";
     public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it.";
-    public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it!";
     public static final String STUDENT_FORMAT = "%s added.\n";
     public static final String LODGING_DOES_NOT_EXIST = "Lodging %s does not exist.\n";
-    public static final String STUDENT_DOES_NOT_EXIST = "%s does not exist!\n";
-    public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services\n";
-    public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s service with average\n";
-    public static final String RANKED_HEADER= "%s services closer with %s average";
     public static final String SERVICE_IS_FULL = "%s %s is full!";
     public static final String INVALID_BOUND = "Invalid bounds.";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
@@ -138,26 +134,6 @@ public class Main {
                     } catch (BoundsNotDefined e) {
                         System.out.println(INVALID_BOUND);
                     }
-                }case Command.RANKED -> {
-                    String type = in.next();int rate = in.nextInt();String name = in.nextLine().trim();
-                    try {
-                        Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name);
-                        System.out.println(RANKED_HEADER);
-                        while(it.hasNext()) {
-                            Service s = it.next();
-                            System.out.println(s.getName());
-                        }
-                    } catch (BoundsNotDefined e) {
-                        System.out.println(BOUNDS_NOT_DEFINED);
-                    } catch (NoSuchElementException e) {
-                        System.out.printf(STUDENT_DOES_NOT_EXIST, name);
-                    }catch (InvalidTypeException e) {
-                        System.out.println(INVALID_SERVICE_TYPE);
-                    } catch (NoSuchElementOfGivenType e) {
-                        System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type);
-                    }catch (NoSuchServiceWithGivenRate e) {
-                        System.out.printf(NO_SUCH_SERVICE_WITH_AVERAGE, type);
-                    }
                 }
                 case Command.STUDENTS -> {
                     String country = in.nextLine().trim();
@@ -174,16 +150,17 @@ public class Main {
                 }
                 case Command.STUDENT -> {
                     String type = in.next();
+                    in.nextLine();
                     String name = in.nextLine().trim();
                     String country = in.nextLine().trim();
                     String lodging = in.nextLine().trim();
                     try {
-                        app.createStudent(type, name, country, lodging);
+                        app.createStudent(type, name, lodging, country);
                         System.out.printf(STUDENT_FORMAT, name);
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (InvalidTypeException e) {
-                        System.out.println(INVALID_SERVICE_TYPE);
+                        System.out.println(INVALID_STUDENT_TYPE);
                     }
                     catch (NoSuchElementException e) {
                         System.out.printf(LODGING_DOES_NOT_EXIST, lodging);

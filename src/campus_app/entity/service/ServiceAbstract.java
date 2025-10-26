@@ -27,9 +27,6 @@ public abstract class ServiceAbstract implements Service {
         this.position = position;
         this.ratings = new DoublyLinkedList<>();
     }
-    public boolean isFull() {
-        return value>users.size();
-    }
 
     @Override
     public void addRating(int rating, String description) {
@@ -81,5 +78,13 @@ public abstract class ServiceAbstract implements Service {
     @Override
     public TwoWayIterator<Student> getUsers(){
         return users.twoWayiterator();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Service service)) {
+            return false;
+        }
+        return this.getName().equalsIgnoreCase(service.getName());
     }
 }
