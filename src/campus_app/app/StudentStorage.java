@@ -24,6 +24,7 @@ public class StudentStorage implements Serializable {
     }
 
     public Student getStudent(String student) {
+        // TODO students.get(students.indexof()) vai passar pela lista 2 vezes, mas isto não fica muito bonito
         return alphabeticalStudents.get(new BookishStudent(student, null, ""));
     }
 
@@ -42,11 +43,11 @@ public class StudentStorage implements Serializable {
     }
 
     public Iterator<Student> getAllStudents() {
-        return students.iterator();
+        return alphabeticalStudents.iterator();
     }
 
     public Iterator<Student> getStudentsByCountry(String country) {
-        return new FilterIterator<>(alphabeticalStudents.iterator(), new ByCountryPredicate(country));
+        return new FilterIterator<>(students.iterator(), new ByCountryPredicate(country));
     }
 
     public Iterator<Service> listVisitedServices(String studentName) {

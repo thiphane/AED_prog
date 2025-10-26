@@ -7,4 +7,9 @@ public record Position(long latitude, long longitude) implements Serializable {
         return ((position.latitude()-this.latitude())+
                 (position.longitude()-this.longitude()));
     }
+
+    @Override
+    public String toString() {
+        return String.format("(%d, %d)", this.latitude(), this.longitude());
+    }
 }
