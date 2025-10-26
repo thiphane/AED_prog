@@ -64,8 +64,10 @@ public class ListInArray<E> implements List<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E getFirst() {
-        //TODO: Left as an exercise.
-        return null;
+        if (size() == 0) {
+            throw new NoSuchElementException();
+        }
+        return this.elems[0];
     }
 
     /**
@@ -75,8 +77,10 @@ public class ListInArray<E> implements List<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E getLast() {
-        //TODO: Left as an exercise.
-        return null;
+        if (size() == 0) {
+            throw new NoSuchElementException();
+        }
+        return this.elems[this.size() - 1];
     }
 
     /**
@@ -90,8 +94,10 @@ public class ListInArray<E> implements List<E> {
      * @throws InvalidPositionException if position is not valid in the list
      */
     public E get(int position) {
-        //TODO: Left as an exercise.
-        return null;
+        if(position < 0 || position >= this.size()) {
+            throw new InvalidPositionException();
+        }
+        return this.elems[position];
     }
 
     /**
@@ -103,8 +109,24 @@ public class ListInArray<E> implements List<E> {
      * @return position of the first occurrence of the element in the list (or -1)
      */
     public int indexOf(E element) {
-        //TODO: Left as an exercise.
-        return 0;
+        for(int i = 0; i < this.size(); i++) {
+            if(this.elems[i].equals(element)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private void checkAddSize() {
+        if(this.elems.length <= this.size()) {
+            E[] newArr = (E[])(new Object[this.elems.length * FACTOR]);
+            for(int i = 0; i < this.size(); i++) {
+                newArr[i] = this.elems[i];
+            }
+            this.elems = newArr;
+        }
     }
 
     /**
@@ -113,7 +135,12 @@ public class ListInArray<E> implements List<E> {
      * @param element to be inserted
      */
     public void addFirst(E element) {
-        //TODO: Left as an exercise.
+        this.checkAddSize();
+        for(int i = this.size(); i > 0; i--) {
+            this.elems[i] = this.elems[i-1];
+        }
+        this.elems[0] = element;
+        this.counter++;
     }
 
     /**
@@ -122,7 +149,8 @@ public class ListInArray<E> implements List<E> {
      * @param element to be inserted
      */
     public void addLast(E element) {
-        //TODO: Left as an exercise.
+        this.checkAddSize();
+        this.elems[this.counter++] = element;
     }
 
     /**
@@ -136,7 +164,15 @@ public class ListInArray<E> implements List<E> {
      * @throws InvalidPositionException - if position is not valid in the list
      */
     public void add(int position, E element) {
-        //TODO: Left as an exercise.
+        this.checkAddSize();
+        if (position < 0 || position >= this.size()) {
+            throw new InvalidPositionException();
+        }
+        for(int i = this.size(); i > position; i--) {
+            this.elems[i] = this.elems[i-1];
+        }
+        this.elems[position] = element;
+        this.counter++;
     }
 
     /**
@@ -146,8 +182,16 @@ public class ListInArray<E> implements List<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E removeFirst() {
-        //TODO: Left as an exercise.
-        return null;
+        if (this.size() == 0) {
+            throw new NoSuchElementException();
+        }
+        E elem = this.elems[0];
+        this.counter--;
+        for(int i = 0; i < this.size(); i++) {
+            this.elems[i] = this.elems[i+1];
+        }
+        this.elems[counter] = null;
+        return elem;
     }
 
     /**
@@ -157,8 +201,13 @@ public class ListInArray<E> implements List<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E removeLast() {
-        //TODO: Left as an exercise.
-        return null;
+        if (this.size() == 0) {
+            throw new NoSuchElementException();
+        }
+        E elem = this.elems[this.size() - 1];
+        this.elems[this.size() - 1] = null;
+        this.counter--;
+        return elem;
     }
 
     /**
@@ -172,7 +221,15 @@ public class ListInArray<E> implements List<E> {
      * @throws InvalidPositionException - if position is not valid in the list
      */
     public E remove(int position) {
-        //TODO: Left as an exercise.
-        return null;
+        if (position < 0 || position >= this.size()) {
+            throw new InvalidPositionException();
+        }
+        E elem = this.elems[position];
+        for(int i = position; i < size()-1; i++) {
+            this.elems[i] = this.elems[i+1];
+        }
+        this.elems[size() - 1] = null;
+        this.counter--;
+        return elem;
     }
 }

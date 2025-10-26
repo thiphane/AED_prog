@@ -34,7 +34,19 @@ public class FilterIterator<E> implements Iterator<E> {
      * @param criterion filter
      */
     public FilterIterator(Iterator<E> list, Predicate<E> criterion) {
-        //TODO: Left as an exercise.
+        this.iterator = list;
+        this.criterion = criterion;
+        updateNext();
+    }
+
+    private void updateNext() {
+        if(this.iterator.hasNext()) { this.nextToReturn = this.iterator.next(); } else { this.nextToReturn = null; return; }
+        while(this.iterator.hasNext() && !this.criterion.check(this.nextToReturn)) {
+            this.nextToReturn = this.iterator.next();
+        }
+        if(!this.criterion.check(this.nextToReturn)) {
+            this.nextToReturn = null;
+        }
     }
 
     /**
@@ -43,8 +55,7 @@ public class FilterIterator<E> implements Iterator<E> {
      * @return true iff the iteration has more elements
      */
     public boolean hasNext() {
-        //TODO: Left as an exercise.
-        return true;
+        return this.nextToReturn != null;
     }
 
     /**
@@ -54,8 +65,9 @@ public class FilterIterator<E> implements Iterator<E> {
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
     public E next() {
-        //TODO: Left as an exercise.
-        return null;
+        E element = this.nextToReturn;
+        updateNext();
+        return element;
     }
 
     /**
@@ -63,7 +75,9 @@ public class FilterIterator<E> implements Iterator<E> {
      * After rewind, if the iteration is not empty, next will return the first element.
      */
     public void rewind() {
-        //TODO: Left as an exercise.
+        this.iterator.rewind();
+        this.nextToReturn = null;
+        updateNext();
     }
 
 }

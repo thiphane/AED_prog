@@ -30,7 +30,8 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * currentSize is initialized as 0.
      */
     public DoublyLinkedList( ) {
-        //TODO: Left as an exercise.
+        this.head = this.tail = null;
+        this.currentSize = 0;
 
     }
 
@@ -39,8 +40,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return true if list is empty
      */
     public boolean isEmpty() {
-        //TODO: Left as an exercise.
-        return true;
+        return this.currentSize <= 0;
     }
 
     /**
@@ -49,8 +49,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      */
 
     public int size() {
-        //TODO: Left as an exercise.
-        return 0;
+        return this.currentSize;
     }
 
     /**
@@ -75,8 +74,14 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @param element - Element to be inserted
      */
     public void addFirst( E element ) {
-        //TODO: Left as an exercise.
-
+        if(this.head == null) {
+            this.head = new DoublyListNode<>(element);
+            this.tail = this.head;
+        } else {
+            this.head.setPrevious(new DoublyListNode<>(element, null, this.head));
+            this.head = this.head.getPrevious();
+        }
+        currentSize++;
     }
 
     /**
@@ -84,8 +89,14 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @param element - Element to be inserted
      */
     public void addLast( E element ) {
-        //TODO: Left as an exercise.
-
+        if(this.tail == null) {
+            this.tail = new DoublyListNode<>(element);
+            this.head = this.tail;
+        } else {
+            this.tail.setNext(new DoublyListNode<>(element, this.tail, null));
+            this.tail = this.tail.getNext();
+        }
+        currentSize++;
     }
 
     /**
@@ -94,8 +105,9 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E getFirst( ) {
-        //TODO: Left as an exercise.
-        return null;
+        if(this.isEmpty()) { throw new NoSuchElementException(); }
+        assert this.head != null;
+        return this.head.getElement();
     }
 
     /**
@@ -104,13 +116,36 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E getLast( ) {
-        //TODO: Left as an exercise.
-        return null;
+        if(this.isEmpty()) { throw new NoSuchElementException(); }
+        assert this.tail != null;
+        return this.tail.getElement();
     }
 
-   
+    private DoublyListNode<E> getNode(int position) {
+        if(position >= size() || position < 0) {
+            throw new InvalidPositionException();
+        }
+        boolean backwards = position > (this.size() / 2);
+        DoublyListNode<E> cur;
+        int count;
+        if(backwards) {
+            cur = tail;
+            count = this.size() - position - 1;
+        } else {
+            cur = head;
+            count = position;
+        }
+        for(int i = 0; i < count; i++) {
+            if(backwards) {
+                cur = cur.getPrevious();
+            } else {
+                cur = cur.getNext();
+            }
+        }
+        return cur;
+    }
 
-     /**
+    /**
      * Returns the element at the specified position in the list.
      * Range of valid positions: 0, ..., size()-1.
      * If the specified position is 0, get corresponds to getFirst.
@@ -120,9 +155,9 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws InvalidPositionException if position is not valid in the list
      */
     public E get( int position ) {
-        //TODO: Left as an exercise.
-        return null;
+        return this.getNode(position).getElement();
     }
+
     /**
      * Returns the position of the first occurrence of the specified element
      * in the list, if the list contains the element.
@@ -131,8 +166,16 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return position of the first occurrence of the element in the list (or -1)
      */
     public int indexOf( E element ) {
-        //TODO: Left as an exercise.
-        return 0;
+        DoublyListNode<E> cur = this.head;
+        int i = 0;
+        while(cur != null && !cur.getElement().equals(element)) {
+            cur = cur.getNext();
+            i++;
+        }
+        if(cur == null) {
+            return -1;
+        }
+        return i;
     }
 
     /**
@@ -145,8 +188,14 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws InvalidPositionException - if position is not valid in the list
      */
     public void add( int position, E element ) {
-        //TODO: Left as an exercise.
-
+        if(position == 0) { this.addFirst(element); return; }
+        if(position == size()) { this.addLast(element); return; }
+        // Add to middle
+        DoublyListNode<E> newNext = this.getNode(position);
+        DoublyListNode<E> node = new DoublyListNode<>(element, newNext.getPrevious(), newNext);
+        newNext.setPrevious(node);
+        node.getPrevious().setNext(node);
+        currentSize++;
     }
 
     /**
@@ -155,8 +204,12 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E removeFirst( ) {
-        //TODO: Left as an exercise.
-        return null;
+        if(size() <= 0) { throw new NoSuchElementException(); }
+        E element = this.head.getElement();
+        this.head = this.head.getNext();
+        if(this.head == null) { this.tail = null; } else { this.head.setPrevious(null); }
+        currentSize--;
+        return element;
     }
 
     /**
@@ -165,8 +218,21 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws NoSuchElementException - if size() == 0
      */
     public E removeLast( ) {
-        //TODO: Left as an exercise.
-        return null;
+        if(size() <= 0) { throw new NoSuchElementException(); }
+        E element = this.tail.getElement();
+        this.tail = this.tail.getPrevious();
+        if(this.tail == null) { this.head = null; } else { this.tail.setNext(null); }
+        currentSize--;
+        return element;
+    }
+
+    private E removeMiddle(int position) {
+        // Remove middle
+        DoublyListNode<E> toRemove = this.getNode(position);
+        toRemove.getPrevious().setNext(toRemove.getNext());
+        toRemove.getNext().setPrevious(toRemove.getPrevious());
+        currentSize--;
+        return toRemove.getElement();
     }
 
     /**
@@ -179,8 +245,12 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @throws InvalidPositionException - if position is not valid in the list
      */
     public E remove( int position ) {
-        //TODO: Left as an exercise.
-        return null;
+        if(position < 0 || position > size()) {
+            throw new InvalidPositionException();
+        }
+        if(position == 0) { return removeFirst(); }
+        if(position == size()-1) { return removeLast(); }
+        return removeMiddle(position);
     }
 
 }

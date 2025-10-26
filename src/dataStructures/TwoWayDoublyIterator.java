@@ -29,7 +29,8 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      */
     public TwoWayDoublyIterator(DoublyListNode<E> first, DoublyListNode<E> last) {
         super(first);
-        //TODO: Left as an exercise.
+        this.lastNode = last;
+        this.prevToReturn = last;
     }
 
     /**
@@ -38,8 +39,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * @return true iff the iteration has more elements in the reverse direction
      */
     public boolean hasPrevious( ) {
-        //TODO: Left as an exercise.
-        return true;
+        return this.prevToReturn != null;
     }
 
     /**
@@ -48,8 +48,11 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
     public E next( ){
-        //TODO: Left as an exercise.
-        return null;
+        if(!this.hasNext()) { throw new NoSuchElementException(); }
+        E element = this.nextToReturn.getElement();
+        this.prevToReturn = this.nextToReturn.getPrevious();
+        this.nextToReturn = this.nextToReturn.getNext();
+        return element;
     }
 
     /**
@@ -58,8 +61,11 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
     public E previous( ) {
-        //TODO: Left as an exercise.
-        return null;
+        if(!this.hasPrevious()) { throw new NoSuchElementException(); }
+        E element = this.prevToReturn.getElement();
+        this.nextToReturn = this.prevToReturn.getNext();
+        this.prevToReturn = this.prevToReturn.getPrevious();
+        return element;
     }
 
     /**
@@ -68,13 +74,15 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
      * previous will return the last element
      */
     public void fullForward() {
-        //TODO: Left as an exercise.
+        this.nextToReturn = null;
+        this.prevToReturn = this.lastNode;
     }
 
     /**
      * Restart the iterator
      */
     public void rewind() {
-        //TODO: Left as an exercise.
+        this.prevToReturn = null;
+        super.rewind();
     }
 }
