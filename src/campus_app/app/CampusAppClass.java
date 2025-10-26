@@ -142,13 +142,6 @@ public class CampusAppClass implements CampusApp {
     public Iterator<Service> listServicesByRanking() {
         return null;
     }
-
-    @Override
-    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) {
-        // TODO add to student storage
-        return null;
-    }
-
     @Override
     public Iterator<Service> listServicesByTag(String tagName) {
         return new FilterIterator<>(currentBounds.listAllServices(), new ServiceTagPredicate(tagName));

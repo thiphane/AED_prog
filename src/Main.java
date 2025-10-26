@@ -35,13 +35,8 @@ public class Main {
     public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services!\n";
     public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s services with average!\n";
     public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it.";
-    public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it!";
     public static final String STUDENT_FORMAT = "%s added.\n";
     public static final String LODGING_DOES_NOT_EXIST = "Lodging %s does not exist.\n";
-    public static final String STUDENT_DOES_NOT_EXIST = "%s does not exist!\n";
-    public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services\n";
-    public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s service with average\n";
-    public static final String RANKED_HEADER= "%s services closer with %s average";
     public static final String SERVICE_IS_FULL = "%s %s is full!";
     public static final String INVALID_BOUND = "Invalid bounds.";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
