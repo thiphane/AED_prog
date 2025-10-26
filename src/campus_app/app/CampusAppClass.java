@@ -122,7 +122,7 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Service getService(String serviceName) {
-        return null;
+        return services.getService(serviceName);
     }
 
     @Override
