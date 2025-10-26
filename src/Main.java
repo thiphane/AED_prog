@@ -133,26 +133,6 @@ public class Main {
                     } catch (BoundsNotDefined e) {
                         System.out.println(INVALID_BOUND);
                     }
-                }case Command.RANKED -> {
-                    String type = in.next();int rate = in.nextInt();String name = in.nextLine().trim();
-                    try {
-                        Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name);
-                        System.out.println(RANKED_HEADER);
-                        while(it.hasNext()) {
-                            Service s = it.next();
-                            System.out.println(s.getName());
-                        }
-                    } catch (BoundsNotDefined e) {
-                        System.out.println(BOUNDS_NOT_DEFINED);
-                    } catch (NoSuchElementException e) {
-                        System.out.printf(STUDENT_DOES_NOT_EXIST, name);
-                    }catch (InvalidTypeException e) {
-                        System.out.println(INVALID_SERVICE_TYPE);
-                    } catch (NoSuchElementOfGivenType e) {
-                        System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type);
-                    }catch (NoSuchServiceWithGivenRate e) {
-                        System.out.printf(NO_SUCH_SERVICE_WITH_AVERAGE, type);
-                    }
                 }
                 case Command.STUDENTS -> {
                     String country = in.nextLine().trim();
