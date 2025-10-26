@@ -1,5 +1,6 @@
 package dataStructures;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -13,7 +14,8 @@ class DoublyListNode<E> implements Serializable {
     	/**
     	 * Serial Version UID of the Class
     	 */
-        static final long serialVersionUID = 0L;
+        @Serial
+        private static final long serialVersionUID = 0L;
         
     	/**
          * Element stored in the node.
