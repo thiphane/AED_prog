@@ -3,7 +3,9 @@ import dataStructures.*;
 import campus_app.app.Position;
 import campus_app.entity.student.Student;
 
-public interface Service {
+import java.io.Serializable;
+
+public interface Service extends Serializable {
     String getName();
     ServiceType getType();
     Position getPosition();

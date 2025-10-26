@@ -1,3 +1,4 @@
+import campus_app.app.Bounds;
 import campus_app.app.CampusApp;
 import campus_app.app.CampusAppClass;
 import campus_app.entity.service.Service;
@@ -10,6 +11,7 @@ import java.util.Scanner;
 public class Main {
     public static final String HELP_FORMAT = "%s - %s\n";
     public static final String BOUND_CREATED_FORMAT = "%s created.\n";
+    public static final String SAVE_FORMAT = "%s saved.\n";
     public static final String EXIT_MESSAGE = "Bye!";
     // Error Messages
     public static final String BOUNDS_NOT_DEFINED = "System bounds not defined.";
@@ -24,9 +26,10 @@ public class Main {
     public static final String SERVICE_ALREADY_EXISTS_FORMAT = "%s already exists!\n";
     public static final String SERVICE_LIST_FORMAT = "%s: %s (%d, %d).\n";
     public static final String SERVICE_FORMAT = "%s %s added.\n";
-    public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it.";
+    public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it!";
     public static final String INVALID_BOUND = "Invalid bounds.";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
+    private static final String BOUND_LOADED_FORMAT = "%s loaded.\n";
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -61,6 +64,7 @@ public class Main {
                 }
                 case Command.SERVICES -> {
                     in.nextLine();
+
                     Iterator<Service> services = app.listAllServices();
                     if(!services.hasNext()) {
                         System.out.println(NO_SERVICES);
@@ -108,7 +112,24 @@ public class Main {
                     } catch (InvalidTypeException e) {
                         System.out.println(INVALID_SERVICE_TYPE);
                     } catch (AlreadyExistsException e) {
-                        System.out.printf(SERVICE_ALREADY_EXISTS_FORMAT, name);
+                        System.out.printf(SERVICE_ALREADY_EXISTS_FORMAT, e.getElement());
+                    }
+                }
+                case Command.SAVE -> {
+                    try {
+                        String name = app.saveCurrentArea().getName();
+                        System.out.printf(SAVE_FORMAT, name);
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    }
+                }
+                case Command.LOAD -> {
+                    try{
+                        String name = in.nextLine().trim();
+                        Bounds area = app.loadArea(name);
+                        System.out.printf(BOUND_LOADED_FORMAT, area.getName());
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(INVALID_BOUND);
                     }
                 }
                 case Command.UNKNOWN -> {

@@ -1,4 +1,6 @@
 package campus_app.entity.service;
+import campus_app.exceptions.InvalidPriceException;
+import campus_app.exceptions.InvalidValueException;
 import dataStructures.*;
 import campus_app.app.Position;
 import campus_app.entity.student.Student;
@@ -11,7 +13,13 @@ public abstract class ServiceAbstract implements Service {
     int rating;
     private TwoWayList<Student> users;
     List<String> ratings;
-    protected ServiceAbstract(String serviceName, Position position, int price, int value) {
+    protected ServiceAbstract(String serviceName, Position position, int price, int value, ServiceType type) throws InvalidPriceException, InvalidValueException {
+        if(price < 0) {
+            throw new InvalidPriceException(type);
+        }
+        if(value < 0) {
+            throw new InvalidValueException(type);
+        }
         this.name = serviceName;
         this.price = price;
         this.value = value;

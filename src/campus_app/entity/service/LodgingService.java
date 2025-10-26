@@ -1,11 +1,13 @@
 package campus_app.entity.service;
 
 import campus_app.app.Position;
+import campus_app.exceptions.InvalidPriceException;
 import campus_app.exceptions.InvalidValueException;
 
 public class LodgingService extends ServiceAbstract {
-    public LodgingService(String serviceName, Position position, int price, int value) throws InvalidValueException {
-        super(serviceName, position, price, value);
+    private static final ServiceType TYPE = ServiceType.LODGING;
+    public LodgingService(String serviceName, Position position, int price, int value) throws InvalidValueException, InvalidPriceException {
+        super(serviceName, position, price, value, TYPE);
         if(value <= 0) {
             throw new InvalidValueException(this.getType());
         }
@@ -13,6 +15,6 @@ public class LodgingService extends ServiceAbstract {
 
     @Override
     public ServiceType getType() {
-        return ServiceType.LODGING;
+        return TYPE;
     }
 }

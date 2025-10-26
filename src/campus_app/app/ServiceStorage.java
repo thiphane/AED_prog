@@ -4,7 +4,9 @@ import campus_app.entity.service.Service;
 import campus_app.exceptions.AlreadyExistsException;
 import dataStructures.*;
 
-public class ServiceStorage {
+import java.io.Serializable;
+
+public class ServiceStorage implements Serializable {
     // All services by order of insertion
     protected List<Service> services;
     // All services by order of their rating
@@ -18,8 +20,8 @@ public class ServiceStorage {
         Iterator<Service> iter = services.iterator();
         while(iter.hasNext()) {
             Service cur = iter.next();
-            if(cur.getName().equals(service.getName())) {
-                throw new AlreadyExistsException();
+            if(cur.getName().equalsIgnoreCase(service.getName())) {
+                throw new AlreadyExistsException(cur.getName());
             }
         }
         this.services.addLast(service);

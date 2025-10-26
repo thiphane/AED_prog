@@ -4,7 +4,9 @@ import dataStructures.*;
 import campus_app.entity.service.ServiceType;
 import campus_app.entity.service.Service;
 
-public interface Student {
+import java.io.Serializable;
+
+public interface Student extends Serializable {
     String getCountry();
     String getName();
     Service getLocation();

@@ -4,7 +4,9 @@ import dataStructures.*;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
 
-public class StudentStorage {
+import java.io.Serializable;
+
+public class StudentStorage implements Serializable {
     // All students by order of insertion
     protected List<Student> students;
     // All students sorted alphabetically

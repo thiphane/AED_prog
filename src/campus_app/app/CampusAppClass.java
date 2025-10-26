@@ -8,12 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class CampusAppClass implements CampusApp {
-    StudentStorage students;
-    ServiceStorage services;
     Bounds currentBounds;
     public CampusAppClass() {
-        this.students = new StudentStorage();
-        this.services = new ServiceStorage();
         this.currentBounds = null;
     }
 
@@ -26,16 +22,18 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void saveCurrentArea() throws BoundsNotDefined {
+    public Bounds saveCurrentArea() throws BoundsNotDefined {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
         this.currentBounds.save();
+        return this.currentBounds;
     }
 
     @Override
-    public void loadArea(String areaName) {
-
+    public Bounds loadArea(String areaName) throws BoundsNotDefined {
+        this.currentBounds = BoundsClass.loadBounds(areaName);
+        return this.currentBounds;
     }
 
     @Override
@@ -72,7 +70,7 @@ public class CampusAppClass implements CampusApp {
                 throw new RuntimeException("Invalid service type");
             }
         }
-        this.services.addService(service);
+        this.currentBounds.addService(service);
     }
 
     @Override
@@ -82,7 +80,7 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Student getStudent(String student) {
-        return students.getStudent(student);
+        return currentBounds.getStudent(student);
     }
 
     @Override
@@ -92,21 +90,21 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Student removeStudent(String studentName) {
-        return students.removeStudent(studentName);
+        return currentBounds.removeStudent(studentName);
     }
 
     @Override
     public boolean updateStudentPosition(String studentName, String service) {
         Service newLocation = this.getService(service);
 
-        return students.updateStudentLocation(studentName, newLocation);
+        return currentBounds.updateStudentLocation(studentName, newLocation);
     }
 
     @Override
     public void moveHome(String studentName, String newHome) {
         Service newHomeService = this.getService(newHome);
 
-        students.moveHome(studentName, newHomeService);
+        currentBounds.moveHome(studentName, newHomeService);
     }
 
     @Override
@@ -121,22 +119,22 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Student> listAllStudents() {
-        return students.getAllStudents();
+        return currentBounds.getAllStudents();
     }
 
     @Override
     public Iterator<Student> listStudentsByCountry(String country) {
-        return students.getStudentsByCountry(country);
+        return currentBounds.getStudentsByCountry(country);
     }
 
     @Override
     public Iterator<Service> listAllServices() {
-        return services.listAllServices();
+        return currentBounds.listAllServices();
     }
 
     @Override
     public Iterator<Service> listVisitedServices(String studentName) {
-        return students.listVisitedServices(studentName);
+        return currentBounds.listVisitedServices(studentName);
     }
 
     @Override
@@ -152,11 +150,11 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Service> listServicesByTag(String tagName) {
-        return new FilterIterator<>(services.listAllServices(), new ServiceTagPredicate(tagName));
+        return new FilterIterator<>(currentBounds.listAllServices(), new ServiceTagPredicate(tagName));
     }
 
     @Override
     public Service findBestService(String studentName, ServiceType type) {
-        return students.findBestService(studentName, new FilterIterator<>(services.listAllServices(), new ServiceTypePredicate(type)));
+        return currentBounds.findBestService(studentName, new FilterIterator<>(currentBounds.listAllServices(), new ServiceTypePredicate(type)));
     }
 }
