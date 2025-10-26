@@ -124,4 +124,14 @@ public class BoundsClass implements Bounds, Serializable {
         }
         return res;
     }
+
+    @Override
+    public Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate) {
+        return students.findClosestService(studentName, byTypeAndRate);
+    }
+
+    @Override
+    public void addStudent(Student student) {
+        students.addStudent(student);
+    }
 }

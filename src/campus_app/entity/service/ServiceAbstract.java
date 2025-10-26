@@ -27,10 +27,14 @@ public abstract class ServiceAbstract implements Service {
         this.position = position;
         this.ratings = new DoublyLinkedList<>();
     }
+    public boolean isFull() {
+        return value>users.size();
+    }
 
     @Override
     public void addRating(int rating, String description) {
-        rating+=rating;
+        this.rating+=rating;
+        ratings.addLast(description);
     }
     @Override
     public void addUser(Student student) {

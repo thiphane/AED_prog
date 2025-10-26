@@ -38,7 +38,7 @@ public class StudentStorage implements Serializable {
     }
 
     public void moveHome(String student, Service newHome) {
-
+        this.getStudent(student).moveHome(newHome);
     }
 
     public Iterator<Student> getAllStudents() {
@@ -50,10 +50,13 @@ public class StudentStorage implements Serializable {
     }
 
     public Iterator<Service> listVisitedServices(String studentName) {
-        return null;
+        return this.getStudent(studentName).getVisitedServices();
     }
 
     public Service findBestService(String studentName, Iterator<Service> services) {
         return this.getStudent(studentName).findBestService(services);
+    }
+    public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) {
+        return this.getStudent(studentName).findClosestServices(services);
     }
 }

@@ -36,4 +36,8 @@ public interface Bounds {
     Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator);
 
     Iterator<Service> listVisitedServices(String studentName);
+
+    Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate);
+
+    void addStudent(Student student);
 }

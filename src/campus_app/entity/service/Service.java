@@ -17,4 +17,5 @@ public interface Service extends Serializable {
     void removeUser(Student student);
     int getPrice();
     boolean hasTag(String tagName);
+    boolean isFull();
 }

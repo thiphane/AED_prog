@@ -29,6 +29,13 @@ public class ServiceStorage implements Serializable {
     }
 
     public void rateService(String service, int rating, String description) {
+        Service elem = getService(service);
+        int oldRating = elem.getRating();
+        elem.addRating(rating, description);
+        if(oldRating != elem.getRating()) {
+            servicesByStar.remove(elem);
+            servicesByStar.add(elem);
+        }
         // Update servicesByStar
     }
 

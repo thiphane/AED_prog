@@ -3,6 +3,7 @@ import campus_app.entity.service.*;
 import campus_app.exceptions.*;
 import dataStructures.*;
 import campus_app.entity.student.Student;
+import dataStructures.exceptions.NoSuchElementException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -157,4 +158,28 @@ public class CampusAppClass implements CampusApp {
     public Service findBestService(String studentName, ServiceType type) {
         return currentBounds.findBestService(studentName, new FilterIterator<>(currentBounds.listAllServices(), new ServiceTypePredicate(type)));
     }
+
+    @Override
+    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, NoSuchElementException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate {
+        if(currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
+        if(rate < 0 || rate > 5) throw new IllegalArgumentException();
+
+        if(this.currentBounds.getStudent(studentName) == null){
+            throw new NoSuchElementException();
+        }
+        ServiceType serviceType = ServiceType.getType(type);
+        if(serviceType == null){
+            throw new InvalidTypeException();
+        }
+        Iterator<Service> byType = new FilterIterator<>(this.currentBounds.listAllServices(), new ServiceTypePredicate(serviceType));
+        if(!byType.hasNext())throw new NoSuchElementOfGivenType();
+        //TODO: if byTYpe is null than throw exception
+        Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate));
+        if(!byTypeAndRate.hasNext())throw new NoSuchServiceWithGivenRate();
+        //TODO: if no service of given type with given average exists, throw exception
+        return this.currentBounds.findClosestService(studentName, byTypeAndRate);
+    }
+
 }

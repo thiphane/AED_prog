@@ -12,6 +12,10 @@ public class LeisureService extends ServiceAbstract implements Service {
             throw new InvalidValueException(this.getType());
         }
     }
+    @Override
+    public boolean isFull() {
+        return false;
+    }
 
     @Override
     public ServiceType getType() {
