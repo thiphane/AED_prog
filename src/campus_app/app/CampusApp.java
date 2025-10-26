@@ -19,13 +19,13 @@ public interface CampusApp {
     boolean updateStudentPosition(String studentName, String service);
     void moveHome(String studentName, String newHome);
     void rateService(int rate, String serviceName, String description);
-    TwoWayIterator<Student> getUsersByService(String serviceName);
+    TwoWayIterator<Student> getUsersByService(String serviceName, Order actualOrder)throws InvalidOrderException, BoundsNotDefined, InvalidTypeException;;
     Iterator<Student> listAllStudents();
     Iterator<Student> listStudentsByCountry(String country);
     Iterator<Service> listAllServices();
     Iterator<Service> listVisitedServices(String studentName);
     Iterator<Service> listServicesByRanking();
-    Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName);
+    Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName)throws BoundsNotDefined, InvalidTypeException, NoSuchElementException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate;;
     Iterator<Service> listServicesByTag(String tagName);
     Service findBestService(String studentName, ServiceType type);
 }

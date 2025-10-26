@@ -114,8 +114,19 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public TwoWayIterator<Student> getUsersByService(String serviceName) {
-        return null;
+    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, InvalidTypeException{
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
+        if(order == null)throw new InvalidOrderException();
+        Service service = this.getService(serviceName);
+        if(service == null) {
+            throw new NoSuchElementException();
+        }
+        if(!(service.getType().equals(ServiceType.LEISURE) && !(service.getType().equals(ServiceType.EATING)))) {
+            throw new InvalidTypeException();
+        }
+        return this.getService(serviceName).getUsers();
     }
 
     @Override

@@ -1,11 +1,13 @@
 import campus_app.app.Bounds;
 import campus_app.app.CampusApp;
 import campus_app.app.CampusAppClass;
+import campus_app.app.Order;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
 import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.*;
 import dataStructures.Iterator;
+import dataStructures.TwoWayIterator;
 import dataStructures.exceptions.NoSuchElementException;
 import user.Command;
 
@@ -31,7 +33,7 @@ public class Main {
     public static final String SERVICE_LIST_FORMAT = "%s: %s (%d, %d).\n";
     public static final String SERVICE_FORMAT = "%s %s added.\n";
     public static final String RANKED_HEADER = "%s services closer with %s average\n";
-    public static final String STUDENT_DOES_NOT_EXIST = "%s does not exist!\n";
+    public static final String ELEMENT_DOES_NOT_EXIST = "%s does not exist!\n";
     public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services!\n";
     public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s services with average!\n";
     public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it.";
@@ -42,6 +44,9 @@ public class Main {
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
     private static final String BOUND_LOADED_FORMAT = "%s loaded.\n";
     private static final String ALL_STUDENTS = "all";
+    private static final String THIS_ORDER_DOES_NOT_EXISTS = "This order does not exists!";
+    private static final String SERVICE_CANT_CONTROL_USERS = "%s does not control student entry and exit!\n";
+
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -180,13 +185,44 @@ public class Main {
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (NoSuchElementException e) {
-                        System.out.printf(STUDENT_DOES_NOT_EXIST, name);
+                        System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
                     }catch (InvalidTypeException e) {
                          System.out.println(INVALID_SERVICE_TYPE);
                     } catch (NoSuchElementOfGivenType e) {
                          System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type);
                     }catch (NoSuchServiceWithGivenRate e) {
                         System.out.printf(NO_SUCH_SERVICE_WITH_AVERAGE, type);
+                    }
+                }case Command.USERS -> {
+                    String order  = in.next(); String serviceName = in.nextLine().trim();
+                    Order actualOrder = null;
+                    if(order.equals("<"))actualOrder = Order.NEW_TO_OLD;
+                    if(order.equals(">"))actualOrder = Order.OLD_TO_NEW;
+                    try{
+                        TwoWayIterator<Student> it = app.getUsersByService(serviceName, actualOrder);
+                        assert actualOrder != null;
+                        if(actualOrder.equals(Order.NEW_TO_OLD)) {
+                            while(it.hasNext()) {
+                                Student s = it.next();
+                                System.out.println(s.getName()+":"+s.getType().toString().toLowerCase());
+                            }
+                        }else {
+                            while(it.hasPrevious()) {
+                                Student s = it.previous();
+                                System.out.println(s.getName()+":"+s.getType().toString().toLowerCase());
+                            }
+                        }
+                    }catch(BoundsNotDefined e){
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    }
+                    catch (InvalidOrderException e) {
+                        System.out.println(THIS_ORDER_DOES_NOT_EXISTS);
+                    }
+                    catch(NoSuchElementException e){
+                        System.out.printf(ELEMENT_DOES_NOT_EXIST, serviceName);
+                    }
+                    catch(InvalidTypeException e){
+                        System.out.printf(SERVICE_CANT_CONTROL_USERS, serviceName);
                     }
                 }
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
