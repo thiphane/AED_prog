@@ -185,7 +185,9 @@ public class CampusAppClass implements CampusApp {
             throw new NoSuchElementException();
         }
         Iterator<Service> byType = new FilterIterator<>(services.listAllServices(), new ServiceTypePredicate(type));
+        //TODO: if byTYpe is null than throw exception
         Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate));
+        //TODO: if no service of given type with given average exists, throw exception
         return students.findClosestService(studentName, byTypeAndRate);
     }
 
