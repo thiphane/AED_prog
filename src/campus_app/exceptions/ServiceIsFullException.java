@@ -1,5 +1,5 @@
 package campus_app.exceptions;
 
-public class ServiceIsFullException extends RuntimeException {
+public class ServiceIsFullException extends Exception {
 
 }

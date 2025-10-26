@@ -11,7 +11,7 @@ public interface CampusApp {
     Bounds saveCurrentArea() throws BoundsNotDefined;
     Bounds loadArea(String areaName) throws BoundsNotDefined;
     void createService(String type, String serviceName, long latitude, long longitude, int price, int value) throws InvalidTypeException, BoundsNotDefined, OutsideBoundsException, InvalidPriceException, InvalidValueException, AlreadyExistsException;
-    void createStudent(String type, String name, String lodging, String country) throws AlreadyExistsException, InvalidTypeException, BoundsNotDefined;
+    void createStudent(String type, String name, String lodging, String country) throws AlreadyExistsException, InvalidTypeException, BoundsNotDefined, NoSuchElementException, ServiceIsFullException;
 
     Student getStudent(String student);
     Service getService(String serviceName);

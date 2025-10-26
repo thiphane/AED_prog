@@ -17,12 +17,13 @@ public class Main {
     public static final String HELP_FORMAT = "%s - %s\n";
     public static final String BOUND_CREATED_FORMAT = "%s created.\n";
     public static final String SAVE_FORMAT = "%s saved.\n";
-    public static final String STUDENT_LIST_FORMAT = "%s: %s at %s\n";
+    public static final String STUDENT_LIST_FORMAT = "%s: %s at %s.\n";
     public static final String EXIT_MESSAGE = "Bye!";
     // Error Messages
     public static final String BOUNDS_NOT_DEFINED = "System bounds not defined.";
     public static final String NO_SERVICES = "No services yet!";
     public static final String INVALID_SERVICE_TYPE = "Invalid service type!";
+    public static final String INVALID_STUDENT_TYPE = "Invalid student type!";
     public static final String OUTSIDE_BOUNDS = "Invalid location!";
     public static final String INVALID_PRICE_EATING = "Invalid menu price!";
     public static final String INVALID_PRICE_LODGING = "Invalid room price!";
@@ -36,7 +37,7 @@ public class Main {
     public static final String ELEMENT_DOES_NOT_EXIST = "%s does not exist!\n";
     public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services!\n";
     public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s services with average!\n";
-    public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it.";
+    public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it!";
     public static final String STUDENT_FORMAT = "%s added.\n";
     public static final String LODGING_DOES_NOT_EXIST = "Lodging %s does not exist.\n";
     public static final String SERVICE_IS_FULL = "%s %s is full!";
@@ -47,6 +48,9 @@ public class Main {
     private static final String THIS_ORDER_DOES_NOT_EXISTS = "This order does not exists!";
     private static final String SERVICE_CANT_CONTROL_USERS = "%s does not control student entry and exit!\n";
 
+    private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
+    private static final String NO_STUDENTS = "No students yet!";
+    private static final String NO_STUDENTS_COUNTRY = "No students from %s!\n";
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -144,8 +148,14 @@ public class Main {
                     Iterator<Student> students;
                     if (country.equalsIgnoreCase(ALL_STUDENTS)) {
                         students = app.listAllStudents();
+                        if(!students.hasNext()) {
+                            System.out.println(NO_STUDENTS);
+                        }
                     } else {
                         students = app.listStudentsByCountry(country);
+                        if(!students.hasNext()) {
+                            System.out.printf(NO_STUDENTS_COUNTRY, country);
+                        }
                     }
                     while(students.hasNext()) {
                         Student cur = students.next();
@@ -154,16 +164,17 @@ public class Main {
                 }
                 case Command.STUDENT -> {
                     String type = in.next();
+                    in.nextLine();
                     String name = in.nextLine().trim();
                     String country = in.nextLine().trim();
                     String lodging = in.nextLine().trim();
                     try {
-                        app.createStudent(type, name, country, lodging);
+                        app.createStudent(type, name, lodging, country);
                         System.out.printf(STUDENT_FORMAT, name);
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (InvalidTypeException e) {
-                        System.out.println(INVALID_SERVICE_TYPE);
+                        System.out.println(INVALID_STUDENT_TYPE);
                     }
                     catch (NoSuchElementException e) {
                         System.out.printf(LODGING_DOES_NOT_EXIST, lodging);
@@ -173,7 +184,19 @@ public class Main {
                     } catch (AlreadyExistsException e) {
                         System.out.printf(SERVICE_ALREADY_EXISTS_FORMAT, name);
                     }
-                }case Command.RANKED -> {
+                }
+                case Command.WHERE -> {
+                    String name = in.nextLine().trim();
+                    Student student = app.getStudent(name);
+                    if(student == null) {
+                        System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
+                    } else {
+                        Service location = student.getLocation();
+                        System.out.printf(STUDENT_LOCATION_FORMAT, student.getName(), location.getName(), location.getType().toString().toLowerCase(), location.getPosition());
+                    }
+
+                }
+                case Command.RANKED -> {
                     String type = in.next();int rate = in.nextInt();String name = in.nextLine().trim();
                     try {
                         Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name);

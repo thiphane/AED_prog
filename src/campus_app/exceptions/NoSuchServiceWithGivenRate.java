@@ -1,4 +1,4 @@
 package campus_app.exceptions;
 
-public class NoSuchServiceWithGivenRate extends RuntimeException {
+public class NoSuchServiceWithGivenRate extends Exception {
 }
