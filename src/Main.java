@@ -224,7 +224,7 @@ public class Main {
                     try{
                         TwoWayIterator<Student> it = app.getUsersByService(serviceName, actualOrder);
                         assert actualOrder != null;
-                        if(actualOrder.equals(Order.NEW_TO_OLD)) {
+                        if(actualOrder.equals(Order.OLD_TO_NEW)) {
                             while(it.hasNext()) {
                                 Student s = it.next();
                                 System.out.println(s.getName()+":"+s.getType().toString().toLowerCase());
