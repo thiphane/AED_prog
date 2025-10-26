@@ -166,6 +166,9 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @return position of the first occurrence of the element in the list (or -1)
      */
     public int indexOf( E element ) {
+        if(this.tail.getElement().equals(element)) {
+            return this.size()-1;
+        }
         DoublyListNode<E> cur = this.head;
         int i = 0;
         while(cur != null && !cur.getElement().equals(element)) {

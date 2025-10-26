@@ -2,6 +2,7 @@ import campus_app.app.Bounds;
 import campus_app.app.CampusApp;
 import campus_app.app.CampusAppClass;
 import campus_app.entity.service.Service;
+import campus_app.entity.student.Student;
 import campus_app.exceptions.*;
 import dataStructures.Iterator;
 import user.Command;
@@ -12,6 +13,7 @@ public class Main {
     public static final String HELP_FORMAT = "%s - %s\n";
     public static final String BOUND_CREATED_FORMAT = "%s created.\n";
     public static final String SAVE_FORMAT = "%s saved.\n";
+    public static final String STUDENT_FORMAT = "%s: %s at %s\n";
     public static final String EXIT_MESSAGE = "Bye!";
     // Error Messages
     public static final String BOUNDS_NOT_DEFINED = "System bounds not defined.";
@@ -30,6 +32,7 @@ public class Main {
     public static final String INVALID_BOUND = "Invalid bounds.";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
     private static final String BOUND_LOADED_FORMAT = "%s loaded.\n";
+    private static final String ALL_STUDENTS = "all";
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -130,6 +133,19 @@ public class Main {
                         System.out.printf(BOUND_LOADED_FORMAT, area.getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(INVALID_BOUND);
+                    }
+                }
+                case Command.STUDENTS -> {
+                    String country = in.nextLine().trim();
+                    Iterator<Student> students;
+                    if (country.equalsIgnoreCase(ALL_STUDENTS)) {
+                        students = app.listAllStudents();
+                    } else {
+                        students = app.listStudentsByCountry(country);
+                    }
+                    while(students.hasNext()) {
+                        Student cur = students.next();
+                        System.out.printf(STUDENT_FORMAT, cur.getName(), cur.getType().toString().toLowerCase(), cur.getLocation().getName());
                     }
                 }
                 case Command.UNKNOWN -> {

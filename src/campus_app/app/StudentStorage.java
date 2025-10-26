@@ -1,5 +1,6 @@
 package campus_app.app;
 
+import campus_app.entity.student.BookishStudent;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
@@ -27,7 +28,9 @@ public class StudentStorage implements Serializable {
     }
 
     public Student removeStudent(String student) {
-        return null;
+        Student st = alphabeticalStudents.remove(new BookishStudent(student, null, ""));
+        students.remove(students.indexOf(st));
+        return st;
     }
 
     public boolean updateStudentLocation(String student, Service newLocation) {

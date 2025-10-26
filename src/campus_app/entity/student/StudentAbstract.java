@@ -43,4 +43,12 @@ public abstract class StudentAbstract implements Student {
     public Service getLocation() {
         return this.location;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Student st) {
+            return this.getName().equalsIgnoreCase(st.getName());
+        }
+        return false;
+    }
 }
