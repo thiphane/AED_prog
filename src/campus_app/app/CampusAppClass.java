@@ -144,7 +144,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listClosestServicesByStudent(int rate, ServiceType type, String studentName) {
+    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) {
         // TODO add to student storage
         return null;
     }

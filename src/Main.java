@@ -30,6 +30,11 @@ public class Main {
     public static final String SERVICE_ALREADY_EXISTS_FORMAT = "%s already exists!\n";
     public static final String SERVICE_LIST_FORMAT = "%s: %s (%d, %d).\n";
     public static final String SERVICE_FORMAT = "%s %s added.\n";
+    public static final String RANKED_HEADER = "%s services closer with %s average\n";
+    public static final String STUDENT_DOES_NOT_EXIST = "%s does not exist!\n";
+    public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services!\n";
+    public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s services with average!\n";
+    public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it.";
     public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it!";
     public static final String STUDENT_FORMAT = "%s added.\n";
     public static final String LODGING_DOES_NOT_EXIST = "Lodging %s does not exist.\n";
@@ -132,6 +137,26 @@ public class Main {
                         System.out.printf(BOUND_LOADED_FORMAT, area.getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(INVALID_BOUND);
+                    }
+                }case Command.RANKED -> {
+                    String type = in.next();int rate = in.nextInt();String name = in.nextLine().trim();
+                    try {
+                        Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name);
+                        System.out.println(RANKED_HEADER);
+                        while(it.hasNext()) {
+                            Service s = it.next();
+                            System.out.println(s.getName());
+                        }
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    } catch (NoSuchElementException e) {
+                        System.out.printf(STUDENT_DOES_NOT_EXIST, name);
+                    }catch (InvalidTypeException e) {
+                        System.out.println(INVALID_SERVICE_TYPE);
+                    } catch (NoSuchElementOfGivenType e) {
+                        System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type);
+                    }catch (NoSuchServiceWithGivenRate e) {
+                        System.out.printf(NO_SUCH_SERVICE_WITH_AVERAGE, type);
                     }
                 }
                 case Command.STUDENTS -> {
