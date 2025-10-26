@@ -146,7 +146,7 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public void rateService(int rate, String serviceName, String description) {
-
+        services.rateService(serviceName, rate, description);
     }
 
     @Override
@@ -181,8 +181,12 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Service> listClosestServicesByStudent(int rate, ServiceType type, String studentName) {
-        // TODO add to student storage
-        return null;
+        if(students.getStudent(studentName) == null){
+            throw new NoSuchElementException();
+        }
+        Iterator<Service> byType = new FilterIterator<>(services.listAllServices(), new ServiceTypePredicate(type));
+        Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate));
+        return students.findClosestService(studentName, byTypeAndRate);
     }
 
     @Override

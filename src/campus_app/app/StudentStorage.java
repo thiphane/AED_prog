@@ -67,4 +67,7 @@ public class StudentStorage {
     public Service findBestService(String studentName, Iterator<Service> services) {
         return this.getStudent(studentName).findBestService(services);
     }
+    public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) {
+        return this.getStudent(studentName).findClosestServices(services);
+    }
 }

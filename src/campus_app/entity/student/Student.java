@@ -14,4 +14,5 @@ public interface Student {
     void updatePosition(Service position);
     Service findBestService(Iterator<Service> services);
     Iterator<Service> getVisitedServices();
+    Iterator<Service>  findClosestServices(Iterator<Service> services);
 }
