@@ -1,8 +1,10 @@
 import campus_app.app.CampusApp;
 import campus_app.app.CampusAppClass;
 import campus_app.entity.service.Service;
+import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.*;
 import dataStructures.Iterator;
+import dataStructures.exceptions.NoSuchElementException;
 import user.Command;
 
 import java.util.Scanner;
@@ -24,6 +26,9 @@ public class Main {
     public static final String SERVICE_ALREADY_EXISTS_FORMAT = "%s already exists!\n";
     public static final String SERVICE_LIST_FORMAT = "%s: %s (%d, %d).\n";
     public static final String SERVICE_FORMAT = "%s %s added.\n";
+    public static final String STUDENT_FORMAT = "%s added.\n";
+    public static final String LODGING_DOES_NOT_EXIST = "Lodging %s does not exist.\n";
+    public static final String SERVICE_IS_FULL = "%s %s is full!";
     public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it.";
     public static final String INVALID_BOUND = "Invalid bounds.";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
@@ -107,6 +112,28 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (InvalidTypeException e) {
                         System.out.println(INVALID_SERVICE_TYPE);
+                    } catch (AlreadyExistsException e) {
+                        System.out.printf(SERVICE_ALREADY_EXISTS_FORMAT, name);
+                    }
+                }
+                case Command.STUDENT -> {
+                    String type = in.next();
+                    String name = in.nextLine().trim();
+                    String country = in.nextLine().trim();
+                    String lodging = in.nextLine().trim();
+                    try {
+                        app.createStudent(type, name, country, lodging);
+                        System.out.printf(STUDENT_FORMAT, name);
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    } catch (InvalidTypeException e) {
+                        System.out.println(INVALID_SERVICE_TYPE);
+                    }
+                    catch (NoSuchElementException e) {
+                        System.out.printf(LODGING_DOES_NOT_EXIST, lodging);
+                    }
+                    catch (ServiceIsFullException e) {
+                        System.out.printf(SERVICE_IS_FULL, ServiceType.LODGING.toString().toLowerCase(), lodging);
                     } catch (AlreadyExistsException e) {
                         System.out.printf(SERVICE_ALREADY_EXISTS_FORMAT, name);
                     }
