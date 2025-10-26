@@ -93,7 +93,7 @@ public class CampusAppClass implements CampusApp {
         if(services.getService(lodging).isFull()){
             throw new ServiceIsFullException();
         }
-        if(students.getStudent(lodging) != null){
+        if(students.getStudent(name) != null){
             throw new AlreadyExistsException();
         }
         Student student;
@@ -180,13 +180,24 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listClosestServicesByStudent(int rate, ServiceType type, String studentName) {
+    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException,NoSuchElementException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate {
+        if(currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
+        if(rate < 0 || rate > 5) throw new IllegalArgumentException();
+
         if(students.getStudent(studentName) == null){
             throw new NoSuchElementException();
         }
+        ServiceType serviceType;
+        if(StudentType.getType(type) == null){
+            throw new InvalidTypeException();
+        }
         Iterator<Service> byType = new FilterIterator<>(services.listAllServices(), new ServiceTypePredicate(type));
+        if(!byType.hasNext())throw new NoSuchElementOfGivenType();
         //TODO: if byTYpe is null than throw exception
         Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate));
+        if(!byTypeAndRate.hasNext())throw new NoSuchServiceWithGivenRate();
         //TODO: if no service of given type with given average exists, throw exception
         return students.findClosestService(studentName, byTypeAndRate);
     }

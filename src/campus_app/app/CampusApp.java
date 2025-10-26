@@ -4,7 +4,7 @@ import dataStructures.*;
 import campus_app.entity.service.Service;
 import campus_app.entity.service.ServiceType;
 import campus_app.entity.student.Student;
-import campus_app.entity.student.StudentType;
+import dataStructures.exceptions.NoSuchElementException;
 
 public interface CampusApp {
     void createBounds(String name, long topLatitude, long topLongitude, long bottomLatitude, long bottomLongitude ) throws BoundNameExists, InvalidBoundPoints;
@@ -25,7 +25,7 @@ public interface CampusApp {
     Iterator<Service> listAllServices();
     Iterator<Service> listVisitedServices(String studentName);
     Iterator<Service> listServicesByRanking();
-    Iterator<Service> listClosestServicesByStudent(int rating, ServiceType type, String studentName);
+    Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, NoSuchElementException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate;
     Iterator<Service> listServicesByTag(String tagName);
     Service findBestService(String studentName, ServiceType type);
 }

@@ -3,6 +3,11 @@ package campus_app.entity.student;
 import dataStructures.Iterator;
 import campus_app.entity.service.ServiceType;
 import campus_app.entity.service.Service;
+import dataStructures.SortedDoublyLinkedList;
+import dataStructures.SortedList;
+
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public abstract class StudentAbstract implements Student {
     private final String name;
@@ -42,5 +47,14 @@ public abstract class StudentAbstract implements Student {
     @Override
     public Service getLocation() {
         return this.location;
+    }
+
+    @Override
+    public Iterator<Service> findClosestServices(Iterator<Service> services) {
+        SortedList<Service> sortedSet = new SortedDoublyLinkedList<>(new DistanceComparator(this));
+        while(services.hasNext()){
+            sortedSet.add(services.next());
+        }
+        return sortedSet.iterator();
     }
 }
