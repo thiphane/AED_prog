@@ -1,8 +1,9 @@
 package campus_app.app;
 import campus_app.entity.service.*;
+import campus_app.entity.student.*;
 import campus_app.exceptions.*;
 import dataStructures.*;
-import campus_app.entity.student.Student;
+import dataStructures.exceptions.NoSuchElementException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -76,8 +77,42 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void createStudent(String type, String name, String lodging, String country) {
-
+    public void createStudent(String type, String name, String lodging, String country) throws InvalidTypeException, BoundsNotDefined, AlreadyExistsException {
+        StudentType actualType;
+        try {
+            actualType = StudentType.getType(type);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidTypeException();
+        }
+        if(currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
+        if(services.getService(lodging) == null){
+            throw new NoSuchElementException();
+        }
+        if(services.getService(lodging).isFull()){
+            throw new ServiceIsFullException();
+        }
+        if(students.getStudent(lodging) != null){
+            throw new AlreadyExistsException();
+        }
+        Student student;
+        switch(actualType) {
+            case OUTGOING -> {
+                student = new OutgoingStudent(name, services.getService(lodging), country);
+            }
+            case THRIFTY -> {
+                student = new ThriftyStudent(name, services.getService(lodging), country);
+            }
+            case BOOKISH -> {
+                student = new BookishStudent(name, services.getService(lodging), country);
+            }
+            default -> {
+                // Compiler complains without default case
+                throw new RuntimeException("Invalid service type");
+            }
+        }
+        this.students.addStudent(student);
     }
 
     @Override
