@@ -1,12 +1,17 @@
 package campus_app.entity.student;
 
+import campus_app.entity.service.LodgingService;
+import campus_app.exceptions.InvalidTypeException;
+import campus_app.exceptions.MoveNotAcceptable;
+import campus_app.exceptions.SameHomeException;
+import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
 public class ThriftyStudent extends StudentAbstract {
-    public ThriftyStudent(String name, Service home, String country) {
+    public ThriftyStudent(String name, LodgingService home, String country) {
         super(name, home, country);
     }
 
@@ -28,8 +33,10 @@ public class ThriftyStudent extends StudentAbstract {
     }
 
     @Override
-    public void moveHome(Service home) {
-        // TODO throw exception se nao for valido
+    public void moveHome(LodgingService home) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException {
+        if (!this.getHome().equals(home) && home.getPrice() >= this.getHome().getPrice()) {
+            throw new MoveNotAcceptable(this);
+        }
         super.moveHome(home);
     }
 

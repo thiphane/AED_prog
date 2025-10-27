@@ -51,11 +51,14 @@ public class Main {
     private static final String SERVICE_CANT_CONTROL_USERS = "%s does not control student entry and exit!\n";
     private static final String STUDENT_IS_DISTRACTED = "%1$s is now at %2$s. %1$s is distracted!\n";
     private static final String LOCATION_CHANGED_FORMAT = "%s is now at %s.\n";
+    private static final String MOVE_NOT_ACCEPTABLE = "Move is not acceptable for %s!\n";
 
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
     private static final String NO_STUDENTS_COUNTRY = "No students from %s!\n";
     private static final String USER_FORMAT = "%s: %s.\n";
+    private static final String SAME_HOME_FORMAT = "That is %s's home!\n";
+    private static final String STUDENT_MOVED_FORMAT = "lodging %1$s is now %2$s's home. %1$s is at home\n";
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -180,7 +183,7 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (InvalidTypeException e) {
                         System.out.println(INVALID_STUDENT_TYPE);
-                    } catch (NoSuchElementException e) {
+                    } catch (NoSuchElementOfGivenType e) {
                         System.out.printf(LODGING_DOES_NOT_EXIST, lodging);
                     } catch (ServiceIsFullException e) {
                         System.out.printf(SERVICE_IS_FULL, ServiceType.LODGING.toString().toLowerCase(), lodging);
@@ -273,6 +276,28 @@ public class Main {
                     }
                 }
 
+                case Command.MOVE -> {
+                    String name = in.nextLine().trim();
+                    String lodging = in.nextLine().trim();
+                    try {
+                        app.moveHome(name, lodging);
+                        // TODO arranjar forma de não usar getService e getUser e devolver com moveHome ou algo assim
+                        Student student = app.getStudent(name);
+                        Service home = app.getService(lodging);
+                        System.out.printf(STUDENT_MOVED_FORMAT, student.getName(), home.getName());
+                    } catch (ServiceIsFullException e) {
+                        System.out.printf(SERVICE_IS_FULL, ServiceType.LODGING.toString().toLowerCase(), e.getService().getName());
+                    } catch (MoveNotAcceptable e) {
+                        System.out.printf(MOVE_NOT_ACCEPTABLE, e.getStudent().getName());
+                    } catch (NoSuchElementOfGivenType e) {
+                        System.out.printf(LODGING_DOES_NOT_EXIST, lodging);
+                    } catch (NoSuchStudentException e) {
+                        System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
+                    }
+                    catch (SameHomeException e) {
+                        System.out.printf(SAME_HOME_FORMAT, e.getStudent().getName());
+                    }
+                }
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
                 case Command.EXIT -> System.out.println(EXIT_MESSAGE);
             }

@@ -1,12 +1,13 @@
 package campus_app.entity.student;
 
+import campus_app.entity.service.LodgingService;
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
 public class BookishStudent extends StudentAbstract implements Student {
-    public BookishStudent(String name, Service home, String country) {
+    public BookishStudent(String name, LodgingService home, String country) {
         super(name, home, country);
     }
 
