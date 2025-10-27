@@ -3,16 +3,15 @@ package campus_app.entity.student;
 import campus_app.entity.service.StudentStoringService;
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
-import dataStructures.Iterator;
+import dataStructures.*;
 import campus_app.entity.service.Service;
-import dataStructures.SortedDoublyLinkedList;
-import dataStructures.SortedList;
 
 public abstract class StudentAbstract implements Student {
     private final String name;
     private final String country;
     private Service home;
     private Service location;
+    protected List<Service> visited;
     public StudentAbstract(String name, Service home, String country) {
         this.name = name;
         this.home = home;

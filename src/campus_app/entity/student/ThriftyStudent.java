@@ -2,12 +2,14 @@ package campus_app.entity.student;
 
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
+import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
 public class ThriftyStudent extends StudentAbstract {
     public ThriftyStudent(String name, Service home, String country) {
         super(name, home, country);
+        super.visited = new DoublyLinkedList<>();
     }
 
     public StudentType getType(){
