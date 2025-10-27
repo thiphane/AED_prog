@@ -1,5 +1,7 @@
 package campus_app.entity.student;
 
+import campus_app.exceptions.ServiceIsFullException;
+import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
@@ -13,9 +15,11 @@ public class ThriftyStudent extends StudentAbstract {
     }
 
     @Override
-    public void updatePosition(Service position) {
+    public void updatePosition(Service position) throws ThriftyStudentIsDistracted, ServiceIsFullException {
         // TODO throw exception se estiver distraido, mas ainda fazer os outros efeitos
+        boolean isDistracted =this.getLocation().getPrice()<position.getPrice();
         super.updatePosition(position);
+        if(isDistracted)throw new ThriftyStudentIsDistracted();
     }
 
     @Override

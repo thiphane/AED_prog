@@ -41,12 +41,16 @@ public class Main {
     public static final String STUDENT_FORMAT = "%s added.\n";
     public static final String LODGING_DOES_NOT_EXIST = "lodging %s does not exist!\n";
     public static final String SERVICE_IS_FULL = "%s %s is full!\n";
+    public static final String SERVICE_IS_NOT_VALID = "%s is not a valid service!\n";
     public static final String INVALID_BOUND = "Invalid bounds.";
+    public static final String ALREADY_THERE = "Already there!.";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
     private static final String BOUND_LOADED_FORMAT = "%s loaded.\n";
     private static final String ALL_STUDENTS = "all";
     private static final String THIS_ORDER_DOES_NOT_EXISTS = "This order does not exists!";
     private static final String SERVICE_CANT_CONTROL_USERS = "%s does not control student entry and exit!\n";
+    private static final String STUDENT_IS_DISTRACTED = "%1$s is now at %2$s. %1$s is distracted!\n";
+    private static final String LOCATION_CHANGED_FORMAT = "%s is now at %s.\n";
 
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
@@ -60,11 +64,11 @@ public class Main {
         do {
             String cmd = in.next();
             command = Command.getCommand(cmd);
-            switch(command) {
+            switch (command) {
                 case Command.HELP -> {
                     in.nextLine();
-                    for(Command c : Command.values()) {
-                        if(!c.getDescription().isEmpty()) {
+                    for (Command c : Command.values()) {
+                        if (!c.getDescription().isEmpty()) {
                             System.out.printf(HELP_FORMAT, c.name().toLowerCase(), c.getDescription());
                         }
                     }
@@ -88,10 +92,10 @@ public class Main {
                     in.nextLine();
 
                     Iterator<Service> services = app.listAllServices();
-                    if(!services.hasNext()) {
+                    if (!services.hasNext()) {
                         System.out.println(NO_SERVICES);
                     }
-                    while(services.hasNext()) {
+                    while (services.hasNext()) {
                         Service s = services.next();
                         System.out.printf(SERVICE_LIST_FORMAT, s.getName(), s.getType().toString().toLowerCase(), s.getPosition().latitude(), s.getPosition().longitude());
                     }
@@ -107,12 +111,12 @@ public class Main {
                         app.createService(type, name, latitude, longitude, price, value);
                         System.out.printf(SERVICE_FORMAT, type.toLowerCase().trim(), name);
                     } catch (InvalidValueException e) {
-                        switch(e.getType()) {
+                        switch (e.getType()) {
                             case EATING, LODGING -> System.out.println(INVALID_VALUE_CAPACITY);
                             case LEISURE -> System.out.println(INVALID_VALUE_LEISURE);
                         }
                     } catch (InvalidPriceException e) {
-                        switch(e.getType()) {
+                        switch (e.getType()) {
                             case EATING -> System.out.println(INVALID_PRICE_EATING);
                             case LEISURE -> System.out.println(INVALID_PRICE_LEISURE);
                             case LODGING -> System.out.println(INVALID_PRICE_LODGING);
@@ -136,7 +140,7 @@ public class Main {
                     }
                 }
                 case Command.LOAD -> {
-                    try{
+                    try {
                         String name = in.nextLine().trim();
                         Bounds area = app.loadArea(name);
                         System.out.printf(BOUND_LOADED_FORMAT, area.getName());
@@ -149,16 +153,16 @@ public class Main {
                     Iterator<Student> students;
                     if (country.equalsIgnoreCase(ALL_STUDENTS)) {
                         students = app.listAllStudents();
-                        if(!students.hasNext()) {
+                        if (!students.hasNext()) {
                             System.out.println(NO_STUDENTS);
                         }
                     } else {
                         students = app.listStudentsByCountry(country);
-                        if(!students.hasNext()) {
+                        if (!students.hasNext()) {
                             System.out.printf(NO_STUDENTS_COUNTRY, country);
                         }
                     }
-                    while(students.hasNext()) {
+                    while (students.hasNext()) {
                         Student cur = students.next();
                         System.out.printf(STUDENT_LIST_FORMAT, cur.getName(), cur.getType().toString().toLowerCase(), cur.getLocation().getName());
                     }
@@ -176,11 +180,9 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (InvalidTypeException e) {
                         System.out.println(INVALID_STUDENT_TYPE);
-                    }
-                    catch (NoSuchElementException e) {
+                    } catch (NoSuchElementException e) {
                         System.out.printf(LODGING_DOES_NOT_EXIST, lodging);
-                    }
-                    catch (ServiceIsFullException e) {
+                    } catch (ServiceIsFullException e) {
                         System.out.printf(SERVICE_IS_FULL, ServiceType.LODGING.toString().toLowerCase(), lodging);
                     } catch (AlreadyExistsException e) {
                         System.out.printf(ENTITY_ALREADY_EXISTS_FORMAT, e.getElement());
@@ -189,7 +191,7 @@ public class Main {
                 case Command.WHERE -> {
                     String name = in.nextLine().trim();
                     Student student = app.getStudent(name);
-                    if(student == null) {
+                    if (student == null) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
                     } else {
                         Service location = student.getLocation();
@@ -198,11 +200,13 @@ public class Main {
 
                 }
                 case Command.RANKED -> {
-                    String type = in.next();int rate = in.nextInt();String name = in.nextLine().trim();
+                    String type = in.next();
+                    int rate = in.nextInt();
+                    String name = in.nextLine().trim();
                     try {
                         Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name);
                         System.out.println(RANKED_HEADER);
-                        while(it.hasNext()) {
+                        while (it.hasNext()) {
                             Service s = it.next();
                             System.out.println(s.getName());
                         }
@@ -210,45 +214,65 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (NoSuchElementException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
-                    }catch (InvalidTypeException e) {
-                         System.out.println(INVALID_SERVICE_TYPE);
+                    } catch (InvalidTypeException e) {
+                        System.out.println(INVALID_SERVICE_TYPE);
                     } catch (NoSuchElementOfGivenType e) {
-                         System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type);
-                    }catch (NoSuchServiceWithGivenRate e) {
+                        System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type);
+                    } catch (NoSuchServiceWithGivenRate e) {
                         System.out.printf(NO_SUCH_SERVICE_WITH_AVERAGE, type);
                     }
-                }case Command.USERS -> {
-                    String order  = in.next(); String serviceName = in.nextLine().trim();
+                }
+                case Command.USERS -> {
+                    String order = in.next();
+                    String serviceName = in.nextLine().trim();
                     Order actualOrder = null;
-                    if(order.equals("<"))actualOrder = Order.NEW_TO_OLD;
-                    if(order.equals(">"))actualOrder = Order.OLD_TO_NEW;
-                    try{
+                    if (order.equals("<")) actualOrder = Order.NEW_TO_OLD;
+                    if (order.equals(">")) actualOrder = Order.OLD_TO_NEW;
+                    try {
                         TwoWayIterator<Student> it = app.getUsersByService(serviceName, actualOrder);
                         assert actualOrder != null;
-                        if(actualOrder.equals(Order.OLD_TO_NEW)) {
-                            while(it.hasNext()) {
+                        if (actualOrder.equals(Order.OLD_TO_NEW)) {
+                            while (it.hasNext()) {
                                 Student s = it.next();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
-                        }else {
-                            while(it.hasPrevious()) {
+                        } else {
+                            while (it.hasPrevious()) {
                                 Student s = it.previous();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
                         }
-                    }catch(BoundsNotDefined e){
+                    } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
-                    }
-                    catch (InvalidOrderException e) {
+                    } catch (InvalidOrderException e) {
                         System.out.println(THIS_ORDER_DOES_NOT_EXISTS);
-                    }
-                    catch(NoSuchElementException e){
+                    } catch (NoSuchElementException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, serviceName);
-                    }
-                    catch(InvalidTypeException e){
+                    } catch (InvalidTypeException e) {
                         System.out.printf(SERVICE_CANT_CONTROL_USERS, serviceName);
                     }
                 }
+                case Command.GO -> {
+                    String studentName = in.nextLine().trim();
+                    String locationName = in.nextLine().trim();
+                    boolean isDistracted = false;
+                    try {
+                        isDistracted = app.updateStudentPosition(studentName, locationName);
+                        if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, studentName, locationName);}
+                        else System.out.printf(LOCATION_CHANGED_FORMAT, studentName, locationName);
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    } catch (NoSuchElementException e) {
+                        System.out.printf(ELEMENT_DOES_NOT_EXIST, locationName);
+                    }catch(InvalidTypeException e){
+                        System.out.printf(SERVICE_IS_NOT_VALID, locationName);
+                    }catch (StudentAlreadyThereException e){
+                        System.out.println(ALREADY_THERE);
+                    }catch(ServiceIsFullException e){
+                        System.out.printf(SERVICE_IS_FULL, ServiceType.EATING.name().toLowerCase(), locationName);
+                    }
+                }
+
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
                 case Command.EXIT -> System.out.println(EXIT_MESSAGE);
             }

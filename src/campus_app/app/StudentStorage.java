@@ -1,6 +1,9 @@
 package campus_app.app;
 
+import campus_app.entity.service.StudentStoringService;
 import campus_app.entity.student.BookishStudent;
+import campus_app.exceptions.ServiceIsFullException;
+import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
@@ -34,8 +37,9 @@ public class StudentStorage implements Serializable {
         return st;
     }
 
-    public boolean updateStudentLocation(String student, Service newLocation) {
-        return false;
+    public void updateStudentLocation(String student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
+        Student actualStudent = getStudent(student);
+        actualStudent.updatePosition(newLocation);
     }
 
     public void moveHome(String student, Service newHome) {

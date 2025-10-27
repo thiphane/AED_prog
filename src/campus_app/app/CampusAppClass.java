@@ -3,6 +3,7 @@ import campus_app.entity.service.*;
 import campus_app.entity.student.*;
 import campus_app.exceptions.*;
 import dataStructures.*;
+import dataStructures.exceptions.InvalidPositionException;
 import dataStructures.exceptions.NoSuchElementException;
 
 import java.nio.file.Files;
@@ -136,10 +137,27 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public boolean updateStudentPosition(String studentName, String service) {
+    public boolean updateStudentPosition(String studentName, String service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException{
         Service newLocation = this.getService(service);
-
-        return currentBounds.updateStudentLocation(studentName, newLocation);
+        Student student = currentBounds.getStudent(studentName);
+        if(currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
+        if(newLocation == null) {
+            throw new NoSuchElementException();
+        }
+        if(!newLocation.getType().equals(ServiceType.LEISURE) && !newLocation.getType().equals(ServiceType.EATING)) {
+            throw new InvalidTypeException();
+        }
+        if(student.getLocation().equals(newLocation)) {
+            throw new StudentAlreadyThereException();
+        }
+        try {
+            currentBounds.updateStudentLocation(studentName, newLocation);
+        }catch (ThriftyStudentIsDistracted e){
+            return false;
+        }
+        return true;
     }
 
     @Override

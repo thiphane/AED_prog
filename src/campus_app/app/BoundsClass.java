@@ -2,9 +2,7 @@ package campus_app.app;
 
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
-import campus_app.exceptions.AlreadyExistsException;
-import campus_app.exceptions.BoundsNotDefined;
-import campus_app.exceptions.InvalidBoundPoints;
+import campus_app.exceptions.*;
 import dataStructures.FilterIterator;
 import dataStructures.Iterator;
 
@@ -42,8 +40,9 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public boolean updateStudentLocation(String studentName, Service newLocation) {
-        return students.updateStudentLocation(studentName, newLocation);
+    public void updateStudentLocation(String studentName, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
+        students.updateStudentLocation(studentName, newLocation);
+
     }
 
     @Override

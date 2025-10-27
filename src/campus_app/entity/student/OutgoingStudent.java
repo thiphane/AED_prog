@@ -1,5 +1,7 @@
 package campus_app.entity.student;
 
+import campus_app.exceptions.ServiceIsFullException;
+import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
@@ -13,7 +15,7 @@ public class OutgoingStudent extends StudentAbstract implements Student {
     }
 
     @Override
-    public void updatePosition(Service position) {
+    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
         // TODO Store service if needed
     }
