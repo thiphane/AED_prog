@@ -11,13 +11,13 @@ public interface CampusApp {
     Bounds saveCurrentArea() throws BoundsNotDefined;
     Bounds loadArea(String areaName) throws BoundsNotDefined;
     void createService(String type, String serviceName, long latitude, long longitude, int price, int value) throws InvalidTypeException, BoundsNotDefined, OutsideBoundsException, InvalidPriceException, InvalidValueException, AlreadyExistsException;
-    void createStudent(String type, String name, String lodging, String country) throws AlreadyExistsException, InvalidTypeException, BoundsNotDefined, NoSuchElementException, ServiceIsFullException;
+    void createStudent(String type, String name, String lodging, String country) throws AlreadyExistsException, InvalidTypeException, BoundsNotDefined, NoSuchElementOfGivenType, ServiceIsFullException;
 
-    Student getStudent(String student);
+    Student getStudent(String student) throws NoSuchElementException;
     Service getService(String serviceName);
     Student removeStudent(String studentName);
     boolean updateStudentPosition(String studentName, String service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
-    void moveHome(String studentName, String newHome);
+    void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, NoSuchElementOfGivenType, SameHomeException;
     void rateService(int rate, String serviceName, String description);
     TwoWayIterator<Student> getUsersByService(String serviceName, Order actualOrder)throws InvalidOrderException, BoundsNotDefined, InvalidTypeException;;
     Iterator<Student> listAllStudents();

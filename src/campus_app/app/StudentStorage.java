@@ -1,12 +1,18 @@
 package campus_app.app;
 
+import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.StudentStoringService;
 import campus_app.entity.student.BookishStudent;
+import campus_app.exceptions.InvalidTypeException;
+import campus_app.exceptions.MoveNotAcceptable;
+import campus_app.exceptions.SameHomeException;
+import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
+import dataStructures.exceptions.NoSuchElementException;
 
 import java.io.Serializable;
 
@@ -26,7 +32,7 @@ public class StudentStorage implements Serializable {
         this.alphabeticalStudents.add(student);
     }
 
-    public Student getStudent(String student) {
+    public Student getStudent(String student) throws NoSuchElementException {
         // TODO students.get(students.indexof()) vai passar pela lista 2 vezes, mas isto não fica muito bonito
         return alphabeticalStudents.get(new BookishStudent(student, null, ""));
     }
@@ -42,7 +48,7 @@ public class StudentStorage implements Serializable {
         actualStudent.updatePosition(newLocation);
     }
 
-    public void moveHome(String student, Service newHome) {
+    public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException {
         this.getStudent(student).moveHome(newHome);
     }
 

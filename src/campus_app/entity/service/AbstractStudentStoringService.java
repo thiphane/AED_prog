@@ -20,7 +20,7 @@ public abstract class AbstractStudentStoringService extends ServiceAbstract impl
     @Override
     public void addUser(Student student) throws ServiceIsFullException {
         if (this.getValue() <= this.users.size()) {
-            throw new ServiceIsFullException();
+            throw new ServiceIsFullException(this);
         }
         this.users.addLast(student);
     }

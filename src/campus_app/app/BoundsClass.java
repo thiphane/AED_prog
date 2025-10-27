@@ -1,5 +1,6 @@
 package campus_app.app;
 
+import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
 import campus_app.exceptions.*;
@@ -46,7 +47,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public void moveHome(String studentName, Service newHomeService) {
+    public void moveHome(String studentName, LodgingService newHomeService) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException {
         students.moveHome(studentName, newHomeService);
     }
 

@@ -76,16 +76,21 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void createStudent(String type, String name, String lodging, String country) throws InvalidTypeException, AlreadyExistsException, NoSuchElementException, ServiceIsFullException {
+    public void createStudent(String type, String name, String lodging, String country) throws InvalidTypeException, AlreadyExistsException, NoSuchElementOfGivenType, ServiceIsFullException {
         StudentType studentType;
         try {
             studentType = StudentType.getType(type);
         } catch (Exception e) {
             throw new InvalidTypeException();
         }
-        Service serviceObj = currentBounds.getService(lodging);
+        Service serviceObj;
+        try {
+            serviceObj = currentBounds.getService(lodging);
+        } catch (Exception e) {
+            throw new NoSuchElementOfGivenType();
+        }
         if(!(serviceObj instanceof LodgingService home)) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementOfGivenType();
         }
         // TODO lançar a exceção no código nas classes que implementam Service que adicionam o estudante à lista de estudantes no serviço
         /*if(home.isFull()) {
@@ -161,10 +166,17 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void moveHome(String studentName, String newHome) {
-        Service newHomeService = this.getService(newHome);
-
-        currentBounds.moveHome(studentName, newHomeService);
+    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, NoSuchElementOfGivenType, NoSuchElementException, SameHomeException {
+        Service newHomeService;
+        try {
+            newHomeService = this.getService(newHome);
+        } catch(NoSuchElementException e) {
+            throw new NoSuchElementOfGivenType();
+        }
+        if(!(newHomeService instanceof LodgingService lodging)) {
+            throw new NoSuchElementOfGivenType();
+        }
+        currentBounds.moveHome(studentName, lodging);
     }
 
     @Override
