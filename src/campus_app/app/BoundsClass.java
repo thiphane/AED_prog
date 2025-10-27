@@ -136,12 +136,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Service getService(String lodging) {
-        return services.getService(lodging);
-    }
-
-    @Override
-    public boolean studentExists(String name) {
-        return students.getStudent(name) != null;
+    public Service getService(String service) {
+        return services.getService(service);
     }
 }

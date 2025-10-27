@@ -41,7 +41,5 @@ public interface Bounds {
 
     void addStudent(Student student);
 
-    Service getService(String lodging);
-
-    boolean studentExists(String name);
+    Service getService(String service);
 }

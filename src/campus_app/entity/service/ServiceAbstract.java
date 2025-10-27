@@ -11,7 +11,6 @@ public abstract class ServiceAbstract implements Service {
     private final int price;
     private final int value;
     int rating;
-    private TwoWayList<Student> users;
     List<String> ratings;
     protected ServiceAbstract(String serviceName, Position position, int price, int value, ServiceType type) throws InvalidPriceException, InvalidValueException {
         if(price < 0) {
@@ -33,14 +32,7 @@ public abstract class ServiceAbstract implements Service {
         this.rating+=rating;
         ratings.addLast(description);
     }
-    @Override
-    public void addUser(Student student) {
-        users.addLast(student);
-    }
-    @Override
-    public void removeUser(Student student) {
-        //users.remove(student);
-    }
+
     @Override
     public int getRating() {
         return Math.round(this.getRealRating());
@@ -74,10 +66,6 @@ public abstract class ServiceAbstract implements Service {
             if(iter.next().contains(tagName)) { return true; }
         }
         return false;
-    }
-    @Override
-    public TwoWayIterator<Student> getUsers(){
-        return users.twoWayiterator();
     }
 
     @Override

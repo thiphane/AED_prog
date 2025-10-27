@@ -4,7 +4,7 @@ import campus_app.app.Position;
 import campus_app.exceptions.InvalidPriceException;
 import campus_app.exceptions.InvalidValueException;
 
-public class EatingService extends ServiceAbstract implements Service {
+public class EatingService extends AbstractStudentStoringService {
     private static final ServiceType TYPE = ServiceType.EATING;
     public EatingService(String serviceName, Position position, int price, int value) throws InvalidValueException, InvalidPriceException {
         super(serviceName, position, price, value, TYPE);

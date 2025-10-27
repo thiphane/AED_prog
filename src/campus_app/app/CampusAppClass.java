@@ -94,8 +94,9 @@ public class CampusAppClass implements CampusApp {
         // TODO talvez criar o objeto de estudante antes de verificar se existe, assim não
         //  é preciso tar a criar um objeto estudante só com o nome para encontrar um com o mesmo nome
         //  em StudentStorage.getStudent
-        if(currentBounds.studentExists(name)) {
-            throw new AlreadyExistsException(name);
+        Student std = currentBounds.getStudent(name);
+        if(std != null) {
+            throw new AlreadyExistsException(std.getName());
         }
 
         Student student;
@@ -113,6 +114,9 @@ public class CampusAppClass implements CampusApp {
                 throw new InvalidTypeException();
             }
         }
+
+        home.addUser(student);
+
         this.currentBounds.addStudent(student);
     }
 
@@ -123,7 +127,7 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Service getService(String serviceName) {
-        return null;
+        return currentBounds.getService(serviceName);
     }
 
     @Override
@@ -160,10 +164,10 @@ public class CampusAppClass implements CampusApp {
         if(service == null) {
             throw new NoSuchElementException();
         }
-        if(!(service.getType().equals(ServiceType.LEISURE) && !(service.getType().equals(ServiceType.EATING)))) {
+        if(!(service instanceof StudentStoringService storingService)) {
             throw new InvalidTypeException();
         }
-        return this.getService(serviceName).getUsers();
+        return storingService.getUsers();
     }
 
     @Override

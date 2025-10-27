@@ -9,12 +9,9 @@ public interface Service extends Serializable {
     String getName();
     ServiceType getType();
     Position getPosition();
-    TwoWayIterator<Student> getUsers();
     void addRating(int rating, String description);
     int getRating();
     float getRealRating();
-    void addUser(Student student);
-    void removeUser(Student student);
     int getPrice();
     boolean hasTag(String tagName);
 }

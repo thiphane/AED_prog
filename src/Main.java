@@ -30,7 +30,7 @@ public class Main {
     public static final String INVALID_PRICE_LEISURE = "Invalid ticket price!";
     public static final String INVALID_VALUE_LEISURE = "Invalid discount price!";
     public static final String INVALID_VALUE_CAPACITY = "Invalid capacity!";
-    public static final String SERVICE_ALREADY_EXISTS_FORMAT = "%s already exists!\n";
+    public static final String ENTITY_ALREADY_EXISTS_FORMAT = "%s already exists!\n";
     public static final String SERVICE_LIST_FORMAT = "%s: %s (%d, %d).\n";
     public static final String SERVICE_FORMAT = "%s %s added.\n";
     public static final String RANKED_HEADER = "%s services closer with %s average\n";
@@ -39,8 +39,8 @@ public class Main {
     public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s services with average!\n";
     public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it!";
     public static final String STUDENT_FORMAT = "%s added.\n";
-    public static final String LODGING_DOES_NOT_EXIST = "Lodging %s does not exist.\n";
-    public static final String SERVICE_IS_FULL = "%s %s is full!";
+    public static final String LODGING_DOES_NOT_EXIST = "lodging %s does not exist!\n";
+    public static final String SERVICE_IS_FULL = "%s %s is full!\n";
     public static final String INVALID_BOUND = "Invalid bounds.";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
     private static final String BOUND_LOADED_FORMAT = "%s loaded.\n";
@@ -51,6 +51,7 @@ public class Main {
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
     private static final String NO_STUDENTS_COUNTRY = "No students from %s!\n";
+    private static final String USER_FORMAT = "%s: %s.\n";
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -123,7 +124,7 @@ public class Main {
                     } catch (InvalidTypeException e) {
                         System.out.println(INVALID_SERVICE_TYPE);
                     } catch (AlreadyExistsException e) {
-                        System.out.printf(SERVICE_ALREADY_EXISTS_FORMAT, e.getElement());
+                        System.out.printf(ENTITY_ALREADY_EXISTS_FORMAT, e.getElement());
                     }
                 }
                 case Command.SAVE -> {
@@ -182,7 +183,7 @@ public class Main {
                     catch (ServiceIsFullException e) {
                         System.out.printf(SERVICE_IS_FULL, ServiceType.LODGING.toString().toLowerCase(), lodging);
                     } catch (AlreadyExistsException e) {
-                        System.out.printf(SERVICE_ALREADY_EXISTS_FORMAT, name);
+                        System.out.printf(ENTITY_ALREADY_EXISTS_FORMAT, e.getElement());
                     }
                 }
                 case Command.WHERE -> {
@@ -227,12 +228,12 @@ public class Main {
                         if(actualOrder.equals(Order.OLD_TO_NEW)) {
                             while(it.hasNext()) {
                                 Student s = it.next();
-                                System.out.println(s.getName()+":"+s.getType().toString().toLowerCase());
+                                System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
                         }else {
                             while(it.hasPrevious()) {
                                 Student s = it.previous();
-                                System.out.println(s.getName()+":"+s.getType().toString().toLowerCase());
+                                System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
                         }
                     }catch(BoundsNotDefined e){
