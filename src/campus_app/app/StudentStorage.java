@@ -50,7 +50,7 @@ public class StudentStorage implements Serializable {
             isDistracted = std.isDistracted(newLocation);
         }
         student.updatePosition(newLocation);
-        if(isDistracted)throw new ThriftyStudentIsDistracted();
+        if(isDistracted)throw new ThriftyStudentIsDistracted(student);
     }
 
     public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException {

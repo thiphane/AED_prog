@@ -228,9 +228,9 @@ public class Main {
                         }
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
-                    } catch (NoSuchElementException e) {
+                    } catch (StudentDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
-                    } catch (InvalidTypeException e) {
+                    }catch (InvalidTypeException e) {
                         System.out.println(INVALID_SERVICE_TYPE);
                     } catch (NoSuchElementOfGivenType e) {
                         System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type);
@@ -264,8 +264,8 @@ public class Main {
                         System.out.println(THIS_ORDER_DOES_NOT_EXISTS);
                     } catch (ServiceDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, serviceName);
-                    } catch (InvalidTypeException e) {
-                        System.out.printf(SERVICE_CANT_CONTROL_USERS, serviceName);
+                    } catch (CantShowUsersException e) {
+                        System.out.printf(SERVICE_CANT_CONTROL_USERS, e.getService().getName());
                     }
                 }
                 case Command.GO -> {
@@ -289,7 +289,7 @@ public class Main {
                     }catch (StudentAlreadyThereException e){
                         System.out.println(ALREADY_THERE);
                     }catch(ServiceIsFullException e){
-                        System.out.printf(SERVICE_IS_FULL, ServiceType.EATING.name().toLowerCase(), locationName);
+                        System.out.printf(SERVICE_IS_FULL, ServiceType.EATING.name().toLowerCase(), e.getService().getName());
                     }
                 }
 
@@ -320,17 +320,26 @@ public class Main {
                     try{
                         Student student = app.getStudent(name);
                         Iterator<Service> it = app.listVisitedServices(student);
-                        if(it.hasNext()){
                             while(it.hasNext()){
                                 System.out.println(it.next().getName());
                             }
-                        } else System.out.printf(STUDENT_HAS_NOT_VISITED_ANY_LOCATION, name);
                     }catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }  catch (StudentDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
                     } catch (StudentDoesntStoreVisitedServicesException e) {
                         System.out.printf(STUDENT_IS_THRIFTY, name);
+                    } catch (NoVisitedServicesException e) {
+                        System.out.printf(STUDENT_HAS_NOT_VISITED_ANY_LOCATION, e.getStudent().getName());
+                    }
+                }case Command.LEAVE -> {
+                    String name = in.nextLine().trim();
+                    try{
+                        app.removeStudent(name);
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    }catch (StudentDoesNotExistException e) {
+                        System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
                     }
                 }
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);

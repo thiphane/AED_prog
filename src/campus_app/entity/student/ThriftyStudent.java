@@ -51,6 +51,6 @@ public class ThriftyStudent extends StudentAbstract {
 
     @Override
     public Iterator<Service> getVisitedServices()throws StudentDoesntStoreVisitedServicesException{
-        throw new StudentDoesntStoreVisitedServicesException();
+        throw new StudentDoesntStoreVisitedServicesException(this);
     }
 }

@@ -146,27 +146,33 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Student removeStudent(String studentName) throws BoundsNotDefined {
+    public Student removeStudent(String studentName) throws BoundsNotDefined, StudentDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
+        }Student std = currentBounds.removeStudent(studentName);
+        if(std == null) {
+            throw new StudentDoesNotExistException();
         }
-        return currentBounds.removeStudent(studentName);
+        return std;
     }
 
     @Override
-    public boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException{
+    public boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException, StudentDoesNotExistException {
 
         if(currentBounds == null) {
             throw new BoundsNotDefined();
+        }
+        if(student ==null){
+            throw new StudentDoesNotExistException();
         }
         if(service == null) {
             throw new NoSuchElementException();
         }
         if(!service.getType().equals(ServiceType.LEISURE) && !service.getType().equals(ServiceType.EATING)) {
-            throw new InvalidTypeException();
+            throw new InvalidTypeException(service);
         }
         if(student.getLocation().equals(service)) {
-            throw new StudentAlreadyThereException();
+            throw new StudentAlreadyThereException(student);
         }
         try {
             currentBounds.updateStudentLocation(student, service);
@@ -195,7 +201,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, InvalidTypeException, ServiceDoesNotExistException {
+    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, InvalidTypeException, ServiceDoesNotExistException, CantShowUsersException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -205,7 +211,7 @@ public class CampusAppClass implements CampusApp {
             throw new NoSuchElementException();
         }
         if(!(service instanceof StudentStoringService storingService)) {
-            throw new InvalidTypeException();
+            throw new CantShowUsersException(service);
         }
         return storingService.getUsers();
     }
@@ -237,11 +243,15 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException, BoundsNotDefined {
+    public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException, BoundsNotDefined, NoVisitedServicesException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return currentBounds.listVisitedServices(student);
+        Iterator<Service> it = currentBounds.listVisitedServices(student);
+        if(it.hasNext()){
+            throw new NoVisitedServicesException(student);
+        }
+        return it;
     }
 
     @Override
@@ -272,14 +282,14 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, NoSuchElementException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate {
+    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException {
         if(currentBounds == null) {
             throw new BoundsNotDefined();
         }
         if(rate < 0 || rate > 5) throw new IllegalArgumentException();
 
         if(this.currentBounds.getStudent(studentName) == null){
-            throw new NoSuchElementException();
+            throw new StudentDoesNotExistException();
         }
         ServiceType serviceType = ServiceType.getType(type);
         if(serviceType == null){

@@ -1,3 +1,7 @@
 package campus_app.exceptions;
 
-public class InvalidTypeException extends Exception{}
+import campus_app.entity.service.Service;
+
+public class InvalidTypeException extends Exception{
+
+}
