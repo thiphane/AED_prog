@@ -52,6 +52,8 @@ public class Main {
     private static final String STUDENT_IS_DISTRACTED = "%1$s is now at %2$s. %1$s is distracted!\n";
     private static final String LOCATION_CHANGED_FORMAT = "%s is now at %s.\n";
     private static final String MOVE_NOT_ACCEPTABLE = "Move is not acceptable for %s!\n";
+    private static final String STUDENT_HAS_NOT_VISITED_ANY_LOCATION = "%s has not visited any locations!";
+    private static final String STUDENT_IS_THRIFTY = "%s is thrifty!";
 
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
@@ -94,13 +96,17 @@ public class Main {
                 case Command.SERVICES -> {
                     in.nextLine();
 
-                    Iterator<Service> services = app.listAllServices();
-                    if (!services.hasNext()) {
-                        System.out.println(NO_SERVICES);
-                    }
-                    while (services.hasNext()) {
-                        Service s = services.next();
-                        System.out.printf(SERVICE_LIST_FORMAT, s.getName(), s.getType().toString().toLowerCase(), s.getPosition().latitude(), s.getPosition().longitude());
+                    try{
+                        Iterator<Service> services = app.listAllServices();
+                        if (!services.hasNext()) {
+                            System.out.println(NO_SERVICES);
+                        }
+                        while (services.hasNext()) {
+                            Service s = services.next();
+                            System.out.printf(SERVICE_LIST_FORMAT, s.getName(), s.getType().toString().toLowerCase(), s.getPosition().latitude(), s.getPosition().longitude());
+                        }
+                    }catch(BoundsNotDefined e){
+                        System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
                 case Command.SERVICE -> {
@@ -154,20 +160,24 @@ public class Main {
                 case Command.STUDENTS -> {
                     String country = in.nextLine().trim();
                     Iterator<Student> students;
-                    if (country.equalsIgnoreCase(ALL_STUDENTS)) {
-                        students = app.listAllStudents();
-                        if (!students.hasNext()) {
-                            System.out.println(NO_STUDENTS);
+                    try {
+                        if (country.equalsIgnoreCase(ALL_STUDENTS)) {
+                            students = app.listAllStudents();
+                            if (!students.hasNext()) {
+                                System.out.println(NO_STUDENTS);
+                            }
+                        } else {
+                            students = app.listStudentsByCountry(country);
+                            if (!students.hasNext()) {
+                                System.out.printf(NO_STUDENTS_COUNTRY, country);
+                            }
                         }
-                    } else {
-                        students = app.listStudentsByCountry(country);
-                        if (!students.hasNext()) {
-                            System.out.printf(NO_STUDENTS_COUNTRY, country);
+                        while (students.hasNext()) {
+                            Student cur = students.next();
+                            System.out.printf(STUDENT_LIST_FORMAT, cur.getName(), cur.getType().toString().toLowerCase(), cur.getLocation().getName());
                         }
-                    }
-                    while (students.hasNext()) {
-                        Student cur = students.next();
-                        System.out.printf(STUDENT_LIST_FORMAT, cur.getName(), cur.getType().toString().toLowerCase(), cur.getLocation().getName());
+                    }catch(BoundsNotDefined e){
+                        System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
                 case Command.STUDENT -> {
@@ -193,12 +203,16 @@ public class Main {
                 }
                 case Command.WHERE -> {
                     String name = in.nextLine().trim();
-                    Student student = app.getStudent(name);
-                    if (student == null) {
-                        System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
-                    } else {
-                        Service location = student.getLocation();
-                        System.out.printf(STUDENT_LOCATION_FORMAT, student.getName(), location.getName(), location.getType().toString().toLowerCase(), location.getPosition());
+                    try {
+                        Student student = app.getStudent(name);
+                        if (student == null) {
+                            System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
+                        } else {
+                            Service location = student.getLocation();
+                            System.out.printf(STUDENT_LOCATION_FORMAT, student.getName(), location.getName(), location.getType().toString().toLowerCase(), location.getPosition());
+                        }
+                    }catch (BoundsNotDefined e){
+                        System.out.println(BOUNDS_NOT_DEFINED);
                     }
 
                 }
@@ -287,7 +301,9 @@ public class Main {
                         Student student = app.getStudent(name);
                         Service home = app.getService(lodging);
                         System.out.printf(STUDENT_MOVED_FORMAT, student.getName(), home.getName());
-                    } catch (ServiceIsFullException e) {
+                    } catch(BoundsNotDefined e){
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    }catch (ServiceIsFullException e) {
                         System.out.printf(SERVICE_IS_FULL, ServiceType.LODGING.toString().toLowerCase(), e.getService().getName());
                     } catch (MoveNotAcceptable e) {
                         System.out.printf(MOVE_NOT_ACCEPTABLE, e.getStudent().getName());
@@ -298,6 +314,21 @@ public class Main {
                     }
                     catch (SameHomeException e) {
                         System.out.printf(SAME_HOME_FORMAT, e.getStudent().getName());
+                    }
+                }case Command.VISITED -> {
+                    String name = in.nextLine().trim();
+                    try{
+                        Student student = app.getStudent(name);
+                        Iterator<Service> it = app.listVisitedServices(student);
+                        if(it.hasNext()){
+                           System.out.println(it.next().getName());
+                        } else System.out.printf(STUDENT_HAS_NOT_VISITED_ANY_LOCATION, name);
+                    }catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    } catch(NoSuchElementException e){
+                        System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
+                    } catch (StudentDoesntStoreVisitedServicesException e) {
+                        System.out.printf(STUDENT_IS_THRIFTY, name);
                     }
                 }
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);

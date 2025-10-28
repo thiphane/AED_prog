@@ -40,7 +40,7 @@ public interface Bounds {
 
     Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator);
 
-    Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException;
+    Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException;
 
     Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate);
 

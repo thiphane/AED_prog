@@ -13,19 +13,19 @@ public interface CampusApp {
     void createService(String type, String serviceName, long latitude, long longitude, int price, int value) throws InvalidTypeException, BoundsNotDefined, OutsideBoundsException, InvalidPriceException, InvalidValueException, AlreadyExistsException;
     void createStudent(String type, String name, String lodging, String country) throws AlreadyExistsException, InvalidTypeException, BoundsNotDefined, NoSuchElementOfGivenType, ServiceIsFullException;
 
-    Student getStudent(String student) throws NoSuchElementException;
-    Service getService(String serviceName);
-    Student removeStudent(String studentName);
+    Student getStudent(String student) throws NoSuchElementException, BoundsNotDefined;
+    Service getService(String serviceName) throws BoundsNotDefined;
+    Student removeStudent(String studentName) throws BoundsNotDefined;
     boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
-    void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, NoSuchElementOfGivenType, SameHomeException;
-    void rateService(int rate, String serviceName, String description);
+    void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, NoSuchElementOfGivenType, SameHomeException, BoundsNotDefined;
+    void rateService(int rate, String serviceName, String description) throws BoundsNotDefined;
     TwoWayIterator<Student> getUsersByService(String serviceName, Order actualOrder)throws InvalidOrderException, BoundsNotDefined, InvalidTypeException;;
-    Iterator<Student> listAllStudents();
-    Iterator<Student> listStudentsByCountry(String country);
-    Iterator<Service> listAllServices();
-    Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException;
-    Iterator<Service> listServicesByRanking();
+    Iterator<Student> listAllStudents() throws BoundsNotDefined;
+    Iterator<Student> listStudentsByCountry(String country) throws BoundsNotDefined;
+    Iterator<Service> listAllServices() throws BoundsNotDefined;
+    Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException, BoundsNotDefined;
+    Iterator<Service> listServicesByRanking() throws BoundsNotDefined;
     Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName)throws BoundsNotDefined, InvalidTypeException, NoSuchElementException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate;;
-    Iterator<Service> listServicesByTag(String tagName);
-    Service findBestService(String studentName, ServiceType type);
+    Iterator<Service> listServicesByTag(String tagName) throws BoundsNotDefined;
+    Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined;
 }

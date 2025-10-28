@@ -22,7 +22,13 @@ public class ThriftyStudent extends StudentAbstract {
         return StudentType.THRIFTY;
     }
     public boolean isDistracted(Service service){
-        return this.getLocation().getPrice()<service.getPrice();
+       Iterator<Service> it = visited.iterator();
+       while(it.hasNext()){
+           Service s =  it.next();
+           if(s.getType().equals(service.getType())){
+               return s.getPrice()<service.getPrice();
+           }
+       } return false;
     }
 
     @Override

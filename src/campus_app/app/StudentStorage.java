@@ -62,8 +62,8 @@ public class StudentStorage implements Serializable {
         return new FilterIterator<>(students.iterator(), new ByCountryPredicate(country));
     }
 
-    public Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException {
-        return this.getStudent(studentName).getVisitedServices();
+    public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException {
+        return student.getVisitedServices();
     }
 
     public Service findBestService(String studentName, Iterator<Service> services) {

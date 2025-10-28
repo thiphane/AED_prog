@@ -76,7 +76,11 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void createStudent(String type, String name, String lodging, String country) throws InvalidTypeException, AlreadyExistsException, NoSuchElementOfGivenType, ServiceIsFullException {
+    public void createStudent(String type, String name, String lodging, String country) throws InvalidTypeException, AlreadyExistsException, NoSuchElementOfGivenType, ServiceIsFullException, BoundsNotDefined {
+
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         StudentType studentType;
         try {
             studentType = StudentType.getType(type);
@@ -117,17 +121,26 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Student getStudent(String student) {
+    public Student getStudent(String student) throws BoundsNotDefined {
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return currentBounds.getStudent(student);
     }
 
     @Override
-    public Service getService(String serviceName) {
+    public Service getService(String serviceName) throws BoundsNotDefined {
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return currentBounds.getService(serviceName);
     }
 
     @Override
-    public Student removeStudent(String studentName) {
+    public Student removeStudent(String studentName) throws BoundsNotDefined {
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return currentBounds.removeStudent(studentName);
     }
 
@@ -149,13 +162,16 @@ public class CampusAppClass implements CampusApp {
         try {
             currentBounds.updateStudentLocation(student, service);
         }catch (ThriftyStudentIsDistracted e){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
-    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, NoSuchElementOfGivenType, NoSuchElementException, SameHomeException {
+    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, NoSuchElementOfGivenType, NoSuchElementException, SameHomeException, BoundsNotDefined {
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         Service newHomeService;
         try {
             newHomeService = this.getService(newHome);
@@ -169,7 +185,10 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void rateService(int rate, String serviceName, String description) {
+    public void rateService(int rate, String serviceName, String description) throws BoundsNotDefined {
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
 
     }
 
@@ -190,37 +209,63 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Student> listAllStudents() {
+    public Iterator<Student> listAllStudents() throws BoundsNotDefined {
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return currentBounds.getAllStudents();
     }
 
     @Override
-    public Iterator<Student> listStudentsByCountry(String country) {
+    public Iterator<Student> listStudentsByCountry(String country) throws BoundsNotDefined {
+
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return currentBounds.getStudentsByCountry(country);
     }
 
     @Override
-    public Iterator<Service> listAllServices() {
+    public Iterator<Service> listAllServices() throws BoundsNotDefined {
+
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return currentBounds.listAllServices();
     }
 
     @Override
-    public Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException {
-        return currentBounds.listVisitedServices(studentName);
+    public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException, BoundsNotDefined {
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
+        return currentBounds.listVisitedServices(student);
     }
 
     @Override
-    public Iterator<Service> listServicesByRanking() {
+    public Iterator<Service> listServicesByRanking() throws BoundsNotDefined {
+
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return null;
     }
 
     @Override
-    public Iterator<Service> listServicesByTag(String tagName) {
+    public Iterator<Service> listServicesByTag(String tagName) throws BoundsNotDefined {
+
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return new FilterIterator<>(currentBounds.listAllServices(), new ServiceTagPredicate(tagName));
     }
 
     @Override
-    public Service findBestService(String studentName, ServiceType type) {
+    public Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined {
+
+        if(this.currentBounds == null) {
+            throw new BoundsNotDefined();
+        }
         return currentBounds.findBestService(studentName, new FilterIterator<>(currentBounds.listAllServices(), new ServiceTypePredicate(type)));
     }
 

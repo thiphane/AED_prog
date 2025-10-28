@@ -6,6 +6,7 @@ import campus_app.entity.student.Student;
 import campus_app.exceptions.*;
 import dataStructures.FilterIterator;
 import dataStructures.Iterator;
+import dataStructures.exceptions.NoSuchElementException;
 
 import java.io.*;
 
@@ -72,8 +73,8 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException {
-        return students.listVisitedServices(studentName);
+    public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException {
+        return students.listVisitedServices(student);
     }
 
     public void addService(Service service) throws AlreadyExistsException {
