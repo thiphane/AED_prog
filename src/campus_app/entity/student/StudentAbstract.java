@@ -47,8 +47,9 @@ public abstract class StudentAbstract implements Student {
         if(this.home.equals(home)) {
             throw new SameHomeException(this);
         }
-        this.home.removeUser(this);
-        setHome(home);
+        LodgingService oldHome = this.home;
+        this.setHome(home);
+        oldHome.removeUser(this);
     }
 
     @Override

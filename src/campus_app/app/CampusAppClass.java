@@ -183,7 +183,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException {
+    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -273,7 +273,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined, NoSuchElementException{
+    public Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined, NoSuchElementException, StudentDoesNotExistException {
 
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();

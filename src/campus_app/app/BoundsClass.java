@@ -48,7 +48,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public void moveHome(String studentName, LodgingService newHomeService) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException {
+    public void moveHome(String studentName, LodgingService newHomeService) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException {
         students.moveHome(studentName, newHomeService);
     }
 
@@ -68,7 +68,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator) {
+    public Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator) throws StudentDoesNotExistException {
         return students.findBestService(studentName, serviceFilterIterator);
     }
 
@@ -127,7 +127,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate) {
+    public Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate) throws StudentDoesNotExistException {
         return students.findClosestService(studentName, byTypeAndRate);
     }
 

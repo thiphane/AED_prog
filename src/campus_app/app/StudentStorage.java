@@ -49,8 +49,12 @@ public class StudentStorage implements Serializable {
         student.updatePosition(newLocation);
     }
 
-    public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException {
-        this.getStudent(student).moveHome(newHome);
+    public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException {
+        Student s = this.getStudent(student);
+        if(s == null) {
+            throw new StudentDoesNotExistException();
+        }
+        s.moveHome(newHome);
     }
 
     public Iterator<Student> getAllStudents() {
@@ -65,10 +69,20 @@ public class StudentStorage implements Serializable {
         return student.getVisitedServices();
     }
 
-    public Service findBestService(String studentName, Iterator<Service> services) {
-        return this.getStudent(studentName).findBestService(services);
+    public Service findBestService(String studentName, Iterator<Service> services) throws StudentDoesNotExistException {
+        // TODO este código aparece muitas vezes repetido, talvez mudar para o getStudent
+        //  tendo em conta que ás vezes o valor de retorno null é esperado
+        Student s = this.getStudent(studentName);
+        if (s == null) {
+            throw new StudentDoesNotExistException();
+        }
+        return s.findBestService(services);
     }
-    public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) {
-        return this.getStudent(studentName).findClosestServices(services);
+    public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) throws StudentDoesNotExistException {
+        Student s = this.getStudent(studentName);
+        if(s == null) {
+            throw new StudentDoesNotExistException();
+        }
+        return s.findClosestServices(services);
     }
 }

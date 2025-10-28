@@ -30,7 +30,7 @@ public interface Bounds {
 
     void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException;
 
-    void moveHome(String studentName, LodgingService newHomeService) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException;
+    void moveHome(String studentName, LodgingService newHomeService) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException;
 
     Iterator<Student> getAllStudents();
 
@@ -38,11 +38,11 @@ public interface Bounds {
 
     Iterator<Service> listAllServices();
 
-    Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator);
+    Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator) throws StudentDoesNotExistException;
 
     Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException;
 
-    Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate);
+    Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate) throws StudentDoesNotExistException;
 
     void addStudent(Student student);
 
