@@ -260,7 +260,9 @@ public class Main {
                     String locationName = in.nextLine().trim();
                     boolean isDistracted = false;
                     try {
-                        isDistracted = app.updateStudentPosition(studentName, locationName);
+                        Student student = app.getStudent(studentName);
+                        Service home = app.getService(locationName);
+                        isDistracted = app.updateStudentPosition(student, home);
                         if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, studentName, locationName);}
                         else System.out.printf(LOCATION_CHANGED_FORMAT, studentName, locationName);
                     } catch (BoundsNotDefined e) {

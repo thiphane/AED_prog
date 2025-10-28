@@ -3,12 +3,10 @@ package campus_app.app;
 import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.StudentStoringService;
 import campus_app.entity.student.BookishStudent;
-import campus_app.exceptions.InvalidTypeException;
-import campus_app.exceptions.MoveNotAcceptable;
-import campus_app.exceptions.SameHomeException;
+import campus_app.entity.student.StudentType;
+import campus_app.entity.student.ThriftyStudent;
+import campus_app.exceptions.*;
 import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
@@ -34,18 +32,22 @@ public class StudentStorage implements Serializable {
 
     public Student getStudent(String student) throws NoSuchElementException {
         // TODO students.get(students.indexof()) vai passar pela lista 2 vezes, mas isto não fica muito bonito
-        return alphabeticalStudents.get(new BookishStudent(student, null, ""));
+        return alphabeticalStudents.get(new BookishStudent(student));
     }
 
     public Student removeStudent(String student) {
-        Student st = alphabeticalStudents.remove(new BookishStudent(student, null, ""));
+        Student st = alphabeticalStudents.remove(new BookishStudent(student));
         students.remove(students.indexOf(st));
         return st;
     }
 
-    public void updateStudentLocation(String student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
-        Student actualStudent = getStudent(student);
-        actualStudent.updatePosition(newLocation);
+    public void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
+        boolean isDistracted = false;
+        if(student instanceof ThriftyStudent std){
+            isDistracted = std.isDistracted(newLocation);
+        }
+        student.updatePosition(newLocation);
+        if(isDistracted)throw new ThriftyStudentIsDistracted();
     }
 
     public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException {
@@ -60,7 +62,7 @@ public class StudentStorage implements Serializable {
         return new FilterIterator<>(students.iterator(), new ByCountryPredicate(country));
     }
 
-    public Iterator<Service> listVisitedServices(String studentName) {
+    public Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException {
         return this.getStudent(studentName).getVisitedServices();
     }
 

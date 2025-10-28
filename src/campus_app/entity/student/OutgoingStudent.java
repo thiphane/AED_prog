@@ -3,12 +3,19 @@ package campus_app.entity.student;
 import campus_app.entity.service.LodgingService;
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
+import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
 public class OutgoingStudent extends StudentAbstract implements Student {
-    public OutgoingStudent(String name, LodgingService home, String country) {
-        super(name, home, country);
+    public OutgoingStudent(String name){
+        super(name);
+        super.visited = new DoublyLinkedList<>();
+    }
+    @Override
+    public void setHome(LodgingService home) throws ServiceIsFullException {
+        super.setHome(home);
+        visited.addFirst(home);
     }
 
     public StudentType getType(){
@@ -16,9 +23,11 @@ public class OutgoingStudent extends StudentAbstract implements Student {
     }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
+    public void updatePosition(Service position) throws ServiceIsFullException {
         super.updatePosition(position);
-        // TODO Store service if needed
+        if(super.visited.indexOf(position) ==-1){
+            super.visited.addLast(position);
+        }
     }
 
     @Override
@@ -26,8 +35,4 @@ public class OutgoingStudent extends StudentAbstract implements Student {
         return null;
     }
 
-    @Override
-    public Iterator<Service> getVisitedServices() {
-        return null;
-    }
 }

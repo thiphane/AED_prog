@@ -1,32 +1,33 @@
 package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
-import campus_app.exceptions.InvalidTypeException;
-import campus_app.exceptions.MoveNotAcceptable;
-import campus_app.exceptions.SameHomeException;
+import campus_app.exceptions.*;
 import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
+import dataStructures.ListInArray;
 
 public class ThriftyStudent extends StudentAbstract {
-    public ThriftyStudent(String name, LodgingService home, String country) {
-        super(name, home, country);
-        super.visited = new DoublyLinkedList<>();
+    public ThriftyStudent(String name){
+        super(name);
+        visited = new ListInArray<>(3);
     }
-
+    @Override
+    public void setHome(LodgingService home) throws ServiceIsFullException {
+        super.setHome(home);
+        visited.addFirst(home);
+    }
     public StudentType getType(){
         return StudentType.THRIFTY;
     }
+    public boolean isDistracted(Service service){
+        return this.getLocation().getPrice()<service.getPrice();
+    }
 
     @Override
-    public void updatePosition(Service position) throws ThriftyStudentIsDistracted, ServiceIsFullException {
-        // TODO throw exception se estiver distraido, mas ainda fazer os outros efeitos
-        boolean isDistracted =this.getLocation().getPrice()<position.getPrice();
+    public void updatePosition(Service position) throws ServiceIsFullException {
         super.updatePosition(position);
-        if(isDistracted)throw new ThriftyStudentIsDistracted();
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ThriftyStudent extends StudentAbstract {
     }
 
     @Override
-    public Iterator<Service> getVisitedServices() {
-        // throw new exception
-        return null;
-    }}
+    public Iterator<Service> getVisitedServices()throws StudentDoesntStoreVisitedServicesException{
+        throw new StudentDoesntStoreVisitedServicesException();
+    }
+}

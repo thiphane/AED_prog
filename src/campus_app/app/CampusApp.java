@@ -16,14 +16,14 @@ public interface CampusApp {
     Student getStudent(String student) throws NoSuchElementException;
     Service getService(String serviceName);
     Student removeStudent(String studentName);
-    boolean updateStudentPosition(String studentName, String service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
+    boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
     void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, NoSuchElementOfGivenType, SameHomeException;
     void rateService(int rate, String serviceName, String description);
     TwoWayIterator<Student> getUsersByService(String serviceName, Order actualOrder)throws InvalidOrderException, BoundsNotDefined, InvalidTypeException;;
     Iterator<Student> listAllStudents();
     Iterator<Student> listStudentsByCountry(String country);
     Iterator<Service> listAllServices();
-    Iterator<Service> listVisitedServices(String studentName);
+    Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException;
     Iterator<Service> listServicesByRanking();
     Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName)throws BoundsNotDefined, InvalidTypeException, NoSuchElementException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate;;
     Iterator<Service> listServicesByTag(String tagName);

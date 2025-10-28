@@ -1,12 +1,8 @@
 package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
-import campus_app.exceptions.InvalidTypeException;
-import campus_app.exceptions.MoveNotAcceptable;
-import campus_app.exceptions.SameHomeException;
+import campus_app.exceptions.*;
 import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 
@@ -18,9 +14,11 @@ public interface Student extends Serializable {
     Service getLocation();
     StudentType getType();
     Service getHome();
+    void setCountry(String country);
+    void setHome(LodgingService home) throws ServiceIsFullException;
     void moveHome(LodgingService home) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException;
     void updatePosition(Service position) throws ThriftyStudentIsDistracted, ServiceIsFullException;
     Service findBestService(Iterator<Service> services);
-    Iterator<Service> getVisitedServices();
+    Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException;
     Iterator<Service>  findClosestServices(Iterator<Service> services);
 }

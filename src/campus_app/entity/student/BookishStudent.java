@@ -1,19 +1,24 @@
 package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
+import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
+import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
+import dataStructures.ListInArray;
 
 public class BookishStudent extends StudentAbstract implements Student {
-    public BookishStudent(String name, LodgingService home, String country) {
-        super(name, home, country);
+    public BookishStudent(String name){
+        super(name);
+        visited = new DoublyLinkedList<>();
     }
 
     public StudentType getType(){
         return StudentType.BOOKISH;
     }
+
 
     @Override
     public Service findBestService(Iterator<Service> services) {
@@ -21,13 +26,9 @@ public class BookishStudent extends StudentAbstract implements Student {
     }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
-        // TODO update position if needed
+    public void updatePosition(Service position) throws ServiceIsFullException {
         super.updatePosition(position);
-    }
-
-    @Override
-    public Iterator<Service> getVisitedServices() {
-        return null;
+        if(position.getType().equals(ServiceType.LEISURE)&& (super.visited.indexOf(position) ==-1))
+            super.visited.addLast(position);
     }
 }

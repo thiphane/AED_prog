@@ -28,9 +28,9 @@ public interface Bounds {
 
     Student getStudent(String student) throws NoSuchElementException;
 
-    void updateStudentLocation(String studentName, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException;
+    void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException;
 
-    void moveHome(String studentName, LodgingService newHomeService);
+    void moveHome(String studentName, LodgingService newHomeService) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException;
 
     Iterator<Student> getAllStudents();
 
@@ -40,7 +40,7 @@ public interface Bounds {
 
     Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator);
 
-    Iterator<Service> listVisitedServices(String studentName);
+    Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException;
 
     Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate);
 

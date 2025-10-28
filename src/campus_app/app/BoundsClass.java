@@ -41,8 +41,8 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public void updateStudentLocation(String studentName, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
-        students.updateStudentLocation(studentName, newLocation);
+    public void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
+        students.updateStudentLocation(student, newLocation);
 
     }
 
@@ -72,7 +72,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Iterator<Service> listVisitedServices(String studentName) {
+    public Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException {
         return students.listVisitedServices(studentName);
     }
 

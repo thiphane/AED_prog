@@ -92,36 +92,26 @@ public class CampusAppClass implements CampusApp {
         if(!(serviceObj instanceof LodgingService home)) {
             throw new NoSuchElementOfGivenType();
         }
-        // TODO lançar a exceção no código nas classes que implementam Service que adicionam o estudante à lista de estudantes no serviço
-        /*if(home.isFull()) {
-            throw new ServiceIsFullException();
-        }*/
-
-        // TODO talvez criar o objeto de estudante antes de verificar se existe, assim não
-        //  é preciso tar a criar um objeto estudante só com o nome para encontrar um com o mesmo nome
-        //  em StudentStorage.getStudent
-        Student std = currentBounds.getStudent(name);
-        if(std != null) {
-            throw new AlreadyExistsException(std.getName());
+        Student student = currentBounds.getStudent(name);
+        if(student != null) {
+            throw new AlreadyExistsException(student.getName());
         }
-
-        Student student;
         switch(studentType) {
             case StudentType.BOOKISH -> {
-                student = new BookishStudent(name, home, country);
+                student = new BookishStudent(name);
             }
             case THRIFTY -> {
-                student = new ThriftyStudent(name, home, country);
+                student = new ThriftyStudent(name);
             }
             case OUTGOING -> {
-                student = new OutgoingStudent(name, home, country);
+                student = new OutgoingStudent(name);
             }
             default -> {
                 throw new InvalidTypeException();
             }
         }
-
-        home.addUser(student);
+        student.setCountry(country);
+        student.setHome(home);
 
         this.currentBounds.addStudent(student);
     }
@@ -142,23 +132,22 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public boolean updateStudentPosition(String studentName, String service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException{
-        Service newLocation = this.getService(service);
-        Student student = currentBounds.getStudent(studentName);
+    public boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException{
+
         if(currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        if(newLocation == null) {
+        if(service == null) {
             throw new NoSuchElementException();
         }
-        if(!newLocation.getType().equals(ServiceType.LEISURE) && !newLocation.getType().equals(ServiceType.EATING)) {
+        if(!service.getType().equals(ServiceType.LEISURE) && !service.getType().equals(ServiceType.EATING)) {
             throw new InvalidTypeException();
         }
-        if(student.getLocation().equals(newLocation)) {
+        if(student.getLocation().equals(service)) {
             throw new StudentAlreadyThereException();
         }
         try {
-            currentBounds.updateStudentLocation(studentName, newLocation);
+            currentBounds.updateStudentLocation(student, service);
         }catch (ThriftyStudentIsDistracted e){
             return false;
         }
@@ -216,7 +205,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listVisitedServices(String studentName) {
+    public Iterator<Service> listVisitedServices(String studentName) throws StudentDoesntStoreVisitedServicesException {
         return currentBounds.listVisitedServices(studentName);
     }
 

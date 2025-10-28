@@ -1,13 +1,10 @@
 package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
-import campus_app.exceptions.InvalidTypeException;
-import campus_app.exceptions.MoveNotAcceptable;
-import campus_app.exceptions.SameHomeException;
-import campus_app.exceptions.ServiceIsFullException;
+import campus_app.entity.service.ServiceType;
+import campus_app.exceptions.*;
 import campus_app.entity.service.StudentStoringService;
 import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 import dataStructures.SortedDoublyLinkedList;
@@ -15,15 +12,26 @@ import dataStructures.SortedList;
 
 public abstract class StudentAbstract implements Student {
     private final String name;
-    private final String country;
+    private String country;
     private LodgingService home;
     private Service location;
     protected List<Service> visited;
-    public StudentAbstract(String name, LodgingService home, String country) {
+    public StudentAbstract(String name){
         this.name = name;
+        this.country = null;
+        this.home = null;
+        this.location = null;
+    }
+    @Override
+    public void setHome(LodgingService home) throws ServiceIsFullException {
+        home.addUser(this);
         this.home = home;
+        this.location = home;
+    }
+
+    @Override
+    public void setCountry(String country) {
         this.country = country;
-        this.updatePosition(home);
     }
     @Override
     public String getCountry() {
@@ -40,13 +48,11 @@ public abstract class StudentAbstract implements Student {
             throw new SameHomeException(this);
         }
         this.home.removeUser(this);
-        home.addUser(this);
-        this.home = home;
-        this.location = home;
+        setHome(home);
     }
 
     @Override
-    public void updatePosition(Service position) throws ThriftyStudentIsDistracted, ServiceIsFullException {
+    public void updatePosition(Service position) throws ServiceIsFullException {
         if(position instanceof StudentStoringService service)service.addUser(this);
         this.location = position;
     }
@@ -76,5 +82,9 @@ public abstract class StudentAbstract implements Student {
             return this.getName().equalsIgnoreCase(st.getName());
         }
         return false;
+    }
+    @Override
+    public Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException {
+        return visited.iterator();
     }
 }

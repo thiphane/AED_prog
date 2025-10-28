@@ -22,7 +22,7 @@ public abstract class AbstractStudentStoringService extends ServiceAbstract impl
         if (this.getValue() <= this.users.size()) {
             throw new ServiceIsFullException(this);
         }
-        this.users.addLast(student);
+        if(this.users.indexOf(student) ==-1)this.users.addLast(student);
     }
 
     @Override
