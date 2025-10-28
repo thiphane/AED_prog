@@ -122,23 +122,27 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Student getStudent(String student) throws BoundsNotDefined, NoSuchElementException {
+    public Student getStudent(String student) throws BoundsNotDefined, StudentDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
         Student std = currentBounds.getStudent(student);
         if(std == null) {
-            throw new NoSuchElementException();
+            throw new StudentDoesNotExistException();
         }
         return std;
     }
 
     @Override
-    public Service getService(String serviceName) throws BoundsNotDefined {
+    public Service getService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return currentBounds.getService(serviceName);
+        Service service = currentBounds.getService(serviceName);
+        if (service == null) {
+            throw new ServiceDoesNotExistException();
+        }
+        return service;
     }
 
     @Override
@@ -173,20 +177,13 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, NoSuchElementOfGivenType, NoSuchElementException, SameHomeException, BoundsNotDefined {
+    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
         Service newHomeService;
-        try {
-            newHomeService = this.getService(newHome);
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementOfGivenType();
-        }
-        if(!(newHomeService instanceof LodgingService lodging)) {
-            throw new NoSuchElementOfGivenType();
-        }
-        currentBounds.moveHome(studentName, lodging);
+        newHomeService = this.getService(newHome);
+        currentBounds.moveHome(studentName, (LodgingService) newHomeService);
     }
 
     @Override
@@ -198,7 +195,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, InvalidTypeException{
+    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, InvalidTypeException, ServiceDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }

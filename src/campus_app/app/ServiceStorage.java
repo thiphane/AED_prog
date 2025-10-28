@@ -44,15 +44,12 @@ public class ServiceStorage implements Serializable {
     }
 
     public Service getService(String service) {
-        try {
-            int ind = services.indexOf(new EatingService(service, new Position(0,0), 50, 50));
-            if(ind < 0) {
-                throw new NoSuchElementException();
-            }
-            return services.get(ind);
-        } catch (InvalidValueException | InvalidPriceException e) {
-            throw new RuntimeException(e);
+        Iterator<Service> iter = services.iterator();
+        while(iter.hasNext()) {
+            Service cur = iter.next();
+            if(cur.getName().equalsIgnoreCase(service))return cur;
         }
+        return null;
     }
 
     public Iterator<Service> listAllServices() {

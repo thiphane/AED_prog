@@ -28,6 +28,7 @@ public class OutgoingStudent extends StudentAbstract implements Student {
         if(super.visited.indexOf(position) ==-1){
             super.visited.addLast(position);
         }
+
     }
 
     @Override
