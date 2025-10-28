@@ -10,8 +10,8 @@ import campus_app.entity.service.Service;
 import dataStructures.ListInArray;
 
 public class BookishStudent extends StudentAbstract implements Student {
-    public BookishStudent(String name){
-        super(name);
+    public BookishStudent(String name, String country, LodgingService home){
+        super(name, country, home);
         visited = new DoublyLinkedList<>();
     }
 
@@ -26,7 +26,7 @@ public class BookishStudent extends StudentAbstract implements Student {
     }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException {
+    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
         if(position.getType().equals(ServiceType.LEISURE)&& (super.visited.indexOf(position) ==-1))
             super.visited.addLast(position);

@@ -14,6 +14,8 @@ import user.Command;
 import java.util.Scanner;
 
 public class Main {
+    private static final String ALL_STUDENTS = "all";
+
     public static final String HELP_FORMAT = "%s - %s\n";
     public static final String BOUND_CREATED_FORMAT = "%s created.\n";
     public static final String SAVE_FORMAT = "%s saved.\n";
@@ -35,6 +37,7 @@ public class Main {
     public static final String SERVICE_FORMAT = "%s %s added.\n";
     public static final String RANKED_HEADER = "%s services closer with %s average\n";
     public static final String ELEMENT_DOES_NOT_EXIST = "%s does not exist!\n";
+    public static final String UNKNOWN_ELEMENT = "Unknown %s!\n";
     public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services!\n";
     public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s services with average!\n";
     public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it!";
@@ -43,24 +46,23 @@ public class Main {
     public static final String SERVICE_IS_FULL = "%s %s is full!\n";
     public static final String SERVICE_IS_NOT_VALID = "%s is not a valid service!\n";
     public static final String INVALID_BOUND = "Invalid bounds.";
-    public static final String ALREADY_THERE = "Already there!.";
+    public static final String ALREADY_THERE = "Already there!";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
     private static final String BOUND_LOADED_FORMAT = "%s loaded.\n";
-    private static final String ALL_STUDENTS = "all";
     private static final String THIS_ORDER_DOES_NOT_EXISTS = "This order does not exists!";
     private static final String SERVICE_CANT_CONTROL_USERS = "%s does not control student entry and exit!\n";
     private static final String STUDENT_IS_DISTRACTED = "%1$s is now at %2$s. %1$s is distracted!\n";
     private static final String LOCATION_CHANGED_FORMAT = "%s is now at %s.\n";
     private static final String MOVE_NOT_ACCEPTABLE = "Move is not acceptable for %s!\n";
-    private static final String STUDENT_HAS_NOT_VISITED_ANY_LOCATION = "%s has not visited any locations!";
-    private static final String STUDENT_IS_THRIFTY = "%s is thrifty!";
+    private static final String STUDENT_HAS_NOT_VISITED_ANY_LOCATION = "%s has not visited any locations!\n";
+    private static final String STUDENT_IS_THRIFTY = "%s is thrifty!\n";
 
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
     private static final String NO_STUDENTS_COUNTRY = "No students from %s!\n";
-    private static final String USER_FORMAT = "%s: %s.\n";
+    private static final String USER_FORMAT = "%s: %s\n";
     private static final String SAME_HOME_FORMAT = "That is %s's home!\n";
-    private static final String STUDENT_MOVED_FORMAT = "lodging %1$s is now %2$s's home. %1$s is at home\n";
+    private static final String STUDENT_MOVED_FORMAT = "lodging %1$s is now %2$s's home. %2$s is at home.\n";
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -276,12 +278,12 @@ public class Main {
                         Student student = app.getStudent(studentName);
                         Service home = app.getService(locationName);
                         isDistracted = app.updateStudentPosition(student, home);
-                        if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, studentName, locationName);}
-                        else System.out.printf(LOCATION_CHANGED_FORMAT, studentName, locationName);
+                        if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, student.getName(), home.getName());}
+                        else System.out.printf(LOCATION_CHANGED_FORMAT, student.getName(), home.getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (ServiceDoesNotExistException e) {
-                        System.out.printf(ELEMENT_DOES_NOT_EXIST, locationName);
+                        System.out.printf(UNKNOWN_ELEMENT, locationName);
                     }catch (StudentDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST,studentName);
                     }catch(InvalidTypeException e){
@@ -301,7 +303,7 @@ public class Main {
                         // TODO arranjar forma de não usar getService e getUser e devolver com moveHome ou algo assim
                         Student student = app.getStudent(name);
                         Service home = app.getService(lodging);
-                        System.out.printf(STUDENT_MOVED_FORMAT, student.getName(), home.getName());
+                        System.out.printf(STUDENT_MOVED_FORMAT, home.getName(), student.getName());
                     } catch(BoundsNotDefined e){
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (ServiceDoesNotExistException e) {

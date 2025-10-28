@@ -103,13 +103,13 @@ public class CampusAppClass implements CampusApp {
         }
         switch(studentType) {
             case StudentType.BOOKISH -> {
-                student = new BookishStudent(name);
+                student = new BookishStudent(name, country, home);
             }
             case THRIFTY -> {
-                student = new ThriftyStudent(name);
+                student = new ThriftyStudent(name, country, home);
             }
             case OUTGOING -> {
-                student = new OutgoingStudent(name);
+                student = new OutgoingStudent(name, country, home);
             }
             default -> {
                 throw new InvalidTypeException();
@@ -183,7 +183,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException {
+    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -273,7 +273,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined, NoSuchElementException{
+    public Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined, NoSuchElementException, StudentDoesNotExistException {
 
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();

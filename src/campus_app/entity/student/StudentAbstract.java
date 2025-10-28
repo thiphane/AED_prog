@@ -16,11 +16,11 @@ public abstract class StudentAbstract implements Student {
     private LodgingService home;
     private Service location;
     protected List<Service> visited;
-    public StudentAbstract(String name){
+    public StudentAbstract(String name, String country, LodgingService home){
         this.name = name;
-        this.country = null;
-        this.home = null;
-        this.location = null;
+        this.country = country;
+        this.home = home;
+        this.location = home;
     }
     @Override
     public void setHome(LodgingService home) throws ServiceIsFullException {
@@ -47,12 +47,13 @@ public abstract class StudentAbstract implements Student {
         if(this.home.equals(home)) {
             throw new SameHomeException(this);
         }
-        this.home.removeUser(this);
-        setHome(home);
+        LodgingService oldHome = this.home;
+        this.setHome(home);
+        oldHome.removeUser(this);
     }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException {
+    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         if(position instanceof StudentStoringService service)service.addUser(this);
         this.location = position;
     }

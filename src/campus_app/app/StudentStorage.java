@@ -34,27 +34,27 @@ public class StudentStorage implements Serializable {
         Iterator<Student> iterator = this.students.iterator();
         while (iterator.hasNext()) {
             Student element = iterator.next();
-            if(element.getName().equalsIgnoreCase(student))return element;
+            if(element.getName().equalsIgnoreCase(student))
+                return element;
         } return null;
     }
 
     public Student removeStudent(String student) {
-        Student st = alphabeticalStudents.remove(new BookishStudent(student));
+        Student st = alphabeticalStudents.remove(new BookishStudent(student, "", null));
         students.remove(students.indexOf(st));
         return st;
     }
 
     public void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
-        boolean isDistracted = false;
-        if(student instanceof ThriftyStudent std){
-            isDistracted = std.isDistracted(newLocation);
-        }
         student.updatePosition(newLocation);
-        if(isDistracted)throw new ThriftyStudentIsDistracted(student);
     }
 
-    public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException {
-        this.getStudent(student).moveHome(newHome);
+    public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException {
+        Student s = this.getStudent(student);
+        if(s == null) {
+            throw new StudentDoesNotExistException();
+        }
+        s.moveHome(newHome);
     }
 
     public Iterator<Student> getAllStudents() {
@@ -69,10 +69,20 @@ public class StudentStorage implements Serializable {
         return student.getVisitedServices();
     }
 
-    public Service findBestService(String studentName, Iterator<Service> services) {
-        return this.getStudent(studentName).findBestService(services);
+    public Service findBestService(String studentName, Iterator<Service> services) throws StudentDoesNotExistException {
+        // TODO este código aparece muitas vezes repetido, talvez mudar para o getStudent
+        //  tendo em conta que ás vezes o valor de retorno null é esperado
+        Student s = this.getStudent(studentName);
+        if (s == null) {
+            throw new StudentDoesNotExistException();
+        }
+        return s.findBestService(services);
     }
-    public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) {
-        return this.getStudent(studentName).findClosestServices(services);
+    public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) throws StudentDoesNotExistException {
+        Student s = this.getStudent(studentName);
+        if(s == null) {
+            throw new StudentDoesNotExistException();
+        }
+        return s.findClosestServices(services);
     }
 }

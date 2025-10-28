@@ -17,7 +17,7 @@ public interface CampusApp {
     Service getService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException;
     Student removeStudent(String studentName) throws BoundsNotDefined, StudentDoesNotExistException;
     boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException, StudentDoesNotExistException;
-    void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException;
+    void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException;
     void rateService(int rate, String serviceName, String description) throws BoundsNotDefined;
     TwoWayIterator<Student> getUsersByService(String serviceName, Order actualOrder) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException;;
     Iterator<Student> listAllStudents() throws BoundsNotDefined;
@@ -27,5 +27,5 @@ public interface CampusApp {
     Iterator<Service> listServicesByRanking() throws BoundsNotDefined;
     Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException;;
     Iterator<Service> listServicesByTag(String tagName) throws BoundsNotDefined;
-    Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined;
+    Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined, StudentDoesNotExistException;
 }
