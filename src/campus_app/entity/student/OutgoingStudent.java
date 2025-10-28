@@ -8,8 +8,8 @@ import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
 public class OutgoingStudent extends StudentAbstract implements Student {
-    public OutgoingStudent(String name){
-        super(name);
+    public OutgoingStudent(String name, String country, LodgingService home){
+        super(name, country, home);
         super.visited = new DoublyLinkedList<>();
     }
     @Override

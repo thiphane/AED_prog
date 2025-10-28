@@ -9,8 +9,8 @@ import campus_app.entity.service.Service;
 import dataStructures.ListInArray;
 
 public class ThriftyStudent extends StudentAbstract {
-    public ThriftyStudent(String name){
-        super(name);
+    public ThriftyStudent(String name, String country, LodgingService home){
+        super(name, country, home);
         visited = new ListInArray<>(3);
     }
     @Override

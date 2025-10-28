@@ -34,12 +34,13 @@ public class StudentStorage implements Serializable {
         Iterator<Student> iterator = this.students.iterator();
         while (iterator.hasNext()) {
             Student element = iterator.next();
-            if(element.getName().equalsIgnoreCase(student))return element;
+            if(element.getName().equalsIgnoreCase(student))
+                return element;
         } return null;
     }
 
     public Student removeStudent(String student) {
-        Student st = alphabeticalStudents.remove(new BookishStudent(student));
+        Student st = alphabeticalStudents.remove(new BookishStudent(student, "", null));
         students.remove(students.indexOf(st));
         return st;
     }

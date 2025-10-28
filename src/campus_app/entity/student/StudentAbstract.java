@@ -16,11 +16,11 @@ public abstract class StudentAbstract implements Student {
     private LodgingService home;
     private Service location;
     protected List<Service> visited;
-    public StudentAbstract(String name){
+    public StudentAbstract(String name, String country, LodgingService home){
         this.name = name;
-        this.country = null;
-        this.home = null;
-        this.location = null;
+        this.country = country;
+        this.home = home;
+        this.location = home;
     }
     @Override
     public void setHome(LodgingService home) throws ServiceIsFullException {

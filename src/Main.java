@@ -35,6 +35,7 @@ public class Main {
     public static final String SERVICE_FORMAT = "%s %s added.\n";
     public static final String RANKED_HEADER = "%s services closer with %s average\n";
     public static final String ELEMENT_DOES_NOT_EXIST = "%s does not exist!\n";
+    public static final String UNKNOWN_ELEMENT = "Unknown %s!\n";
     public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services!\n";
     public static final String NO_SUCH_SERVICE_WITH_AVERAGE = "No %s services with average!\n";
     public static final String BOUND_NAME_EXISTS = "Bounds already exists. Please load it!";
@@ -43,7 +44,7 @@ public class Main {
     public static final String SERVICE_IS_FULL = "%s %s is full!\n";
     public static final String SERVICE_IS_NOT_VALID = "%s is not a valid service!\n";
     public static final String INVALID_BOUND = "Invalid bounds.";
-    public static final String ALREADY_THERE = "Already there!.";
+    public static final String ALREADY_THERE = "Already there!";
     public static final String UNKNOWN_COMMAND = "Unknown command. Type help to see available commands.";
     private static final String BOUND_LOADED_FORMAT = "%s loaded.\n";
     private static final String ALL_STUDENTS = "all";
@@ -276,12 +277,12 @@ public class Main {
                         Student student = app.getStudent(studentName);
                         Service home = app.getService(locationName);
                         isDistracted = app.updateStudentPosition(student, home);
-                        if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, studentName, locationName);}
-                        else System.out.printf(LOCATION_CHANGED_FORMAT, studentName, locationName);
+                        if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, student.getName(), home.getName());}
+                        else System.out.printf(LOCATION_CHANGED_FORMAT, student.getName(), home.getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (ServiceDoesNotExistException e) {
-                        System.out.printf(ELEMENT_DOES_NOT_EXIST, locationName);
+                        System.out.printf(UNKNOWN_ELEMENT, locationName);
                     }catch (StudentDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST,studentName);
                     }catch(InvalidTypeException e){

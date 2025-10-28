@@ -10,8 +10,8 @@ import campus_app.entity.service.Service;
 import dataStructures.ListInArray;
 
 public class BookishStudent extends StudentAbstract implements Student {
-    public BookishStudent(String name){
-        super(name);
+    public BookishStudent(String name, String country, LodgingService home){
+        super(name, country, home);
         visited = new DoublyLinkedList<>();
     }
 
