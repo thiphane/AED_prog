@@ -32,7 +32,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Student getStudent(String student) {
+    public Student getStudent(String student) throws NoSuchElementException {
         return students.getStudent(student);
     }
 

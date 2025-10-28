@@ -78,7 +78,7 @@ public class CampusAppClass implements CampusApp {
     @Override
     public void createStudent(String type, String name, String lodging, String country) throws InvalidTypeException, AlreadyExistsException, NoSuchElementOfGivenType, ServiceIsFullException, BoundsNotDefined {
 
-        if(this.currentBounds == null) {
+        if (this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
         StudentType studentType;
@@ -93,10 +93,11 @@ public class CampusAppClass implements CampusApp {
         } catch (Exception e) {
             throw new NoSuchElementOfGivenType();
         }
-        if(!(serviceObj instanceof LodgingService home)) {
+        if (!(serviceObj instanceof LodgingService home)) {
             throw new NoSuchElementOfGivenType();
         }
-        Student student = currentBounds.getStudent(name);
+            Student student = currentBounds.getStudent(name);
+
         if(student != null) {
             throw new AlreadyExistsException(student.getName());
         }
@@ -121,11 +122,15 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Student getStudent(String student) throws BoundsNotDefined {
+    public Student getStudent(String student) throws BoundsNotDefined, NoSuchElementException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return currentBounds.getStudent(student);
+        Student std = currentBounds.getStudent(student);
+        if(std == null) {
+            throw new NoSuchElementException();
+        }
+        return std;
     }
 
     @Override
@@ -261,7 +266,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined {
+    public Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined, NoSuchElementException{
 
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();

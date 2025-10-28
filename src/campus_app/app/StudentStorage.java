@@ -30,9 +30,12 @@ public class StudentStorage implements Serializable {
         this.alphabeticalStudents.add(student);
     }
 
-    public Student getStudent(String student) throws NoSuchElementException {
-        // TODO students.get(students.indexof()) vai passar pela lista 2 vezes, mas isto não fica muito bonito
-        return alphabeticalStudents.get(new BookishStudent(student));
+    public Student getStudent(String student){
+        Iterator<Student> iterator = this.students.iterator();
+        while (iterator.hasNext()) {
+            Student element = iterator.next();
+            if(element.getName().equalsIgnoreCase(student))return element;
+        } return null;
     }
 
     public Student removeStudent(String student) {
