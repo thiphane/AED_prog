@@ -23,7 +23,7 @@ public class OutgoingStudent extends StudentAbstract implements Student {
     }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException {
+    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
         if(super.visited.indexOf(position) ==-1){
             super.visited.addLast(position);

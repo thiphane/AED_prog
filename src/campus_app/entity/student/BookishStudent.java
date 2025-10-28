@@ -26,7 +26,7 @@ public class BookishStudent extends StudentAbstract implements Student {
     }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException {
+    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
         if(position.getType().equals(ServiceType.LEISURE)&& (super.visited.indexOf(position) ==-1))
             super.visited.addLast(position);

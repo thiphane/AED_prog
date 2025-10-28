@@ -1,6 +1,7 @@
 package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
+import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.*;
 import campus_app.exceptions.ServiceIsFullException;
 import dataStructures.DoublyLinkedList;
@@ -11,7 +12,7 @@ import dataStructures.ListInArray;
 public class ThriftyStudent extends StudentAbstract {
     public ThriftyStudent(String name, String country, LodgingService home){
         super(name, country, home);
-        visited = new ListInArray<>(3);
+        visited = new ListInArray<>(ServiceType.values().length);
     }
     @Override
     public void setHome(LodgingService home) throws ServiceIsFullException {
@@ -21,19 +22,23 @@ public class ThriftyStudent extends StudentAbstract {
     public StudentType getType(){
         return StudentType.THRIFTY;
     }
-    public boolean isDistracted(Service service){
-       Iterator<Service> it = visited.iterator();
-       while(it.hasNext()){
-           Service s =  it.next();
-           if(s.getType().equals(service.getType())){
-               return s.getPrice()<service.getPrice();
-           }
-       } return false;
-    }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException {
+    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
+        for(int i = 0; i < visited.size(); i++) {
+            Service s = visited.get(i);
+            if(s.getType() == position.getType()) {
+                if (position.getPrice() > s.getPrice()) {
+                    throw new ThriftyStudentIsDistracted(this);
+                } else {
+                    visited.remove(i);
+                    visited.addLast(position);
+                    return;
+                }
+            }
+        }
+        visited.addLast(position);
     }
 
     @Override

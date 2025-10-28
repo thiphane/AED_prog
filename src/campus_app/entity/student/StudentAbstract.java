@@ -52,7 +52,7 @@ public abstract class StudentAbstract implements Student {
     }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException {
+    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         if(position instanceof StudentStoringService service)service.addUser(this);
         this.location = position;
     }

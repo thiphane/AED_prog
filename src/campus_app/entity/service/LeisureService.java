@@ -14,6 +14,11 @@ public class LeisureService extends ServiceAbstract implements Service {
     }
 
     @Override
+    public int getPrice() {
+        return super.getPrice() * (super.getValue() / 100);
+    }
+
+    @Override
     public ServiceType getType() {
         return TYPE;
     }

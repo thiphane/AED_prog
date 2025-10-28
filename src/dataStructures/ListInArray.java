@@ -165,7 +165,7 @@ public class ListInArray<E> implements List<E> {
      */
     public void add(int position, E element) {
         this.checkAddSize();
-        if (position < 0 || position >= this.size()) {
+        if (position < 0 || position > this.size()) {
             throw new InvalidPositionException();
         }
         for(int i = this.size(); i > position; i--) {
