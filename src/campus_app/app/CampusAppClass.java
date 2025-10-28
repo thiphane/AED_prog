@@ -169,7 +169,7 @@ public class CampusAppClass implements CampusApp {
             throw new NoSuchElementException();
         }
         if(!service.getType().equals(ServiceType.LEISURE) && !service.getType().equals(ServiceType.EATING)) {
-            throw new InvalidTypeException(service);
+            throw new InvalidTypeException();
         }
         if(student.getLocation().equals(service)) {
             throw new StudentAlreadyThereException(student);
@@ -201,7 +201,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, InvalidTypeException, ServiceDoesNotExistException, CantShowUsersException {
+    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
