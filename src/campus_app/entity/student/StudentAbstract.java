@@ -1,7 +1,6 @@
 package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
-import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.*;
 import campus_app.entity.service.StudentStoringService;
 import campus_app.exceptions.ServiceIsFullException;
@@ -12,7 +11,7 @@ import dataStructures.SortedList;
 
 public abstract class StudentAbstract implements Student {
     private final String name;
-    private String country;
+    private final String country;
     private LodgingService home;
     private Service location;
     protected List<Service> visited;
@@ -22,17 +21,13 @@ public abstract class StudentAbstract implements Student {
         this.home = home;
         this.location = home;
     }
-    @Override
-    public void setHome(LodgingService home) throws ServiceIsFullException {
+
+    private void setHome(LodgingService home) throws ServiceIsFullException {
         home.addUser(this);
         this.home = home;
         this.location = home;
     }
 
-    @Override
-    public void setCountry(String country) {
-        this.country = country;
-    }
     @Override
     public String getCountry() {
         return this.country;
@@ -54,8 +49,11 @@ public abstract class StudentAbstract implements Student {
 
     @Override
     public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
+        Service oldLocation = this.location;
         if(position instanceof StudentStoringService service)service.addUser(this);
         this.location = position;
+        if(oldLocation instanceof StudentStoringService loc && !oldLocation.equals(home))
+            loc.removeUser(this);
     }
 
     @Override

@@ -12,11 +12,6 @@ public class OutgoingStudent extends StudentAbstract implements Student {
         super(name, country, home);
         super.visited = new DoublyLinkedList<>();
     }
-    @Override
-    public void setHome(LodgingService home) throws ServiceIsFullException {
-        super.setHome(home);
-        visited.addFirst(home);
-    }
 
     public StudentType getType(){
         return StudentType.OUTGOING;
@@ -25,7 +20,7 @@ public class OutgoingStudent extends StudentAbstract implements Student {
     @Override
     public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
-        if(super.visited.indexOf(position) ==-1){
+        if(super.visited.indexOf(position) == -1){
             super.visited.addLast(position);
         }
 

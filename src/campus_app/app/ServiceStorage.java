@@ -5,9 +5,11 @@ import campus_app.entity.service.Service;
 import campus_app.exceptions.AlreadyExistsException;
 import campus_app.exceptions.InvalidPriceException;
 import campus_app.exceptions.InvalidValueException;
+import campus_app.exceptions.ServiceDoesNotExistException;
 import dataStructures.*;
 import dataStructures.exceptions.NoSuchElementException;
 
+import javax.management.ServiceNotFoundException;
 import java.io.Serializable;
 
 public class ServiceStorage implements Serializable {
@@ -32,7 +34,7 @@ public class ServiceStorage implements Serializable {
         this.servicesByStar.add(service);
     }
 
-    public void rateService(String service, int rating, String description) {
+    public void rateService(String service, int rating, String description) throws ServiceDoesNotExistException {
         Service elem = getService(service);
         int oldRating = elem.getRating();
         elem.addRating(rating, description);
@@ -40,16 +42,14 @@ public class ServiceStorage implements Serializable {
             servicesByStar.remove(elem);
             servicesByStar.add(elem);
         }
-        // Update servicesByStar
     }
 
-    public Service getService(String service) {
+    public Service getService(String service) throws ServiceDoesNotExistException {
         Iterator<Service> iter = services.iterator();
         while(iter.hasNext()) {
             Service cur = iter.next();
             if(cur.getName().equalsIgnoreCase(service))return cur;
-        }
-        return null;
+        } throw new ServiceDoesNotExistException();
     }
 
     public Iterator<Service> listAllServices() {

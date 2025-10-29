@@ -14,11 +14,6 @@ public class ThriftyStudent extends StudentAbstract {
         super(name, country, home);
         visited = new ListInArray<>(ServiceType.values().length);
     }
-    @Override
-    public void setHome(LodgingService home) throws ServiceIsFullException {
-        super.setHome(home);
-        visited.addFirst(home);
-    }
     public StudentType getType(){
         return StudentType.THRIFTY;
     }

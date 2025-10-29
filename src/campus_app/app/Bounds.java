@@ -12,6 +12,8 @@ import dataStructures.FilterIterator;
 import dataStructures.Iterator;
 import dataStructures.exceptions.NoSuchElementException;
 
+import javax.management.ServiceNotFoundException;
+
 public interface Bounds {
     static String getBoundFilename(String name) {
         return String.format("%s.ser", name.toLowerCase());
@@ -47,6 +49,7 @@ public interface Bounds {
 
     void addStudent(Student student);
 
-    Service getService(String service);
+    Service getService(String service) throws ServiceDoesNotExistException;
     Iterator<Service>listServicesByRating();
+    void addRating(int rate, String serviceName, String description) throws ServiceDoesNotExistException;
 }

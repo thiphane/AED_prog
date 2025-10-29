@@ -14,8 +14,6 @@ public interface Student extends Serializable {
     Service getLocation();
     StudentType getType();
     Service getHome();
-    void setCountry(String country);
-    void setHome(LodgingService home) throws ServiceIsFullException;
     void moveHome(LodgingService home) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException;
     void updatePosition(Service position) throws ThriftyStudentIsDistracted, ServiceIsFullException;
     Service findBestService(Iterator<Service> services);

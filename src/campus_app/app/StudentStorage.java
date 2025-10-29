@@ -53,9 +53,6 @@ public class StudentStorage implements Serializable {
 
     public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException {
         Student s = this.getStudent(student);
-        if(s == null) {
-            throw new StudentDoesNotExistException();
-        }
         s.moveHome(newHome);
     }
 

@@ -6,6 +6,7 @@ import dataStructures.*;
 import dataStructures.exceptions.InvalidPositionException;
 import dataStructures.exceptions.NoSuchElementException;
 
+import javax.management.ServiceNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -119,8 +120,6 @@ public class CampusAppClass implements CampusApp {
                 throw new InvalidTypeException();
             }
         }
-        student.setCountry(country);
-        student.setHome(home);
 
         this.currentBounds.addStudent(student);
     }
@@ -186,11 +185,12 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void rateService(int rate, String serviceName, String description) throws BoundsNotDefined {
+    public void rateService(int rate, String serviceName, String description) throws BoundsNotDefined, InvalidRateException, ServiceDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-
+        if(1>rate||rate>5)throw new InvalidRateException();
+        currentBounds.addRating(rate, serviceName, description);
     }
 
     @Override
@@ -241,7 +241,7 @@ public class CampusAppClass implements CampusApp {
             throw new BoundsNotDefined();
         }
         Iterator<Service> it = currentBounds.listVisitedServices(student);
-        if(it.hasNext()){
+        if(!it.hasNext()){
             throw new NoVisitedServicesException(student);
         }
         return it;

@@ -11,6 +11,7 @@ import dataStructures.FilterIterator;
 import dataStructures.Iterator;
 import dataStructures.exceptions.NoSuchElementException;
 
+import javax.management.ServiceNotFoundException;
 import java.io.*;
 
 public class BoundsClass implements Bounds, Serializable {
@@ -143,11 +144,16 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Service getService(String service) {
+    public Service getService(String service) throws ServiceDoesNotExistException {
         return services.getService(service);
     }
     public Iterator<Service>listServicesByRating() {
         return services.listServicesByRanking();
+    }
+
+    @Override
+    public void addRating(int rate, String serviceName, String description) throws ServiceDoesNotExistException {
+        services.rateService(serviceName, rate, description);
     }
 
 }

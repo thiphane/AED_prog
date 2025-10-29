@@ -62,6 +62,8 @@ public class Main {
     private static final String EMPTY_RANKING = "No services in the system.";
     private static final String TAG_FORMAT = "%s %s\n";
     private static final String NO_SUCH_TAG = "There are no services with this tag!";
+    private static final String RATING_SUCCESS_FORMAT = "Your evaluation has been registered!";
+    private static final String INVALID_EVALUATION = "Invalid evaluation!";
 
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
@@ -388,6 +390,19 @@ public class Main {
                         }catch (StudentDoesNotExistException e) {
                             System.out.printf(ELEMENT_DOES_NOT_EXIST, studentName);
                         }
+                }case Command.STAR ->{
+                    int rating = in.nextInt();String serviceName = in.nextLine().trim();
+                    String description =  in.nextLine().trim();
+                    try{
+                        app.rateService(rating, serviceName, description);
+                        System.out.println(RATING_SUCCESS_FORMAT);
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    } catch (InvalidRateException e) {
+                        System.out.println(INVALID_EVALUATION);
+                    }catch(ServiceDoesNotExistException e){
+                        System.out.printf(ELEMENT_DOES_NOT_EXIST, serviceName);
+                    }
                 }
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
                 case Command.EXIT -> System.out.println(EXIT_MESSAGE);
