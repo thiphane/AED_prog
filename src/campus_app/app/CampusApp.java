@@ -23,7 +23,7 @@ public interface CampusApp {
     Iterator<Service> listAllServices() throws BoundsNotDefined;
     Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException, BoundsNotDefined, NoVisitedServicesException;
     Iterator<Service> listServicesByRanking() throws BoundsNotDefined;
-    Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException;;
+    Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException, InvalidRating;
     Iterator<Service> listServicesByTag(String tagName) throws BoundsNotDefined;
     Service findBestService(String studentName, String type) throws BoundsNotDefined, StudentDoesNotExistException, InvalidTypeException;
 }

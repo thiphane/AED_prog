@@ -35,7 +35,7 @@ public class Main {
     public static final String ENTITY_ALREADY_EXISTS_FORMAT = "%s already exists!\n";
     public static final String SERVICE_LIST_FORMAT = "%s: %s (%d, %d).\n";
     public static final String SERVICE_FORMAT = "%s %s added.\n";
-    public static final String RANKED_HEADER = "%s services closer with %s average\n";
+    public static final String RANKED_HEADER = "%s services closer with %d average\n";
     public static final String ELEMENT_DOES_NOT_EXIST = "%s does not exist!\n";
     public static final String UNKNOWN_ELEMENT = "Unknown %s!\n";
     public static final String NO_SERVICES_OF_GIVEN_TYPE = "No %s services!\n";
@@ -64,6 +64,7 @@ public class Main {
     private static final String NO_SUCH_TAG = "There are no services with this tag!";
     private static final String RATING_SUCCESS_FORMAT = "Your evaluation has been registered!";
     private static final String INVALID_EVALUATION = "Invalid evaluation!";
+    private static final String INVALID_STARS = "Invalid stars!";
 
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
@@ -227,12 +228,12 @@ public class Main {
 
                 }
                 case Command.RANKED -> {
-                    String type = in.next();
+                    String type = in.next().toLowerCase();
                     int rate = in.nextInt();
                     String name = in.nextLine().trim();
                     try {
                         Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name);
-                        System.out.println(RANKED_HEADER);
+                        System.out.printf(RANKED_HEADER, type, rate);
                         while (it.hasNext()) {
                             Service s = it.next();
                             System.out.println(s.getName());
@@ -247,6 +248,8 @@ public class Main {
                         System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type);
                     } catch (NoSuchServiceWithGivenRate e) {
                         System.out.printf(NO_SUCH_SERVICE_WITH_AVERAGE, type);
+                    } catch (InvalidRating e) {
+                        System.out.println(INVALID_STARS);
                     }
                 }
                 case Command.USERS -> {

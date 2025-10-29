@@ -262,7 +262,6 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Service> listServicesByTag(String tagName) throws BoundsNotDefined {
-
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -281,17 +280,19 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException {
+    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException, InvalidRating {
         if(currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        if(rate < 0 || rate > 5) throw new IllegalArgumentException();
+        if(rate < 1 || rate > 5) throw new InvalidRating();
 
         if(this.currentBounds.getStudent(studentName) == null){
             throw new StudentDoesNotExistException();
         }
-        ServiceType serviceType = ServiceType.getType(type);
-        if(serviceType == null){
+        ServiceType serviceType;
+        try {
+            serviceType = ServiceType.getType(type);
+        } catch (IllegalArgumentException e) {
             throw new InvalidTypeException();
         }
         Iterator<Service> byType = new FilterIterator<>(this.currentBounds.listAllServices(), new ServiceTypePredicate(serviceType));

@@ -61,9 +61,15 @@ public abstract class ServiceAbstract implements Service {
     }
     @Override
     public boolean hasTag(String tagName) {
+        // TODO talvez guardar as tags únicamente, em vez de guardar os comentários todos
         Iterator<String> iter = ratings.iterator();
         while(iter.hasNext()) {
-            if(iter.next().contains(tagName)) { return true; }
+            String[] cur = iter.next().split(" ");
+            for(String c : cur) {
+                if(c.equalsIgnoreCase(tagName)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
