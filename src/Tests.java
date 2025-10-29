@@ -1,15 +1,11 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 /**
  * The Tests class specifies a test battery implemented using the JUnit tool.
@@ -30,6 +26,7 @@ import org.junit.Test;
  * Para poder usar esta classe tem de incluir no seu ambiente de execucao a biblioteca JUnit 4.
  * Peca ajuda nas sessoes de laboratorio, se necessario!
  */
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class Tests {
     /**
      * Use the following lines to specify the tests you want to perform.
@@ -46,14 +43,17 @@ public class Tests {
      * resto da classe. Basta configurar esta sequencia de testes! Isto ja esta feito para este
      * projecto. Para os outros projectos, tem de configurar os testes.
      */
-    @Test public void test01() { test("input1","output1"); }
+    @Test
+    public void test01() throws IOException {
+        test("input1","output1");
+    }
     @Test public void test02() { test("input2","output2"); }
     @Test public void test03() { test("input3","output3"); }
     @Test public void test04() { test("input4","output4"); }
     @Test public void test05() { test("input5","output5"); }
     @Test public void test06() { test("input6","output6"); }
-    /*@Test public void test07() { test("input7","output7"); }
-    @Test public void test08() { test("input8","output8"); }
+    @Test public void test07() { test("input7","output7"); }
+    /*@Test public void test08() { test("input8","output8"); }
     @Test public void test09() { test("input9","output9"); }
     @Test public void test10() { test("input10","output10"); }
     @Test public void test11() { test("input11","output11"); }
@@ -110,10 +110,18 @@ public class Tests {
      * The setup method is executed before each test.
      * It redirects the output of the program to the console and captures the output of the program.
      */
-    @Before
+    @BeforeEach
     public void setup() {
         consoleStream = System.out;
         System.setOut(new PrintStream(outContent));
+    }
+
+    @BeforeAll
+    public static void deleteFile() throws IOException {
+        Path p = Path.of("costa da caparica.ser");
+        if(Files.exists(p)) {
+            Files.delete(Path.of("costa da caparica.ser"));
+        }
     }
 
     /**
@@ -164,7 +172,7 @@ public class Tests {
             byte[] outPrintBytes = outContent.toByteArray();
             consoleStream.println(new String(outPrintBytes));
 
-            assertEquals(removeCarriages(fullOutput), removeCarriages(new String(outContent.toByteArray())));
+            Assertions.assertEquals(removeCarriages(fullOutput), removeCarriages(new String(outContent.toByteArray())));
         }
     }
 
