@@ -86,9 +86,11 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
     }
 
     private DoublyListNode<E> getNode(E element){
-        if(this.tail != null && this.comparator.compare(element, this.tail.getElement()) == 0) { return this.tail; }
+        if(this.tail != null && this.tail.getElement().equals(element)) {
+            return this.tail;
+        }
         DoublyListNode<E> cur = this.head;
-        while(cur != null && !(this.comparator.compare(cur.getElement(), element) == 0)) {
+        while(cur != null && !(element.equals(cur.getElement()))) {
             cur = cur.getNext();
         }
         return cur;
@@ -127,19 +129,18 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
             this.currentSize++;
             return;
         }
-        if(comparator.compare(this.tail.getElement(), element) < 0) {
+        if(comparator.compare(this.tail.getElement(), element) <= 0) {
             this.addLast(element);
             return;
         }
         DoublyListNode<E> cur = this.head;
-        while(cur != null && comparator.compare(cur.getElement(), element) < 0) {
+        while(cur != null && comparator.compare(cur.getElement(), element) <= 0) {
             cur = cur.getNext();
         }
         if(cur == this.head) {
             this.addFirst(element);
             return;
         }
-        // Not necessary, but generates a warning if not here
         if(cur == null) {
             this.addLast(element);
             return;
@@ -168,10 +169,10 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
      */
     public E remove(E element) {
         if(this.isEmpty()) { return null; }
-        if(this.comparator.compare(this.tail.getElement(), element) == 0) {
+        if(this.tail.getElement().equals(element)) {
             return this.removeLast();
         }
-        if(this.comparator.compare(this.head.getElement(), element) == 0) {
+        if(this.head.getElement().equals(element)) {
             return this.removeFirst();
         }
         DoublyListNode<E> toRemove = this.getNode(element);

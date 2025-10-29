@@ -191,12 +191,7 @@ public class CampusAppClass implements CampusApp {
         if (rate < 1 || rate > 5) {
             throw new InvalidRating();
         }
-        Service service = currentBounds.getService(serviceName);
-        if(service == null) {
-            throw new ServiceDoesNotExistException();
-        }
-
-        service.addRating(rate, description);
+        currentBounds.addRating(rate, serviceName, description);
     }
 
     @Override

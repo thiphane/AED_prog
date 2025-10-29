@@ -58,7 +58,7 @@ public class Main {
     private static final String STUDENT_IS_THRIFTY = "%s is thrifty!\n";
     private static final String STUDENT_HAS_LEFT = "%s has left.\n";
     private static final String RANKING_HEADER = "Services sorted in descending order";
-    private static final String RANKING_FORMAT ="%s:%d.\n";
+    private static final String RANKING_FORMAT ="%s: %d\n";
     private static final String EMPTY_RANKING = "No services in the system.";
     private static final String TAG_FORMAT = "%s %s\n";
     private static final String NO_SUCH_TAG = "There are no services with this tag!";

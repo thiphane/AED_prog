@@ -54,8 +54,8 @@ public class Tests {
     @Test public void test06() { test("input6","output6"); }
     @Test public void test07() { test("input7","output7"); }
     @Test public void test08() { test("input8","output8"); }
-    /*@Test public void test09() { test("input9","output9"); }
-    @Test public void test10() { test("input10","output10"); }
+    @Test public void test09() { test("input9","output9"); }
+    /*@Test public void test10() { test("input10","output10"); }
     @Test public void test11() { test("input11","output11"); }
     @Test public void test12() { test("input12","output12"); }
     @Test public void test13() { test("input13","output13"); }
