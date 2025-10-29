@@ -389,6 +389,7 @@ public class Main {
                         try {
                             Service bestServices = app.findBestService(studentName, type);
                             if(bestServices == null)System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type.toLowerCase());
+                            else System.out.println(bestServices.getName());
                         } catch (BoundsNotDefined e) {
                             System.out.println(BOUNDS_NOT_DEFINED);
                         } catch (InvalidTypeException e) {

@@ -4,33 +4,33 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
-     * Double List Node Implementation
-     * @author AED  Team
-     * @version 1.0
-     * @param <E> Generic Element
-     * 
-     */
+ * Double List Node Implementation
+ * @author AED  Team
+ * @version 1.0
+ * @param <E> Generic Element
+ *
+ */
 class DoublyListNode<E> implements Serializable {
-    	/**
-    	 * Serial Version UID of the Class
-    	 */
-        @Serial
-        private static final long serialVersionUID = 0L;
-        
-    	/**
-         * Element stored in the node.
-         */
-        private E element;
+    /**
+     * Serial Version UID of the Class
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
 
-        /**
-         * (Pointer to) the previous node.
-         */
-        private DoublyListNode<E> previous;
+    /**
+     * Element stored in the node.
+     */
+    private E element;
 
-        /**
-         * (Pointer to) the next node.
-         */
-        private DoublyListNode<E> next;
+    /**
+     * (Pointer to) the previous node.
+     */
+    private DoublyListNode<E> previous;
+
+    /**
+     * (Pointer to) the next node.
+     */
+    private DoublyListNode<E> next;
 
     /**
      *
