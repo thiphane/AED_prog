@@ -10,7 +10,6 @@ import campus_app.entity.service.Service;
 public class OutgoingStudent extends StudentAbstract implements Student {
     public OutgoingStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);
-        super.visited = new DoublyLinkedList<>();
     }
 
     public StudentType getType(){
@@ -20,6 +19,9 @@ public class OutgoingStudent extends StudentAbstract implements Student {
     @Override
     public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
+        if(visited == null) { // TODO updatePosition é usado pelo construtor do abstrato, então não se consegue inicializar a lista antes
+            visited = new DoublyLinkedList<>();
+        }
         if(super.visited.indexOf(position) == -1){
             super.visited.addLast(position);
         }

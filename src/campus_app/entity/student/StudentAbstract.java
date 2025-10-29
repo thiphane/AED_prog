@@ -22,14 +22,22 @@ public abstract class StudentAbstract implements Student {
         this.location = home;
         // Por causa dos estudantes de identificação
         if(home != null) {
-            home.addUser(this);
+            try {
+                this.updatePosition(home);
+            } catch (ThriftyStudentIsDistracted e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     private void setHome(LodgingService home) throws ServiceIsFullException {
-        home.addUser(this);
-        this.home = home;
-        this.location = home;
+        try {
+            this.updatePosition(home);
+            this.home.removeUser(this);
+            this.home = home;
+        } catch (ThriftyStudentIsDistracted e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -46,9 +54,7 @@ public abstract class StudentAbstract implements Student {
         if(this.home.equals(home)) {
             throw new SameHomeException(this);
         }
-        LodgingService oldHome = this.home;
         this.setHome(home);
-        oldHome.removeUser(this);
     }
 
     @Override

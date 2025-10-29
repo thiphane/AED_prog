@@ -12,7 +12,6 @@ import dataStructures.ListInArray;
 public class ThriftyStudent extends StudentAbstract {
     public ThriftyStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);
-        visited = new ListInArray<>(ServiceType.values().length);
     }
     public StudentType getType(){
         return StudentType.THRIFTY;
@@ -21,6 +20,9 @@ public class ThriftyStudent extends StudentAbstract {
     @Override
     public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
+        if(visited == null) {
+            visited = new ListInArray<>(ServiceType.values().length);
+        }
         for(int i = 0; i < visited.size(); i++) {
             Service s = visited.get(i);
             if(s.getType() == position.getType()) {
