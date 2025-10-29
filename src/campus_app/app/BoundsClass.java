@@ -41,7 +41,18 @@ public class BoundsClass implements Bounds, Serializable {
 
     @Override
     public Student removeStudent(String studentName) throws StudentDoesNotExistException {
-        return students.removeStudent(studentName);
+        Iterator<Service> services = this.services.listAllServices();
+        Student student = students.getStudent(studentName);
+        if(student == null) {
+            throw new StudentDoesNotExistException();
+        }
+        while(services.hasNext()) {
+            Service cur = services.next();
+            if(cur instanceof StudentStoringService ss) {
+                ss.removeUser(student);
+            }
+        }
+        return students.removeStudent(student);
     }
 
     @Override

@@ -41,16 +41,11 @@ public class StudentStorage implements Serializable {
         } throw new StudentDoesNotExistException();
     }
 
-    public Student removeStudent(String student) throws StudentDoesNotExistException {
-        Student st;
-        try {
-            st = alphabeticalStudents.remove(new BookishStudent(student, "", null));
-        } catch (ServiceIsFullException e) {
-            throw new RuntimeException(e);
-        }
-        if(st == null) throw new StudentDoesNotExistException();
-        students.remove(students.indexOf(st));
-        return st;
+    public Student removeStudent(Student student) throws StudentDoesNotExistException {
+        Student removed = alphabeticalStudents.remove(student);
+        if(removed == null) throw new StudentDoesNotExistException();
+        students.remove(students.indexOf(removed));
+        return removed;
     }
 
     public void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {

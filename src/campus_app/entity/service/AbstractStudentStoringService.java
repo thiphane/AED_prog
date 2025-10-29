@@ -27,7 +27,10 @@ public abstract class AbstractStudentStoringService extends ServiceAbstract impl
 
     @Override
     public void removeUser(Student student) {
-        this.users.remove(this.users.indexOf(student));
+        int idx = this.users.indexOf(student);
+        if(idx != -1) {
+            this.users.remove(idx);
+        }
     }
 
     @Override
