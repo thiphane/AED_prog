@@ -6,7 +6,6 @@ import dataStructures.*;
 import dataStructures.exceptions.InvalidPositionException;
 import dataStructures.exceptions.NoSuchElementException;
 
-import javax.management.ServiceNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -185,12 +184,19 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public void rateService(int rate, String serviceName, String description) throws BoundsNotDefined, InvalidRateException, ServiceDoesNotExistException {
+    public void rateService(int rate, String serviceName, String description) throws BoundsNotDefined, ServiceDoesNotExistException, InvalidRating {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        if(1>rate||rate>5)throw new InvalidRateException();
-        currentBounds.addRating(rate, serviceName, description);
+        if (rate < 1 || rate > 5) {
+            throw new InvalidRating();
+        }
+        Service service = currentBounds.getService(serviceName);
+        if(service == null) {
+            throw new ServiceDoesNotExistException();
+        }
+
+        service.addRating(rate, description);
     }
 
     @Override

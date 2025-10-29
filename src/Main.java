@@ -398,7 +398,7 @@ public class Main {
                         System.out.println(RATING_SUCCESS_FORMAT);
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
-                    } catch (InvalidRateException e) {
+                    } catch (InvalidRating e) {
                         System.out.println(INVALID_EVALUATION);
                     }catch(ServiceDoesNotExistException e){
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, serviceName);

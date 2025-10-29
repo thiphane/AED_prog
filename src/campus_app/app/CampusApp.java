@@ -2,11 +2,7 @@ package campus_app.app;
 import campus_app.exceptions.*;
 import dataStructures.*;
 import campus_app.entity.service.Service;
-import campus_app.entity.service.ServiceType;
 import campus_app.entity.student.Student;
-import dataStructures.exceptions.NoSuchElementException;
-
-import javax.management.ServiceNotFoundException;
 
 public interface CampusApp {
     void createBounds(String name, long topLatitude, long topLongitude, long bottomLatitude, long bottomLongitude ) throws BoundNameExists, InvalidBoundPoints;
@@ -20,7 +16,7 @@ public interface CampusApp {
     Student removeStudent(String studentName) throws BoundsNotDefined, StudentDoesNotExistException;
     boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
     void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException;
-    void rateService(int rate, String serviceName, String description) throws BoundsNotDefined, InvalidRateException, ServiceDoesNotExistException;
+    void rateService(int rate, String serviceName, String description) throws BoundsNotDefined, InvalidRating, ServiceDoesNotExistException;
     TwoWayIterator<Student> getUsersByService(String serviceName, Order actualOrder) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException;;
     Iterator<Student> listAllStudents() throws BoundsNotDefined;
     Iterator<Student> listStudentsByCountry(String country) throws BoundsNotDefined;

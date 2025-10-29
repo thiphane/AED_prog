@@ -12,8 +12,6 @@ import dataStructures.FilterIterator;
 import dataStructures.Iterator;
 import dataStructures.exceptions.NoSuchElementException;
 
-import javax.management.ServiceNotFoundException;
-
 public interface Bounds {
     static String getBoundFilename(String name) {
         return String.format("%s.ser", name.toLowerCase());

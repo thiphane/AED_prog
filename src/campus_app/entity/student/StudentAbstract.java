@@ -15,11 +15,15 @@ public abstract class StudentAbstract implements Student {
     private LodgingService home;
     private Service location;
     protected List<Service> visited;
-    public StudentAbstract(String name, String country, LodgingService home){
+    public StudentAbstract(String name, String country, LodgingService home) throws ServiceIsFullException {
         this.name = name;
         this.country = country;
         this.home = home;
         this.location = home;
+        // Por causa dos estudantes de identificação
+        if(home != null) {
+            home.addUser(this);
+        }
     }
 
     private void setHome(LodgingService home) throws ServiceIsFullException {

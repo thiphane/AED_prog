@@ -10,7 +10,7 @@ import campus_app.entity.service.Service;
 import dataStructures.ListInArray;
 
 public class BookishStudent extends StudentAbstract implements Student {
-    public BookishStudent(String name, String country, LodgingService home){
+    public BookishStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);
         visited = new DoublyLinkedList<>();
     }

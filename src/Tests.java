@@ -46,10 +46,10 @@ public class Tests {
      * resto da classe. Basta configurar esta sequencia de testes! Isto ja esta feito para este
      * projecto. Para os outros projectos, tem de configurar os testes.
      */
-    /*@Test public void test01() { test("input1","output1"); }
+    @Test public void test01() { test("input1","output1"); }
     @Test public void test02() { test("input2","output2"); }
     @Test public void test03() { test("input3","output3"); }
-    @Test public void test04() { test("input4","output4"); }*/
+    @Test public void test04() { test("input4","output4"); }
     @Test public void test05() { test("input5","output5"); }
     @Test public void test06() { test("input6","output6"); }
     /*@Test public void test07() { test("input7","output7"); }

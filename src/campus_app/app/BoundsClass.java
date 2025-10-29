@@ -11,7 +11,6 @@ import dataStructures.FilterIterator;
 import dataStructures.Iterator;
 import dataStructures.exceptions.NoSuchElementException;
 
-import javax.management.ServiceNotFoundException;
 import java.io.*;
 
 public class BoundsClass implements Bounds, Serializable {

@@ -8,7 +8,7 @@ import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
 public class OutgoingStudent extends StudentAbstract implements Student {
-    public OutgoingStudent(String name, String country, LodgingService home){
+    public OutgoingStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);
         super.visited = new DoublyLinkedList<>();
     }

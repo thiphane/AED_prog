@@ -41,7 +41,12 @@ public class StudentStorage implements Serializable {
     }
 
     public Student removeStudent(String student) throws StudentDoesNotExistException {
-        Student st = alphabeticalStudents.remove(new BookishStudent(student, "", null));
+        Student st;
+        try {
+            st = alphabeticalStudents.remove(new BookishStudent(student, "", null));
+        } catch (ServiceIsFullException e) {
+            throw new RuntimeException(e);
+        }
         students.remove(students.indexOf(st));
         if(st == null) throw new StudentDoesNotExistException();
         return st;

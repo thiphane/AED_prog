@@ -10,7 +10,7 @@ import campus_app.entity.service.Service;
 import dataStructures.ListInArray;
 
 public class ThriftyStudent extends StudentAbstract {
-    public ThriftyStudent(String name, String country, LodgingService home){
+    public ThriftyStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);
         visited = new ListInArray<>(ServiceType.values().length);
     }
