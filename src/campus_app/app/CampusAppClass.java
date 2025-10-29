@@ -200,7 +200,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException {
+    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -212,7 +212,11 @@ public class CampusAppClass implements CampusApp {
         if(!(service instanceof StudentStoringService storingService)) {
             throw new CantShowUsersException(service);
         }
-        return storingService.getUsers();
+        TwoWayIterator<Student> students = storingService.getUsers();
+        if(!students.hasNext()) {
+            throw new NoStudentsException(storingService);
+        }
+        return students;
     }
 
     @Override

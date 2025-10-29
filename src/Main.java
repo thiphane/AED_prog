@@ -71,6 +71,7 @@ public class Main {
     private static final String USER_FORMAT = "%s: %s\n";
     private static final String SAME_HOME_FORMAT = "That is %s's home!\n";
     private static final String STUDENT_MOVED_FORMAT = "lodging %1$s is now %2$s's home. %2$s is at home.\n";
+    private static final String NO_STUDENTS_IN = "No students on %s!\n";
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -276,6 +277,8 @@ public class Main {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, serviceName);
                     } catch (CantShowUsersException e) {
                         System.out.printf(SERVICE_CANT_CONTROL_USERS, e.getService().getName());
+                    } catch (NoStudentsException e) {
+                        System.out.printf(NO_STUDENTS_IN, e.getService().getName());
                     }
                 }
                 case Command.GO -> {
