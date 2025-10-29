@@ -15,7 +15,8 @@ public class LeisureService extends ServiceAbstract implements Service {
 
     @Override
     public int getPrice() {
-        return super.getPrice() * (super.getValue() / 100);
+        float disc = this.getValue() / 100f;
+        return Math.round(super.getPrice() - (super.getPrice() * disc));
     }
 
     @Override

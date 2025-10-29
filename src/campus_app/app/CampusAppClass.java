@@ -20,6 +20,13 @@ public class CampusAppClass implements CampusApp {
         if((this.currentBounds != null && name.equalsIgnoreCase(this.currentBounds.getName())) || Files.exists(Path.of(Bounds.getBoundFilename(name)))) {
             throw new BoundNameExists();
         }
+        if(this.currentBounds != null) {
+            try {
+                saveCurrentArea();
+            } catch (BoundsNotDefined e) {
+                throw new RuntimeException(e);
+            }
+        }
         this.currentBounds = new BoundsClass(name, new Position(topLatitude, topLongitude), new Position(bottomLatitude, bottomLongitude));
     }
 
@@ -34,6 +41,9 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Bounds loadArea(String areaName) throws BoundsNotDefined {
+        if(this.currentBounds != null) {
+            saveCurrentArea();
+        }
         this.currentBounds = BoundsClass.loadBounds(areaName);
         return this.currentBounds;
     }

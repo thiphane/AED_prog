@@ -1,5 +1,6 @@
 package campus_app.entity.student;
 
+import campus_app.entity.service.EatingService;
 import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.*;
@@ -10,8 +11,10 @@ import campus_app.entity.service.Service;
 import dataStructures.ListInArray;
 
 public class ThriftyStudent extends StudentAbstract {
+    EatingService cheapestEating;
     public ThriftyStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);
+        this.cheapestEating = null;
     }
     public StudentType getType(){
         return StudentType.THRIFTY;
@@ -20,22 +23,13 @@ public class ThriftyStudent extends StudentAbstract {
     @Override
     public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         super.updatePosition(position);
-        if(visited == null) {
-            visited = new ListInArray<>(ServiceType.values().length);
-        }
-        for(int i = 0; i < visited.size(); i++) {
-            Service s = visited.get(i);
-            if(s.getType() == position.getType()) {
-                if (position.getPrice() > s.getPrice()) {
-                    throw new ThriftyStudentIsDistracted(this);
-                } else {
-                    visited.remove(i);
-                    visited.addLast(position);
-                    return;
-                }
+        if(position instanceof EatingService eat) {
+            if(cheapestEating == null || eat.getPrice() <= cheapestEating.getPrice()) {
+                this.cheapestEating = eat;
+            } else {
+                throw new ThriftyStudentIsDistracted(this);
             }
         }
-        visited.addLast(position);
     }
 
     @Override

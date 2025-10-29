@@ -2,6 +2,11 @@ package dataStructures;
 
 import dataStructures.exceptions.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+
 
 /**
  * Sorted Doubly linked list Implementation
@@ -27,7 +32,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
     /**
      * Comparator of elements.
      */
-    private final Comparator<E> comparator;
+    private Comparator<E> comparator;
     /**
      * Constructor of an empty sorted double linked list.
      * head and tail are initialized as null.
@@ -215,4 +220,33 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
         this.head = this.tail;
         this.tail = oldHead;
     }*/
+
+    @Serial
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeObject(this.comparator);
+        oos.writeInt(this.currentSize);
+        Iterator<E> iter = this.iterator();
+        while(iter.hasNext()) {
+            E cur = iter.next();
+            oos.writeObject(cur);
+        }
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        this.comparator = (Comparator<E>) ois.readObject();
+        int size = ois.readInt();
+        for(int i = 0; i < size; i++) {
+            @SuppressWarnings("unchecked")
+            E element = (E)ois.readObject();
+            if(this.isEmpty()) {
+                DoublyListNode<E> newNode = new DoublyListNode<>(element);
+                this.head = newNode;
+                this.tail = newNode;
+                this.currentSize++;
+            } else {
+                this.addLast(element);
+            }
+        }
+    }
 }

@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.*;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -59,12 +60,12 @@ public class Tests {
     @Test public void test11() { test("input11","output11"); }
     @Test public void test12() { test("input12","output12"); }
     @Test public void test13() { test("input13","output13"); }
-    /*@Test public void test14() { test("input14","output14"); }
+    @Test public void test14() { test("input14","output14"); }
     @Test public void test15() { test("input15","output15"); }
     @Test public void test16() { test("input16","output16"); }
     @Test public void test17() { test("input17","output17"); }
     @Test public void test18() { test("input18","output18"); }
-    @Test public void test19() { test("input19","output19"); }
+    /*@Test public void test19() { test("input19","output19"); }
     @Test public void test20() { test("input20","output20"); }
     @Test public void test21() { test("input21","output21"); }
     @Test public void test22() { test("input22","output22"); }
@@ -118,9 +119,12 @@ public class Tests {
 
     @BeforeAll
     public static void deleteFile() throws IOException {
-        Path p = Path.of("costa_da_caparica.ser");
-        if(Files.exists(p)) {
-            Files.delete(Path.of("costa_da_caparica.ser"));
+        try(DirectoryStream<Path> stream = Files.newDirectoryStream(Path.of("."))) {
+            for(Path path : stream) {
+                if(path.toString().endsWith(".ser")) {
+                    Files.delete(path);
+                }
+            }
         }
     }
 

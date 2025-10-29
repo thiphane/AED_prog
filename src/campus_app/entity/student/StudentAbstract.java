@@ -14,7 +14,6 @@ public abstract class StudentAbstract implements Student {
     private final String country;
     private LodgingService home;
     private Service location;
-    protected List<Service> visited;
     public StudentAbstract(String name, String country, LodgingService home) throws ServiceIsFullException {
         this.name = name;
         this.country = country;
@@ -101,10 +100,7 @@ public abstract class StudentAbstract implements Student {
         }
         return false;
     }
-    @Override
-    public Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException {
-        return visited.iterator();
-    }
+
     @Override
     public Service findBestService(Iterator<Service> services) {
         if(services.hasNext())return services.next();

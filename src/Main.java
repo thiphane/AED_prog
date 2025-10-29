@@ -412,7 +412,12 @@ public class Main {
                     }
                 }
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
-                case Command.EXIT -> System.out.println(EXIT_MESSAGE);
+                case Command.EXIT -> {
+                    try {
+                        app.saveCurrentArea();
+                    } catch (BoundsNotDefined e) {}
+                    System.out.println(EXIT_MESSAGE);
+                }
             }
         } while(command != Command.EXIT);
     }

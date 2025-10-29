@@ -3,6 +3,11 @@ package dataStructures;
 import dataStructures.exceptions.InvalidPositionException;
 import dataStructures.exceptions.NoSuchElementException;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+
 /**
  * Implementation of Doubly Linked List
  * @author AED  Team
@@ -14,15 +19,15 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
     /**
      *  Node at the head of the list.
      */
-    private DoublyListNode<E> head;
+    transient private DoublyListNode<E> head;
     /**
      * Node at the tail of the list.
      */
-    private DoublyListNode<E> tail;
+    transient private DoublyListNode<E> tail;
     /**
      * Number of elements in the list.
      */
-    private int currentSize;
+    transient private int currentSize;
 
     /**
      * Constructor of an empty double linked list.
@@ -257,4 +262,23 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
         return removeMiddle(position);
     }
 
+    @Serial
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeInt(this.currentSize);
+        Iterator<E> iter = this.iterator();
+        while(iter.hasNext()) {
+            E cur = iter.next();
+            oos.writeObject(cur);
+        }
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        int size = ois.readInt();
+        for(int i = 0; i < size; i++) {
+            @SuppressWarnings("unchecked")
+            E element = (E)ois.readObject();
+            this.addLast(element);
+        }
+    }
 }
