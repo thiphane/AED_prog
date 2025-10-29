@@ -16,7 +16,7 @@ public interface CampusApp {
     Student getStudent(String student) throws BoundsNotDefined, StudentDoesNotExistException;
     Service getService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException;
     Student removeStudent(String studentName) throws BoundsNotDefined, StudentDoesNotExistException;
-    boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException, StudentDoesNotExistException;
+    boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
     void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException;
     void rateService(int rate, String serviceName, String description) throws BoundsNotDefined;
     TwoWayIterator<Student> getUsersByService(String serviceName, Order actualOrder) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException;;

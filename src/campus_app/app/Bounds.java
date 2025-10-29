@@ -47,4 +47,5 @@ public interface Bounds {
     void addStudent(Student student);
 
     Service getService(String service);
+    Iterator<Service>listServicesByRating();
 }

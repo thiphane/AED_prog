@@ -56,6 +56,10 @@ public class Main {
     private static final String MOVE_NOT_ACCEPTABLE = "Move is not acceptable for %s!\n";
     private static final String STUDENT_HAS_NOT_VISITED_ANY_LOCATION = "%s has not visited any locations!\n";
     private static final String STUDENT_IS_THRIFTY = "%s is thrifty!\n";
+    private static final String STUDENT_HAS_LEFT = "%s has left.\n";
+    private static final String RANKING_HEADER = "Services sorted in descending order";
+    private static final String RANKING_FORMAT ="%s:%d.\n";
+    private static final String EMPTY_RANKING = "No services in the system.";
 
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
@@ -330,18 +334,31 @@ public class Main {
                     }  catch (StudentDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
                     } catch (StudentDoesntStoreVisitedServicesException e) {
-                        System.out.printf(STUDENT_IS_THRIFTY, name);
+                        System.out.printf(STUDENT_IS_THRIFTY, e.getStudent().getName());
                     } catch (NoVisitedServicesException e) {
                         System.out.printf(STUDENT_HAS_NOT_VISITED_ANY_LOCATION, e.getStudent().getName());
                     }
                 }case Command.LEAVE -> {
                     String name = in.nextLine().trim();
                     try{
-                        app.removeStudent(name);
+                        Student student = app.removeStudent(name);
+                        System.out.printf(STUDENT_HAS_LEFT, student.getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }catch (StudentDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
+                    }
+                }case Command.RANKING -> {
+                    try {
+                        Iterator<Service> iter = app.listServicesByRanking();
+                        if(iter.hasNext()) System.out.println(RANKING_HEADER);
+                        else System.out.println(EMPTY_RANKING);
+                        while(iter.hasNext()){
+                            Service ser =  iter.next();
+                            System.out.printf(RANKING_FORMAT, ser.getName(), ser.getRating());
+                        }
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);

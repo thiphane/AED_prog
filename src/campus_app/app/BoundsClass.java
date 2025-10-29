@@ -140,4 +140,7 @@ public class BoundsClass implements Bounds, Serializable {
     public Service getService(String service) {
         return services.getService(service);
     }
+    public Iterator<Service>listServicesByRating() {
+        return services.listServicesByRanking();
+    }
 }

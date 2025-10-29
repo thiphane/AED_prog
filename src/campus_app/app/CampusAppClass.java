@@ -157,13 +157,10 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException, StudentDoesNotExistException {
+    public boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException {
 
         if(currentBounds == null) {
             throw new BoundsNotDefined();
-        }
-        if(student ==null){
-            throw new StudentDoesNotExistException();
         }
         if(service == null) {
             throw new NoSuchElementException();
@@ -259,8 +256,7 @@ public class CampusAppClass implements CampusApp {
 
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
-        }
-        return null;
+        }return currentBounds.listServicesByRating();
     }
 
     @Override
@@ -297,10 +293,8 @@ public class CampusAppClass implements CampusApp {
         }
         Iterator<Service> byType = new FilterIterator<>(this.currentBounds.listAllServices(), new ServiceTypePredicate(serviceType));
         if(!byType.hasNext())throw new NoSuchElementOfGivenType();
-        //TODO: if byTYpe is null than throw exception
         Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate));
         if(!byTypeAndRate.hasNext())throw new NoSuchServiceWithGivenRate();
-        //TODO: if no service of given type with given average exists, throw exception
         return this.currentBounds.findClosestService(studentName, byTypeAndRate);
     }
 
