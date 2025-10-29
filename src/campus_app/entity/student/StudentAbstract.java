@@ -78,11 +78,20 @@ public abstract class StudentAbstract implements Student {
 
     @Override
     public Iterator<Service> findClosestServices(Iterator<Service> services) {
-        SortedList<Service> sortedSet = new SortedDoublyLinkedList<>(new DistanceComparator(this));
-        while(services.hasNext()){
-            sortedSet.add(services.next());
+        DistanceComparator comparator = new DistanceComparator(this.getLocation().getPosition());
+        List<Service> list = new DoublyLinkedList<>();
+        Service closest = null;
+        while(services.hasNext()) {
+            Service cur = services.next();
+            if (closest == null || comparator.compare(cur, closest) < 0) {
+                list = new DoublyLinkedList<>();
+                list.addLast(cur);
+                closest = cur;
+            } else if(comparator.compare(cur, closest) == 0) {
+                list.addLast(cur);
+            }
         }
-        return sortedSet.iterator();
+        return list.iterator();
     }
 
     @Override

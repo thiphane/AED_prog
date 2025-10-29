@@ -6,8 +6,8 @@ import dataStructures.Comparator;
 
 public class DistanceComparator implements Comparator<Service> {
     private final Position position;
-    public DistanceComparator(Student student) {
-        position = student.getLocation().getPosition();
+    public DistanceComparator(Position position) {
+        this.position = position;
     }
     @Override
     public int compare(Service x, Service y) {

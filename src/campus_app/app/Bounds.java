@@ -14,7 +14,7 @@ import dataStructures.exceptions.NoSuchElementException;
 
 public interface Bounds {
     static String getBoundFilename(String name) {
-        return String.format("%s.ser", name.toLowerCase());
+        return String.format("%s.ser", name.toLowerCase().replaceAll(" ", "_"));
     }
 
     String getName();

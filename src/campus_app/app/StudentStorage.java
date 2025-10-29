@@ -11,6 +11,7 @@ import campus_app.exceptions.ServiceIsFullException;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
+import dataStructures.exceptions.InvalidPositionException;
 import dataStructures.exceptions.NoSuchElementException;
 
 import java.io.Serializable;
@@ -47,8 +48,8 @@ public class StudentStorage implements Serializable {
         } catch (ServiceIsFullException e) {
             throw new RuntimeException(e);
         }
-        students.remove(students.indexOf(st));
         if(st == null) throw new StudentDoesNotExistException();
+        students.remove(students.indexOf(st));
         return st;
     }
 

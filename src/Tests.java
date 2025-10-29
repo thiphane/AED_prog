@@ -57,9 +57,9 @@ public class Tests {
     @Test public void test09() { test("input9","output9"); }
     @Test public void test10() { test("input10","output10"); }
     @Test public void test11() { test("input11","output11"); }
-    /*@Test public void test12() { test("input12","output12"); }
+    @Test public void test12() { test("input12","output12"); }
     @Test public void test13() { test("input13","output13"); }
-    @Test public void test14() { test("input14","output14"); }
+    /*@Test public void test14() { test("input14","output14"); }
     @Test public void test15() { test("input15","output15"); }
     @Test public void test16() { test("input16","output16"); }
     @Test public void test17() { test("input17","output17"); }
@@ -118,9 +118,9 @@ public class Tests {
 
     @BeforeAll
     public static void deleteFile() throws IOException {
-        Path p = Path.of("costa da caparica.ser");
+        Path p = Path.of("costa_da_caparica.ser");
         if(Files.exists(p)) {
-            Files.delete(Path.of("costa da caparica.ser"));
+            Files.delete(Path.of("costa_da_caparica.ser"));
         }
     }
 
