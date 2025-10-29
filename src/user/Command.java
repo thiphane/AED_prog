@@ -1,3 +1,7 @@
+/**
+ * @author Thiphane Silva 69882
+ * @author Rodrigo Moura 71429
+ */
 package user;
 
 public enum Command {

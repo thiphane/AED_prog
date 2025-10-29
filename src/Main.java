@@ -1,3 +1,7 @@
+/**
+ * @author Thiphane Silva 69882
+ * @author Rodrigo Moura 71429
+ */
 import campus_app.app.Bounds;
 import campus_app.app.CampusApp;
 import campus_app.app.CampusAppClass;
@@ -82,7 +86,7 @@ public class Main {
             String cmd = in.next();
             command = Command.getCommand(cmd);
             switch (command) {
-                case Command.HELP -> {
+                case HELP -> {
                     in.nextLine();
                     for (Command c : Command.values()) {
                         if (!c.getDescription().isEmpty()) {
@@ -90,7 +94,7 @@ public class Main {
                         }
                     }
                 }
-                case Command.BOUNDS -> {
+                case BOUNDS -> {
                     long topLeftLat = in.nextLong();
                     long topLeftLon = in.nextLong();
                     long botRightLat = in.nextLong();
@@ -105,7 +109,7 @@ public class Main {
                         System.out.println(INVALID_BOUND);
                     }
                 }
-                case Command.SERVICES -> {
+                case SERVICES -> {
                     in.nextLine();
 
                     try{
@@ -121,7 +125,7 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
-                case Command.SERVICE -> {
+                case SERVICE -> {
                     String type = in.next();
                     long latitude = in.nextLong();
                     long longitude = in.nextLong();
@@ -152,7 +156,7 @@ public class Main {
                         System.out.printf(ENTITY_ALREADY_EXISTS_FORMAT, e.getElement());
                     }
                 }
-                case Command.SAVE -> {
+                case SAVE -> {
                     try {
                         String name = app.saveCurrentArea().getName();
                         System.out.printf(SAVE_FORMAT, name);
@@ -160,7 +164,7 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
-                case Command.LOAD -> {
+                case LOAD -> {
                     try {
                         String name = in.nextLine().trim();
                         Bounds area = app.loadArea(name);
@@ -169,7 +173,7 @@ public class Main {
                         System.out.println(INVALID_BOUND);
                     }
                 }
-                case Command.STUDENTS -> {
+                case STUDENTS -> {
                     String country = in.nextLine().trim();
                     Iterator<Student> students;
                     try {
@@ -192,7 +196,7 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
-                case Command.STUDENT -> {
+                case STUDENT -> {
                     String type = in.next();
                     in.nextLine();
                     String name = in.nextLine().trim();
@@ -213,7 +217,7 @@ public class Main {
                         System.out.printf(ENTITY_ALREADY_EXISTS_FORMAT, e.getElement());
                     }
                 }
-                case Command.WHERE -> {
+                case WHERE -> {
                     String name = in.nextLine().trim();
                     try {
                         Student student = app.getStudent(name);
@@ -227,7 +231,7 @@ public class Main {
                     }
 
                 }
-                case Command.RANKED -> {
+                case RANKED -> {
                     String type = in.next().toLowerCase();
                     int rate = in.nextInt();
                     String name = in.nextLine().trim();
@@ -252,7 +256,7 @@ public class Main {
                         System.out.println(INVALID_STARS);
                     }
                 }
-                case Command.USERS -> {
+                case USERS -> {
                     String order = in.next();
                     String serviceName = in.nextLine().trim();
                     Order actualOrder = null;
@@ -284,7 +288,7 @@ public class Main {
                         System.out.printf(NO_STUDENTS_IN, e.getService().getName());
                     }
                 }
-                case Command.GO -> {
+                case GO -> {
                     String studentName = in.nextLine().trim();
                     String locationName = in.nextLine().trim();
                     boolean isDistracted = false;
@@ -309,7 +313,7 @@ public class Main {
                     }
                 }
 
-                case Command.MOVE -> {
+                case MOVE -> {
                     String name = in.nextLine().trim();
                     String lodging = in.nextLine().trim();
                     try {
@@ -331,7 +335,7 @@ public class Main {
                     }catch (MoveNotAcceptable e) {
                         System.out.printf(MOVE_NOT_ACCEPTABLE, e.getStudent().getName());
                     }
-                }case Command.VISITED -> {
+                }case VISITED -> {
                     String name = in.nextLine().trim();
                     try{
                         Student student = app.getStudent(name);
@@ -348,7 +352,7 @@ public class Main {
                     } catch (NoVisitedServicesException e) {
                         System.out.printf(STUDENT_HAS_NOT_VISITED_ANY_LOCATION, e.getStudent().getName());
                     }
-                }case Command.LEAVE -> {
+                }case LEAVE -> {
                     String name = in.nextLine().trim();
                     try{
                         Student student = app.removeStudent(name);
@@ -358,7 +362,7 @@ public class Main {
                     }catch (StudentDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
                     }
-                }case Command.RANKING -> {
+                }case RANKING -> {
                     try {
                         Iterator<Service> iter = app.listServicesByRanking();
                         if(iter.hasNext()) System.out.println(RANKING_HEADER);
@@ -370,7 +374,7 @@ public class Main {
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
-                }case Command.TAG -> {
+                }case TAG -> {
                     String tagName = in.nextLine().trim();
                     try {
                         Iterator<Service> iter = app.listServicesByTag(tagName);
@@ -383,7 +387,7 @@ public class Main {
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
-                }case Command.FIND ->{
+                }case FIND ->{
                         String studentName = in.nextLine().trim();
                         String type = in.nextLine().trim();
                         try {
@@ -397,7 +401,7 @@ public class Main {
                         }catch (StudentDoesNotExistException e) {
                             System.out.printf(ELEMENT_DOES_NOT_EXIST, studentName);
                         }
-                }case Command.STAR ->{
+                }case STAR ->{
                     int rating = in.nextInt();String serviceName = in.nextLine().trim();
                     String description =  in.nextLine().trim();
                     try{
@@ -411,8 +415,8 @@ public class Main {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, serviceName);
                     }
                 }
-                case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
-                case Command.EXIT -> {
+                case UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
+                case EXIT -> {
                     try {
                         app.saveCurrentArea();
                     } catch (BoundsNotDefined e) {}

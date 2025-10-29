@@ -1,3 +1,7 @@
+/**
+ * @author Thiphane Silva 69882
+ * @author Rodrigo Moura 71429
+ */
 package campus_app.app;
 import campus_app.entity.service.*;
 import campus_app.entity.student.*;
@@ -116,7 +120,7 @@ public class CampusAppClass implements CampusApp {
             throw new AlreadyExistsException(student.getName());
         }
         switch(studentType) {
-            case StudentType.BOOKISH -> {
+            case BOOKISH -> {
                 student = new BookishStudent(name, country, home);
             }
             case THRIFTY -> {
