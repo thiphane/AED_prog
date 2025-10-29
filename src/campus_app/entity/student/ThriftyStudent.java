@@ -42,8 +42,15 @@ public class ThriftyStudent extends StudentAbstract {
     }
 
     @Override
-    public Service findBestService(Iterator<Service> services) {
-        return null;
+   public Service findBestService(Iterator<Service> services) {
+        if(services.hasNext()) {
+            Service best = services.next();
+            while (services.hasNext()) {
+                Service curr = services.next();
+                if(curr.getPrice() < best.getPrice())best = curr;
+            }
+            return best;
+        }else return null;
     }
 
     @Override

@@ -88,4 +88,9 @@ public abstract class StudentAbstract implements Student {
     public Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException {
         return visited.iterator();
     }
+    @Override
+    public Service findBestService(Iterator<Service> services) {
+        if(services.hasNext())return services.next();
+        else return null;
+    }
 }

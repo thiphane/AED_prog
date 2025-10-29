@@ -60,6 +60,8 @@ public class Main {
     private static final String RANKING_HEADER = "Services sorted in descending order";
     private static final String RANKING_FORMAT ="%s:%d.\n";
     private static final String EMPTY_RANKING = "No services in the system.";
+    private static final String TAG_FORMAT = "%s %s\n";
+    private static final String NO_SUCH_TAG = "There are no services with this tag!";
 
     private static final String STUDENT_LOCATION_FORMAT = "%s is at %s %s %s.\n";
     private static final String NO_STUDENTS = "No students yet!";
@@ -360,6 +362,32 @@ public class Main {
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
+                }case Command.TAG -> {
+                    String tagName = in.nextLine().trim();
+                    try {
+                        Iterator<Service> iter = app.listServicesByTag(tagName);
+                        if(iter.hasNext()){
+                        while(iter.hasNext()) {
+                            Service ser = iter.next();
+                            System.out.printf(TAG_FORMAT, ser.getType().name().toLowerCase(), ser.getName());
+                        }
+                        }else System.out.println(NO_SUCH_TAG);
+                    } catch (BoundsNotDefined e) {
+                        System.out.println(BOUNDS_NOT_DEFINED);
+                    }
+                }case Command.FIND ->{
+                        String studentName = in.nextLine().trim();
+                        String type = in.nextLine().trim();
+                        try {
+                            Service bestServices = app.findBestService(studentName, type);
+                            if(bestServices == null)System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type.toLowerCase());
+                        } catch (BoundsNotDefined e) {
+                            System.out.println(BOUNDS_NOT_DEFINED);
+                        } catch (InvalidTypeException e) {
+                            System.out.println(INVALID_SERVICE_TYPE);
+                        }catch (StudentDoesNotExistException e) {
+                            System.out.printf(ELEMENT_DOES_NOT_EXIST, studentName);
+                        }
                 }
                 case Command.UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
                 case Command.EXIT -> System.out.println(EXIT_MESSAGE);

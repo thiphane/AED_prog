@@ -1,6 +1,7 @@
 package campus_app.app;
 
 import campus_app.entity.service.LodgingService;
+import campus_app.entity.service.ServiceType;
 import campus_app.entity.service.StudentStoringService;
 import campus_app.entity.student.BookishStudent;
 import campus_app.entity.student.StudentType;
@@ -30,18 +31,19 @@ public class StudentStorage implements Serializable {
         this.alphabeticalStudents.add(student);
     }
 
-    public Student getStudent(String student){
+    public Student getStudent(String student) throws StudentDoesNotExistException {
         Iterator<Student> iterator = this.students.iterator();
         while (iterator.hasNext()) {
             Student element = iterator.next();
             if(element.getName().equalsIgnoreCase(student))
                 return element;
-        } return null;
+        } throw new StudentDoesNotExistException();
     }
 
-    public Student removeStudent(String student) {
+    public Student removeStudent(String student) throws StudentDoesNotExistException {
         Student st = alphabeticalStudents.remove(new BookishStudent(student, "", null));
         students.remove(students.indexOf(st));
+        if(st == null) throw new StudentDoesNotExistException();
         return st;
     }
 
@@ -69,15 +71,9 @@ public class StudentStorage implements Serializable {
         return student.getVisitedServices();
     }
 
-    public Service findBestService(String studentName, Iterator<Service> services) throws StudentDoesNotExistException {
-        // TODO este código aparece muitas vezes repetido, talvez mudar para o getStudent
-        //  tendo em conta que ás vezes o valor de retorno null é esperado
-        Student s = this.getStudent(studentName);
-        if (s == null) {
-            throw new StudentDoesNotExistException();
-        }
-        return s.findBestService(services);
-    }
+    public Service findBestService(Student student, ServiceType type,  Iterator<Service> services) throws StudentDoesNotExistException {
+        return student.findBestService(new FilterIterator<Service>(services, new ServiceTypePredicate(type)));
+   }
     public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) throws StudentDoesNotExistException {
         Student s = this.getStudent(studentName);
         if(s == null) {

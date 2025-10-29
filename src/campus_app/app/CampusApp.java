@@ -27,5 +27,5 @@ public interface CampusApp {
     Iterator<Service> listServicesByRanking() throws BoundsNotDefined;
     Iterator<Service> listClosestServicesByStudent(int rating, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException;;
     Iterator<Service> listServicesByTag(String tagName) throws BoundsNotDefined;
-    Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined, StudentDoesNotExistException;
+    Service findBestService(String studentName, String type) throws BoundsNotDefined, StudentDoesNotExistException, InvalidTypeException;
 }

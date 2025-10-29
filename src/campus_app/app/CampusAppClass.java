@@ -96,7 +96,11 @@ public class CampusAppClass implements CampusApp {
         if (!(serviceObj instanceof LodgingService home)) {
             throw new NoSuchElementOfGivenType();
         }
-            Student student = currentBounds.getStudent(name);
+        Student student = null;
+            try{
+                student = currentBounds.getStudent(name);
+            } catch (StudentDoesNotExistException ignored) {
+            }
 
         if(student != null) {
             throw new AlreadyExistsException(student.getName());
@@ -126,11 +130,7 @@ public class CampusAppClass implements CampusApp {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        Student std = currentBounds.getStudent(student);
-        if(std == null) {
-            throw new StudentDoesNotExistException();
-        }
-        return std;
+        return currentBounds.getStudent(student);
     }
 
     @Override
@@ -147,13 +147,9 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Student removeStudent(String studentName) throws BoundsNotDefined, StudentDoesNotExistException {
-        if(this.currentBounds == null) {
+        if(this.currentBounds == null)
             throw new BoundsNotDefined();
-        }Student std = currentBounds.removeStudent(studentName);
-        if(std == null) {
-            throw new StudentDoesNotExistException();
-        }
-        return std;
+        return currentBounds.removeStudent(studentName);
     }
 
     @Override
@@ -269,12 +265,14 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Service findBestService(String studentName, ServiceType type) throws BoundsNotDefined, NoSuchElementException, StudentDoesNotExistException {
+    public Service findBestService(String studentName, String type) throws BoundsNotDefined, StudentDoesNotExistException, InvalidTypeException {
 
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return currentBounds.findBestService(studentName, new FilterIterator<>(currentBounds.listAllServices(), new ServiceTypePredicate(type)));
+        ServiceType serviceType = ServiceType.getType(type);
+        if(serviceType == null)throw new InvalidTypeException();
+        return currentBounds.findBestService(studentName, serviceType);
     }
 
     @Override

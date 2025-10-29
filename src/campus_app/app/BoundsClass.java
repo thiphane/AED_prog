@@ -2,7 +2,10 @@ package campus_app.app;
 
 import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.Service;
+import campus_app.entity.service.ServiceType;
+import campus_app.entity.service.StudentStoringService;
 import campus_app.entity.student.Student;
+import campus_app.entity.student.StudentType;
 import campus_app.exceptions.*;
 import dataStructures.FilterIterator;
 import dataStructures.Iterator;
@@ -32,12 +35,12 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Student getStudent(String student){
+    public Student getStudent(String student) throws StudentDoesNotExistException {
         return students.getStudent(student);
     }
 
     @Override
-    public Student removeStudent(String studentName) {
+    public Student removeStudent(String studentName) throws StudentDoesNotExistException {
         return students.removeStudent(studentName);
     }
 
@@ -68,8 +71,11 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator) throws StudentDoesNotExistException {
-        return students.findBestService(studentName, serviceFilterIterator);
+    public Service findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException {
+        Student st = students.getStudent(studentName);
+        if(st.getType().equals(StudentType.THRIFTY)) {
+            return students.findBestService(st,type,listAllServices());
+        }else return students.findBestService(st, type, listServicesByRating());
     }
 
     @Override
@@ -143,4 +149,5 @@ public class BoundsClass implements Bounds, Serializable {
     public Iterator<Service>listServicesByRating() {
         return services.listServicesByRanking();
     }
+
 }

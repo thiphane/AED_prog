@@ -2,6 +2,7 @@ package campus_app.app;
 
 import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.Service;
+import campus_app.entity.service.ServiceType;
 import campus_app.entity.student.Student;
 import campus_app.exceptions.*;
 import campus_app.exceptions.AlreadyExistsException;
@@ -22,11 +23,11 @@ public interface Bounds {
     void save();
     boolean isInside(Position pos);
 
-    Student removeStudent(String studentName);
+    Student removeStudent(String studentName) throws StudentDoesNotExistException;
 
     void addService(Service service) throws AlreadyExistsException;
 
-    Student getStudent(String student) throws NoSuchElementException;
+    Student getStudent(String student) throws NoSuchElementException, StudentDoesNotExistException;
 
     void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException;
 
@@ -38,7 +39,7 @@ public interface Bounds {
 
     Iterator<Service> listAllServices();
 
-    Service findBestService(String studentName, FilterIterator<Service> serviceFilterIterator) throws StudentDoesNotExistException;
+    Service findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException;
 
     Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException;
 

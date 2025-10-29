@@ -31,9 +31,4 @@ public class OutgoingStudent extends StudentAbstract implements Student {
 
     }
 
-    @Override
-    public Service findBestService(Iterator<Service> services) {
-        return null;
-    }
-
 }
