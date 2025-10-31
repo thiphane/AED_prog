@@ -23,20 +23,17 @@ public abstract class StudentAbstract implements Student {
         this.country = country;
         this.home = home;
         this.location = home;
-        // Por causa dos estudantes de identificação
-        if(home != null) {
-            try {
-                this.updatePosition(home);
-            } catch (ThriftyStudentIsDistracted e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            this.updatePosition(home);
+        } catch (ThriftyStudentIsDistracted e) {
+            throw new RuntimeException(e);
         }
     }
 
     private void setHome(LodgingService home) throws ServiceIsFullException {
         try {
-            this.updatePosition(home);
-            this.home.removeUser(this);
+            this.updatePosition(home); // O(n)
+            this.home.removeUser(this); // O(n)
             this.home = home;
         } catch (ThriftyStudentIsDistracted e) {
             throw new RuntimeException(e);
@@ -57,16 +54,24 @@ public abstract class StudentAbstract implements Student {
         if(this.home.equals(home)) {
             throw new SameHomeException(this);
         }
-        this.setHome(home);
+        this.setHome(home); // O(n)
     }
 
+    /**
+     * Updates the user's position
+     * O(n) worst case (either the student's current or new position store students),
+     * O(1) best case (neither one stores students)
+     * @param position the new position
+     * @throws ServiceIsFullException if the given position is full
+     * @throws ThriftyStudentIsDistracted if the user gets distracted by going to this service
+     */
     @Override
     public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
         Service oldLocation = this.location;
-        if(position instanceof StudentStoringService service)service.addUser(this);
+        if(position instanceof StudentStoringService service)service.addUser(this); // O(n)
         this.location = position;
         if(oldLocation instanceof StudentStoringService loc && !oldLocation.equals(home))
-            loc.removeUser(this);
+            loc.removeUser(this); // O(n)
     }
 
     @Override
@@ -79,6 +84,12 @@ public abstract class StudentAbstract implements Student {
         return this.location;
     }
 
+    /**
+     * Gets the services closest to the student
+     * O(n)
+     * @param services the services to get the closest from
+     * @return an iterator through the services tied for distance from the user
+     */
     @Override
     public Iterator<Service> findClosestServices(Iterator<Service> services) {
         DistanceComparator comparator = new DistanceComparator(this.getLocation().getPosition());

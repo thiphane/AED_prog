@@ -17,8 +17,8 @@ import dataStructures.ListInArray;
 
 public class BookishStudent extends StudentAbstract implements Student {
     protected List<Service> visited;
-    public BookishStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
-        super(name, country, home);
+    public BookishStudent(String name, String country, LodgingService home) throws ServiceIsFullException { // O(n)
+        super(name, country, home); // O(n)
     }
 
     public StudentType getType(){
@@ -32,7 +32,7 @@ public class BookishStudent extends StudentAbstract implements Student {
         if(visited == null) { // updatePosition é usado pelo construtor do abstrato, então não se consegue inicializar a lista antes
             visited = new DoublyLinkedList<>();
         }
-        if(position.getType().equals(ServiceType.LEISURE) && (visited.indexOf(position) == -1))
+        if(position.getType().equals(ServiceType.LEISURE) && (visited.indexOf(position) == -1)) // O(n)
             visited.addLast(position);
     }
 

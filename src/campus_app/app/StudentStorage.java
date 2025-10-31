@@ -32,13 +32,13 @@ public class StudentStorage implements Serializable {
     }
 
     public void addStudent(Student student) {
-        this.students.addLast(student);
-        this.alphabeticalStudents.add(student);
+        this.students.addLast(student); // O(1)
+        this.alphabeticalStudents.add(student); // O(n) worst case, O(1) best case (student is the lowest in the alphabetical order)
     }
 
     public Student getStudent(String student) throws StudentDoesNotExistException {
         Iterator<Student> iterator = this.students.iterator();
-        while (iterator.hasNext()) {
+        while (iterator.hasNext()) { // O(n)
             Student element = iterator.next();
             if(element.getName().equalsIgnoreCase(student))
                 return element;
@@ -57,7 +57,7 @@ public class StudentStorage implements Serializable {
     }
 
     public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException {
-        Student s = this.getStudent(student);
+        Student s = this.getStudent(student); // O(n)
         s.moveHome(newHome);
     }
 
@@ -73,11 +73,11 @@ public class StudentStorage implements Serializable {
         return student.getVisitedServices();
     }
 
-    public Service findBestService(Student student, ServiceType type,  Iterator<Service> services) throws StudentDoesNotExistException {
+    public Service findBestService(Student student, ServiceType type,  Iterator<Service> services) {
         return student.findBestService(new FilterIterator<Service>(services, new ServiceTypePredicate(type)));
    }
     public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) throws StudentDoesNotExistException {
-        Student s = this.getStudent(studentName);
+        Student s = this.getStudent(studentName); // O(n)
         if(s == null) {
             throw new StudentDoesNotExistException();
         }
@@ -86,11 +86,11 @@ public class StudentStorage implements Serializable {
 
     @Serial
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        ois.defaultReadObject();
+        ois.defaultReadObject(); // Ler os estudantes: O(n)
         // Evitar ler 2 listas do ficheiro, com conteúdo igual
         this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
         Iterator<Student> iter = this.students.iterator();
-        while(iter.hasNext()) {
+        while(iter.hasNext()) { // O(n)
             alphabeticalStudents.add(iter.next());
         }
     }

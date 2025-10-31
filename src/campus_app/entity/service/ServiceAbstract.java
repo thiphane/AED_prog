@@ -34,7 +34,7 @@ public abstract class ServiceAbstract implements Service {
     @Override
     public void addRating(int rating, String description) {
         this.rating+=rating;
-        ratings.addLast(description);
+        ratings.addLast(description); // O(1)
     }
 
     @Override
@@ -63,6 +63,13 @@ public abstract class ServiceAbstract implements Service {
     protected int getValue() {
         return value;
     }
+
+    /**
+     * Checks if a service has a comment with the given tag
+     * O(n)
+     * @param tagName the tag to check
+     * @return whether the service has a comment with the given tag
+     */
     @Override
     public boolean hasTag(String tagName) {
         // TODO talvez guardar as tags únicamente, em vez de guardar os comentários todos

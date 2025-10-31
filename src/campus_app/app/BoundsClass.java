@@ -45,17 +45,17 @@ public class BoundsClass implements Bounds, Serializable {
 
     @Override
     public Student removeStudent(String studentName) throws StudentDoesNotExistException {
-        Iterator<Service> services = this.services.listAllServices();
-        Student student = students.getStudent(studentName);
+        Iterator<Service> services = this.services.listAllServices(); // O(1)
+        Student student = students.getStudent(studentName);  // O(n)
         if(student == null) {
             throw new StudentDoesNotExistException();
         }
-        while(services.hasNext()) {
+        while(services.hasNext()) { // O(n)
             Service cur = services.next();
             if(cur instanceof StudentStoringService ss) {
-                ss.removeUser(student);
+                ss.removeUser(student); // O(n)
             }
-        }
+        } // O(n^2)
         return students.removeStudent(student);
     }
 
@@ -75,6 +75,13 @@ public class BoundsClass implements Bounds, Serializable {
         return students.getAllStudents();
     }
 
+    // TODO passar todos os comentários para as interfaces
+    /**
+     * Get all students from the given country
+     * O(1) to create an iterator, O(n) to traverse it
+     * @param country the country to get students of
+     * @return an iterator through all students from the given country in insertion order
+     */
     @Override
     public Iterator<Student> getStudentsByCountry(String country) {
         return students.getStudentsByCountry(country);
@@ -87,7 +94,7 @@ public class BoundsClass implements Bounds, Serializable {
 
     @Override
     public Service findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException {
-        Student st = students.getStudent(studentName);
+        Student st = students.getStudent(studentName); // O(n)
         if(st.getType().equals(StudentType.THRIFTY)) {
             return students.findBestService(st,type,listAllServices());
         }else return students.findBestService(st, type, listServicesByRating());
@@ -98,6 +105,13 @@ public class BoundsClass implements Bounds, Serializable {
         return students.listVisitedServices(student);
     }
 
+    /**
+     * Adds a new service to the bounds
+     * O(n)
+     * @param service the service to add
+     * @throws AlreadyExistsException if a service with the same name already exists
+     */
+    @Override
     public void addService(Service service) throws AlreadyExistsException {
         this.services.addService(service);
     }
@@ -120,7 +134,7 @@ public class BoundsClass implements Bounds, Serializable {
     @Override
     public void save() {
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(Bounds.getBoundFilename(this.getName())))){
-            oos.writeObject(this);
+            oos.writeObject(this); // O(n), tem de escrever os estudantes e serviços
             oos.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -148,10 +162,15 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate) throws StudentDoesNotExistException {
+    public Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate) throws StudentDoesNotExistException { // O(n)
         return students.findClosestService(studentName, byTypeAndRate);
     }
 
+    /**
+     * Adds a new student to the bounds
+     * O(n)
+     * @param student the student
+     */
     @Override
     public void addStudent(Student student) {
         students.addStudent(student);
@@ -167,7 +186,7 @@ public class BoundsClass implements Bounds, Serializable {
 
     @Override
     public void addRating(int rate, String serviceName, String description) throws ServiceDoesNotExistException {
-        services.rateService(serviceName, rate, description);
+        services.rateService(serviceName, rate, description); // O(n)
     }
 
 }

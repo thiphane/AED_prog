@@ -21,19 +21,31 @@ public abstract class AbstractStudentStoringService extends ServiceAbstract impl
         this.users = new DoublyLinkedList<>();
     }
 
+    /**
+     * Adds a new user to the service
+     * O(n) time
+     * @param student the student
+     * @throws ServiceIsFullException if the service is full
+     */
     @Override
     public void addUser(Student student) throws ServiceIsFullException {
         if (this.getValue() <= this.users.size()) {
             throw new ServiceIsFullException(this);
         }
-        if(this.users.indexOf(student) ==-1)this.users.addLast(student);
+        if(this.users.indexOf(student) ==-1) // O(n)
+            this.users.addLast(student); // O(1)
     }
 
+    /**
+     * Removes an user from the service
+     * O(n) time
+     * @param student the student
+     */
     @Override
     public void removeUser(Student student) {
-        int idx = this.users.indexOf(student);
+        int idx = this.users.indexOf(student); // O(n)
         if(idx != -1) {
-            this.users.remove(idx);
+            this.users.remove(idx); // O(1) best case (first or last element), O(n) worst case
         }
     }
 

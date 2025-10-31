@@ -15,6 +15,6 @@ public class ServiceTagPredicate implements Predicate<Service> {
 
     public boolean check(Service service) {
         return service.hasTag(tag);
-    }
+    } // O(n)
 }
 

@@ -94,7 +94,7 @@ public class Main {
                         }
                     }
                 }
-                case BOUNDS -> {
+                case BOUNDS -> { // O(1)
                     long topLeftLat = in.nextLong();
                     long topLeftLon = in.nextLong();
                     long botRightLat = in.nextLong();
@@ -109,15 +109,15 @@ public class Main {
                         System.out.println(INVALID_BOUND);
                     }
                 }
-                case SERVICES -> {
+                case SERVICES -> { // O(n)
                     in.nextLine();
 
                     try{
-                        Iterator<Service> services = app.listAllServices();
+                        Iterator<Service> services = app.listAllServices(); // O(1)
                         if (!services.hasNext()) {
                             System.out.println(NO_SERVICES);
                         }
-                        while (services.hasNext()) {
+                        while (services.hasNext()) { // O(n)
                             Service s = services.next();
                             System.out.printf(SERVICE_LIST_FORMAT, s.getName(), s.getType().toString().toLowerCase(), s.getPosition().latitude(), s.getPosition().longitude());
                         }
@@ -125,7 +125,7 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
-                case SERVICE -> {
+                case SERVICE -> { // O(n)
                     String type = in.next();
                     long latitude = in.nextLong();
                     long longitude = in.nextLong();
@@ -133,7 +133,7 @@ public class Main {
                     int value = in.nextInt();
                     String name = in.nextLine().trim();
                     try {
-                        app.createService(type, name, latitude, longitude, price, value);
+                        app.createService(type, name, latitude, longitude, price, value); // O(n)
                         System.out.printf(SERVICE_FORMAT, type.toLowerCase().trim(), name);
                     } catch (InvalidValueException e) {
                         switch (e.getType()) {
@@ -156,39 +156,39 @@ public class Main {
                         System.out.printf(ENTITY_ALREADY_EXISTS_FORMAT, e.getElement());
                     }
                 }
-                case SAVE -> {
+                case SAVE -> { // O(n)
                     try {
-                        String name = app.saveCurrentArea().getName();
+                        String name = app.saveCurrentArea().getName(); // O(n)
                         System.out.printf(SAVE_FORMAT, name);
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
-                case LOAD -> {
+                case LOAD -> { // O(n)
                     try {
                         String name = in.nextLine().trim();
-                        Bounds area = app.loadArea(name);
+                        Bounds area = app.loadArea(name); // O(n)
                         System.out.printf(BOUND_LOADED_FORMAT, area.getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(INVALID_BOUND);
                     }
                 }
-                case STUDENTS -> {
+                case STUDENTS -> { // O(n)
                     String country = in.nextLine().trim();
                     Iterator<Student> students;
                     try {
                         if (country.equalsIgnoreCase(ALL_STUDENTS)) {
-                            students = app.listAllStudents();
+                            students = app.listAllStudents(); // O(1)
                             if (!students.hasNext()) {
                                 System.out.println(NO_STUDENTS);
                             }
                         } else {
-                            students = app.listStudentsByCountry(country);
+                            students = app.listStudentsByCountry(country); // O(1)
                             if (!students.hasNext()) {
                                 System.out.printf(NO_STUDENTS_COUNTRY, country);
                             }
                         }
-                        while (students.hasNext()) {
+                        while (students.hasNext()) { // O(n)
                             Student cur = students.next();
                             System.out.printf(STUDENT_LIST_FORMAT, cur.getName(), cur.getType().toString().toLowerCase(), cur.getLocation().getName());
                         }
@@ -196,14 +196,14 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }
-                case STUDENT -> {
+                case STUDENT -> { // O(n)
                     String type = in.next();
                     in.nextLine();
                     String name = in.nextLine().trim();
                     String country = in.nextLine().trim();
                     String lodging = in.nextLine().trim();
                     try {
-                        app.createStudent(type, name, lodging, country);
+                        app.createStudent(type, name, lodging, country); // O(n)
                         System.out.printf(STUDENT_FORMAT, name);
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
@@ -217,11 +217,11 @@ public class Main {
                         System.out.printf(ENTITY_ALREADY_EXISTS_FORMAT, e.getElement());
                     }
                 }
-                case WHERE -> {
+                case WHERE -> { // O(n)
                     String name = in.nextLine().trim();
                     try {
-                        Student student = app.getStudent(name);
-                        Service location = student.getLocation();
+                        Student student = app.getStudent(name); // O(n)
+                        Service location = student.getLocation(); // O(1)
                         System.out.printf(STUDENT_LOCATION_FORMAT, student.getName(), location.getName(), location.getType().toString().toLowerCase(), location.getPosition());
                         }
                     catch (BoundsNotDefined e){
@@ -231,14 +231,14 @@ public class Main {
                     }
 
                 }
-                case RANKED -> {
+                case RANKED -> { // O(n)
                     String type = in.next().toLowerCase();
                     int rate = in.nextInt();
                     String name = in.nextLine().trim();
                     try {
-                        Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name);
+                        Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name); // O(n)
                         System.out.printf(RANKED_HEADER, type, rate);
-                        while (it.hasNext()) {
+                        while (it.hasNext()) { // O(n)
                             Service s = it.next();
                             System.out.println(s.getName());
                         }
@@ -256,22 +256,22 @@ public class Main {
                         System.out.println(INVALID_STARS);
                     }
                 }
-                case USERS -> {
+                case USERS -> { // O(n)
                     String order = in.next();
                     String serviceName = in.nextLine().trim();
                     Order actualOrder = null;
                     if (order.equals("<")) actualOrder = Order.NEW_TO_OLD;
                     if (order.equals(">")) actualOrder = Order.OLD_TO_NEW;
                     try {
-                        TwoWayIterator<Student> it = app.getUsersByService(serviceName, actualOrder);
+                        TwoWayIterator<Student> it = app.getUsersByService(serviceName, actualOrder); // O(n)
                         assert actualOrder != null;
                         if (actualOrder.equals(Order.OLD_TO_NEW)) {
-                            while (it.hasNext()) {
+                            while (it.hasNext()) { // O(n)
                                 Student s = it.next();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
                         } else {
-                            while (it.hasPrevious()) {
+                            while (it.hasPrevious()) { // O(n)
                                 Student s = it.previous();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
@@ -288,14 +288,14 @@ public class Main {
                         System.out.printf(NO_STUDENTS_IN, e.getService().getName());
                     }
                 }
-                case GO -> {
+                case GO -> { // O(n)
                     String studentName = in.nextLine().trim();
                     String locationName = in.nextLine().trim();
                     boolean isDistracted = false;
                     try {
-                        Student student = app.getStudent(studentName);
-                        Service home = app.getService(locationName);
-                        isDistracted = app.updateStudentPosition(student, home);
+                        Student student = app.getStudent(studentName); // O(n)
+                        Service home = app.getService(locationName); // O(n)
+                        isDistracted = app.updateStudentPosition(student, home); // O(1) best case, O(n) worst case, expected O(n)
                         if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, student.getName(), home.getName());}
                         else System.out.printf(LOCATION_CHANGED_FORMAT, student.getName(), home.getName());
                     } catch (BoundsNotDefined e) {
@@ -313,14 +313,14 @@ public class Main {
                     }
                 }
 
-                case MOVE -> {
+                case MOVE -> { // O(n)
                     String name = in.nextLine().trim();
                     String lodging = in.nextLine().trim();
                     try {
-                        app.moveHome(name, lodging);
+                        app.moveHome(name, lodging); // O(n)
                         // TODO arranjar forma de não usar getService e getUser e devolver com moveHome ou algo assim
-                        Student student = app.getStudent(name);
-                        Service home = app.getService(lodging);
+                        Student student = app.getStudent(name); // O(n)
+                        Service home = app.getService(lodging); // O(n)
                         System.out.printf(STUDENT_MOVED_FORMAT, home.getName(), student.getName());
                     } catch(BoundsNotDefined e){
                         System.out.println(BOUNDS_NOT_DEFINED);
@@ -335,12 +335,12 @@ public class Main {
                     }catch (MoveNotAcceptable e) {
                         System.out.printf(MOVE_NOT_ACCEPTABLE, e.getStudent().getName());
                     }
-                }case VISITED -> {
+                }case VISITED -> { // O(n)
                     String name = in.nextLine().trim();
                     try{
                         Student student = app.getStudent(name);
-                        Iterator<Service> it = app.listVisitedServices(student);
-                            while(it.hasNext()){
+                        Iterator<Service> it = app.listVisitedServices(student); // O(1)
+                            while(it.hasNext()){ // O(n) time
                                 System.out.println(it.next().getName());
                             }
                     }catch (BoundsNotDefined e) {
@@ -352,46 +352,46 @@ public class Main {
                     } catch (NoVisitedServicesException e) {
                         System.out.printf(STUDENT_HAS_NOT_VISITED_ANY_LOCATION, e.getStudent().getName());
                     }
-                }case LEAVE -> {
+                }case LEAVE -> { // O(n^2)
                     String name = in.nextLine().trim();
                     try{
-                        Student student = app.removeStudent(name);
+                        Student student = app.removeStudent(name); // O(n^2)
                         System.out.printf(STUDENT_HAS_LEFT, student.getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }catch (StudentDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, name);
                     }
-                }case RANKING -> {
+                }case RANKING -> { // O(n)
                     try {
-                        Iterator<Service> iter = app.listServicesByRanking();
+                        Iterator<Service> iter = app.listServicesByRanking(); // O(1)
                         if(iter.hasNext()) System.out.println(RANKING_HEADER);
                         else System.out.println(EMPTY_RANKING);
-                        while(iter.hasNext()){
+                        while(iter.hasNext()){ // O(n)
                             Service ser =  iter.next();
                             System.out.printf(RANKING_FORMAT, ser.getName(), ser.getRating());
                         }
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
-                }case TAG -> {
+                }case TAG -> { // O(n^2)
                     String tagName = in.nextLine().trim();
                     try {
-                        Iterator<Service> iter = app.listServicesByTag(tagName);
+                        Iterator<Service> iter = app.listServicesByTag(tagName); // O(1)
                         if(iter.hasNext()){
-                        while(iter.hasNext()) {
-                            Service ser = iter.next();
-                            System.out.printf(TAG_FORMAT, ser.getType().name().toLowerCase(), ser.getName());
-                        }
+                            while(iter.hasNext()) { // traversing the iterator is O(n^2)
+                                Service ser = iter.next();
+                                System.out.printf(TAG_FORMAT, ser.getType().name().toLowerCase(), ser.getName());
+                            }
                         }else System.out.println(NO_SUCH_TAG);
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
-                }case FIND ->{
+                }case FIND ->{ // O(1) best case, O(n) worst case
                         String studentName = in.nextLine().trim();
                         String type = in.nextLine().trim();
                         try {
-                            Service bestServices = app.findBestService(studentName, type);
+                            Service bestServices = app.findBestService(studentName, type); // O(1) best case, O(n) worst case
                             if(bestServices == null)System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type.toLowerCase());
                             else System.out.println(bestServices.getName());
                         } catch (BoundsNotDefined e) {
@@ -401,11 +401,11 @@ public class Main {
                         }catch (StudentDoesNotExistException e) {
                             System.out.printf(ELEMENT_DOES_NOT_EXIST, studentName);
                         }
-                }case STAR ->{
+                }case STAR ->{ // O(n)
                     int rating = in.nextInt();String serviceName = in.nextLine().trim();
                     String description =  in.nextLine().trim();
                     try{
-                        app.rateService(rating, serviceName, description);
+                        app.rateService(rating, serviceName, description); // O(n)
                         System.out.println(RATING_SUCCESS_FORMAT);
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
@@ -416,9 +416,9 @@ public class Main {
                     }
                 }
                 case UNKNOWN -> System.out.println(UNKNOWN_COMMAND);
-                case EXIT -> {
+                case EXIT -> { // O(n)
                     try {
-                        app.saveCurrentArea();
+                        app.saveCurrentArea(); // O(n)
                     } catch (BoundsNotDefined e) {}
                     System.out.println(EXIT_MESSAGE);
                 }

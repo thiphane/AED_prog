@@ -26,25 +26,30 @@ public class ServiceStorage implements Serializable {
         this.servicesByStar = new SortedDoublyLinkedList<>(new ServiceStarComparator());
     }
 
+    /**
+     * Adds a new serviec
+     * @param service the service to add
+     * @throws AlreadyExistsException if a service with the given name already exists
+     */
     public void addService(Service service) throws AlreadyExistsException {
         Iterator<Service> iter = services.iterator();
-        while(iter.hasNext()) {
+        while(iter.hasNext()) { // O(n)
             Service cur = iter.next();
             if(cur.getName().equalsIgnoreCase(service.getName())) {
                 throw new AlreadyExistsException(cur.getName());
             }
         }
-        this.services.addLast(service);
-        this.servicesByStar.add(service);
+        this.services.addLast(service); // O(1)
+        this.servicesByStar.add(service); // O(n) worst case, O(1) best case
     }
 
     public void rateService(String service, int rating, String description) throws ServiceDoesNotExistException {
-        Service elem = getService(service);
+        Service elem = getService(service); // O(n)
         int oldRating = elem.getRating();
-        elem.addRating(rating, description);
+        elem.addRating(rating, description); // O(1)
         if(oldRating != elem.getRating()) {
-            servicesByStar.remove(elem);
-            servicesByStar.add(elem);
+            servicesByStar.remove(elem); // O(n)
+            servicesByStar.add(elem); // O(1) best cases, O(n) worst case, expected O(n)
         }
     }
 
@@ -57,7 +62,7 @@ public class ServiceStorage implements Serializable {
     }
 
     public Iterator<Service> listAllServices() {
-        return services.iterator();
+        return services.iterator(); // O(n)
     }
 
     Iterator<Service> listServicesByRanking() {
@@ -66,11 +71,11 @@ public class ServiceStorage implements Serializable {
 
     @Serial
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        ois.defaultReadObject();
+        ois.defaultReadObject(); // O(n)
         // Evitar ler 2 listas do ficheiro, com conteúdo igual
         this.servicesByStar = new SortedDoublyLinkedList<>(new ServiceStarComparator());
         Iterator<Service> iter = this.services.iterator();
-        while(iter.hasNext()) {
+        while(iter.hasNext()) { // O(n)
             servicesByStar.add(iter.next());
         }
     }
