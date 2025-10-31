@@ -8,7 +8,7 @@ import campus_app.app.Position;
 import campus_app.exceptions.InvalidPriceException;
 import campus_app.exceptions.InvalidValueException;
 
-public class LeisureService extends ServiceAbstract implements Service {
+public class LeisureService extends ServiceAbstract {
     private static final ServiceType TYPE = ServiceType.LEISURE;
     public LeisureService(String serviceName, Position position, int price, int value) throws InvalidValueException, InvalidPriceException {
         super(serviceName, position, price, value, TYPE);

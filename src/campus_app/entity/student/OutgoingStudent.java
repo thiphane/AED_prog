@@ -13,7 +13,7 @@ import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 import dataStructures.List;
 
-public class OutgoingStudent extends StudentAbstract implements Student {
+public class OutgoingStudent extends StudentAbstract {
     protected List<Service> visited;
     public OutgoingStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);

@@ -15,7 +15,7 @@ import campus_app.entity.service.Service;
 import dataStructures.List;
 import dataStructures.ListInArray;
 
-public class BookishStudent extends StudentAbstract implements Student {
+public class BookishStudent extends StudentAbstract {
     protected List<Service> visited;
     public BookishStudent(String name, String country, LodgingService home) throws ServiceIsFullException { // O(n)
         super(name, country, home); // O(n)
