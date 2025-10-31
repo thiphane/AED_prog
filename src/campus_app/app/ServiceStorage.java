@@ -40,17 +40,12 @@ public class ServiceStorage implements Serializable {
             }
         }
         this.services.addLast(service); // O(1)
-        this.servicesByStar.add(service); // O(n) worst case, O(1) best case
+        this.servicesByStar.add(service); // O(n) worst case, O(1) best case (all other services are 5 star)
     }
 
-    public void rateService(String service, int rating, String description) throws ServiceDoesNotExistException {
-        Service elem = getService(service); // O(n)
-        int oldRating = elem.getRating();
-        elem.addRating(rating, description); // O(1)
-        if(oldRating != elem.getRating()) {
-            servicesByStar.remove(elem); // O(n)
-            servicesByStar.add(elem); // O(1) best cases, O(n) worst case, expected O(n)
-        }
+    public void updateServiceRating(Service service) {
+        servicesByStar.remove(service);
+        servicesByStar.add(service);
     }
 
     public Service getService(String service) throws ServiceDoesNotExistException {

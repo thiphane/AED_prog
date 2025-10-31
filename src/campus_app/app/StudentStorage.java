@@ -31,7 +31,7 @@ public class StudentStorage implements Serializable {
         this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
     }
 
-    public void addStudent(Student student) {
+    public void addStudent(Student student) throws AlreadyExistsException {
         this.students.addLast(student); // O(1)
         this.alphabeticalStudents.add(student); // O(n) worst case, O(1) best case (student is the lowest in the alphabetical order)
     }
@@ -52,15 +52,6 @@ public class StudentStorage implements Serializable {
         return removed;
     }
 
-    public void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
-        student.updatePosition(newLocation);
-    }
-
-    public void moveHome(String student, LodgingService newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException {
-        Student s = this.getStudent(student); // O(n)
-        s.moveHome(newHome);
-    }
-
     public Iterator<Student> getAllStudents() {
         return alphabeticalStudents.iterator();
     }
@@ -76,13 +67,6 @@ public class StudentStorage implements Serializable {
     public Service findBestService(Student student, ServiceType type,  Iterator<Service> services) {
         return student.findBestService(new FilterIterator<Service>(services, new ServiceTypePredicate(type)));
    }
-    public Iterator<Service> findClosestService(String studentName, Iterator<Service> services) throws StudentDoesNotExistException {
-        Student s = this.getStudent(studentName); // O(n)
-        if(s == null) {
-            throw new StudentDoesNotExistException();
-        }
-        return s.findClosestServices(services);
-    }
 
     @Serial
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {

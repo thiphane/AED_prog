@@ -80,28 +80,6 @@ public interface Bounds {
     Student getStudent(String student) throws StudentDoesNotExistException;
 
     /**
-     * Changes a student's location
-     * O(1) best case, O(n) worst case, expected O(n) time
-     * @param student the student to change the location of
-     * @param newLocation the location to move the student to
-     * @throws ThriftyStudentIsDistracted if the student was distracted by this moving; they are still moved if this is thrown
-     * @throws ServiceIsFullException if the location the student is moving to is full
-     */
-    void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException;
-
-    /**
-     * Changes a student's home
-     * O(n) time
-     * @param studentName the name of the student
-     * @param newHomeService the new home
-     * @throws ServiceIsFullException if the given home is full
-     * @throws MoveNotAcceptable if the student refuses to move to the new home
-     * @throws SameHomeException if the student tries to move to their own home
-     * @throws StudentDoesNotExistException if no student with the given name exists
-     */
-    void moveHome(String studentName, LodgingService newHomeService) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException;
-
-    /**
      * Creating the iterator is O(1), traversing it is O(n)
      * @return an iterator through all the students in the area in alphabetical order
      */
@@ -140,21 +118,11 @@ public interface Bounds {
     Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException;
 
     /**
-     * Gets the closest service(s) to a student
-     * O(n)
-     * @param studentName the name of the student
-     * @param byTypeAndRate an iterator through the services to consider
-     * @return an iterator through the service(s) closest to the student
-     * @throws StudentDoesNotExistException if the student does not exist
-     */
-    Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate) throws StudentDoesNotExistException;
-
-    /**
      * Adds a new student to the bounds
      * O(n) time
      * @param student the student to add
      */
-    void addStudent(Student student);
+    void addStudent(Student student) throws AlreadyExistsException;
 
     /**
      * Gets the service with the given name
@@ -172,12 +140,8 @@ public interface Bounds {
     Iterator<Service>listServicesByRating();
 
     /**
-     * Adds a new evaluation to the given service
-     * O(n)
-     * @param rate the rating
-     * @param serviceName the name of the service
-     * @param description the description of the evaluation
-     * @throws ServiceDoesNotExistException if no service with the given name exists
+     * Updates the service's ranking
+     * @param service the service to update
      */
-    void addRating(int rate, String serviceName, String description) throws ServiceDoesNotExistException;
+    void updateServiceRating(Service service);
 }

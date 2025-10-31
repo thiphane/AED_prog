@@ -60,17 +60,6 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public void updateStudentLocation(Student student, Service newLocation) throws ThriftyStudentIsDistracted, ServiceIsFullException {
-        students.updateStudentLocation(student, newLocation);
-
-    }
-
-    @Override
-    public void moveHome(String studentName, LodgingService newHomeService) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, StudentDoesNotExistException {
-        students.moveHome(studentName, newHomeService);
-    }
-
-    @Override
     public Iterator<Student> getAllStudents() {
         return students.getAllStudents();
     }
@@ -154,18 +143,13 @@ public class BoundsClass implements Bounds, Serializable {
         return res;
     }
 
-    @Override
-    public Iterator<Service> findClosestService(String studentName, Iterator<Service> byTypeAndRate) throws StudentDoesNotExistException { // O(n)
-        return students.findClosestService(studentName, byTypeAndRate);
-    }
-
     /**
      * Adds a new student to the bounds
      * O(n)
      * @param student the student
      */
     @Override
-    public void addStudent(Student student) {
+    public void addStudent(Student student) throws AlreadyExistsException {
         students.addStudent(student);
     }
 
@@ -178,8 +162,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public void addRating(int rate, String serviceName, String description) throws ServiceDoesNotExistException {
-        services.rateService(serviceName, rate, description); // O(n)
+    public void updateServiceRating(Service service) {
+        services.updateServiceRating(service);
     }
-
 }

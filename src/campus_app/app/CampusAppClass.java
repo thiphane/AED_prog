@@ -105,21 +105,18 @@ public class CampusAppClass implements CampusApp {
         Service serviceObj;
         try {
             serviceObj = currentBounds.getService(lodging);
-        } catch (Exception e) {
+        } catch (ServiceDoesNotExistException e) {
             throw new NoSuchElementOfGivenType();
         }
         if (!(serviceObj instanceof LodgingService home)) {
             throw new NoSuchElementOfGivenType();
         }
-        Student student = null;
-        try{
-            student = currentBounds.getStudent(name);
-        } catch (StudentDoesNotExistException ignored) {
-        }
+        try {
+            Student s = currentBounds.getStudent(name);
+            throw new AlreadyExistsException(s.getName());
+        } catch (StudentDoesNotExistException ignored) {}
 
-        if(student != null) {
-            throw new AlreadyExistsException(student.getName()); // TODO passar isto para as bounds .addStudent, tal como os serviços fazem
-        }
+        Student student = null;
         switch(studentType) { // Since lodging services store students, all students will take O(n) time to create
             case BOOKISH -> {
                 student = new BookishStudent(name, country, home);
@@ -130,11 +127,7 @@ public class CampusAppClass implements CampusApp {
             case OUTGOING -> {
                 student = new OutgoingStudent(name, country, home);
             }
-            default -> {
-                throw new InvalidTypeException();
-            }
         }
-
         this.currentBounds.addStudent(student); // O(n)
     }
 
@@ -182,11 +175,11 @@ public class CampusAppClass implements CampusApp {
         }
         try {
             /*
-             * Best case: O(1), if the studen't doesn't store services of this type, the service they're moving to doesn't store users,
+             * Best case: O(1), if the student doesn't store services of this type, the service they're moving to doesn't store users,
              * and neither does the service they're moving from
              * Worst case: O(n), if any of those apply
              */
-            currentBounds.updateStudentLocation(student, service);
+            student.updatePosition(service);
         }catch (ThriftyStudentIsDistracted e){
             return true;
         }
@@ -210,9 +203,12 @@ public class CampusAppClass implements CampusApp {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        Service newHomeService;
-        newHomeService = this.getService(newHome); // O(n)
-        currentBounds.moveHome(studentName, (LodgingService) newHomeService); // O(n)
+        Service newHomeService = this.getService(newHome); // O(n)
+        if(!(newHomeService instanceof LodgingService lodging)) {
+            throw new ServiceDoesNotExistException();
+        }
+        Student student = this.currentBounds.getStudent(studentName); // O(n)
+        student.moveHome(lodging); // O(n)
     }
 
     /**
@@ -233,7 +229,12 @@ public class CampusAppClass implements CampusApp {
         if (rate < 1 || rate > 5) {
             throw new InvalidRating();
         }
-        currentBounds.addRating(rate, serviceName, description); // O(n)
+        Service service = currentBounds.getService(serviceName);
+        int oldRating = service.getRating();
+        service.addRating(rate, description); // O(n)
+        if(service.getRating() != oldRating) {
+            currentBounds.updateServiceRating(service);
+        }
     }
 
     @Override
@@ -341,7 +342,8 @@ public class CampusAppClass implements CampusApp {
         if(!byType.hasNext())throw new NoSuchElementOfGivenType();
         Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate)); // O(1)
         if(!byTypeAndRate.hasNext())throw new NoSuchServiceWithGivenRate();
-        return this.currentBounds.findClosestService(studentName, byTypeAndRate);
+        Student s = this.currentBounds.getStudent(studentName);
+        return s.findClosestServices(byTypeAndRate);
     }
 
 }
