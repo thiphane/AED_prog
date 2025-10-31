@@ -7,7 +7,7 @@ package campus_app.exceptions;
 import campus_app.entity.service.Service;
 
 public class NoStudentsException extends Exception {
-    Service service;
+    final Service service;
     public NoStudentsException(Service where) {
         this.service = where;
     }

@@ -6,7 +6,6 @@ package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
 import campus_app.exceptions.*;
-import campus_app.exceptions.ServiceIsFullException;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 

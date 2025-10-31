@@ -4,21 +4,16 @@
  */
 package campus_app.app;
 
-import campus_app.entity.service.EatingService;
 import campus_app.entity.service.Service;
-import campus_app.entity.student.Student;
 import campus_app.exceptions.AlreadyExistsException;
-import campus_app.exceptions.InvalidPriceException;
-import campus_app.exceptions.InvalidValueException;
 import campus_app.exceptions.ServiceDoesNotExistException;
 import dataStructures.*;
-import dataStructures.exceptions.NoSuchElementException;
 
 import java.io.*;
 
 public class ServiceStorage implements Serializable {
     // All services by order of insertion
-    protected List<Service> services;
+    protected final List<Service> services;
     // All services by order of their rating
     transient protected SortedList<Service> servicesByStar;
     public ServiceStorage() {

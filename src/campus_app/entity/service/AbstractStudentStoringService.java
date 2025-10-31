@@ -14,7 +14,7 @@ import dataStructures.TwoWayIterator;
 import dataStructures.TwoWayList;
 
 public abstract class AbstractStudentStoringService extends ServiceAbstract implements StudentStoringService {
-    private TwoWayList<Student> users;
+    final private TwoWayList<Student> users;
 
     public AbstractStudentStoringService(String serviceName, Position position, int price, int value, ServiceType type) throws InvalidPriceException, InvalidValueException {
         super(serviceName, position, price, value, type);
@@ -37,7 +37,7 @@ public abstract class AbstractStudentStoringService extends ServiceAbstract impl
     }
 
     /**
-     * Removes an user from the service
+     * Removes a user from the service
      * O(n) time
      * @param student the student
      */

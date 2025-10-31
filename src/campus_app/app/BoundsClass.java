@@ -4,16 +4,13 @@
  */
 package campus_app.app;
 
-import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.Service;
 import campus_app.entity.service.ServiceType;
 import campus_app.entity.service.StudentStoringService;
 import campus_app.entity.student.Student;
 import campus_app.entity.student.StudentType;
 import campus_app.exceptions.*;
-import dataStructures.FilterIterator;
 import dataStructures.Iterator;
-import dataStructures.exceptions.NoSuchElementException;
 
 import java.io.*;
 
@@ -27,13 +24,13 @@ public class BoundsClass implements Bounds, Serializable {
         this(name, new Position(topLatitude, topLongitude), new Position(bottomLatitude, bottomLongitude));
     }
 
-    public BoundsClass(String name, Position topLeft, Position botRight) throws InvalidBoundPoints {
-        if(topLeft.latitude() <= botRight.latitude() || topLeft.longitude() >= botRight.longitude()) {
+    public BoundsClass(String name, Position topLeft, Position bottomRight) throws InvalidBoundPoints {
+        if(topLeft.latitude() <= bottomRight.latitude() || topLeft.longitude() >= bottomRight.longitude()) {
             throw new InvalidBoundPoints();
         }
         this.name = name;
         this.topPosition = topLeft;
-        this.bottomPosition = botRight;
+        this.bottomPosition = bottomRight;
         this.students = new StudentStorage();
         this.services = new ServiceStorage();
     }
@@ -149,7 +146,7 @@ public class BoundsClass implements Bounds, Serializable {
      * @param student the student
      */
     @Override
-    public void addStudent(Student student) throws AlreadyExistsException {
+    public void addStudent(Student student) {
         students.addStudent(student);
     }
 

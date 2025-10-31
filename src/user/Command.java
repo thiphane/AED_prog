@@ -27,7 +27,8 @@ public enum Command {
     EXIT("Terminates the execution of the program"),
     UNKNOWN("")
 
-    ;private String description;
+    ;
+    private final String description;
     Command(String description) {
         this.description = description;
     }

@@ -7,7 +7,7 @@ package campus_app.exceptions;
 import campus_app.entity.student.Student;
 
 public class SameHomeException extends Exception {
-    private Student student;
+    private final Student student;
     public SameHomeException(Student student) {
         this.student = student;
     }

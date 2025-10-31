@@ -5,7 +5,7 @@
 package campus_app.exceptions;
 
 public class AlreadyExistsException extends Exception {
-    private String element;
+    private final String element;
     public AlreadyExistsException(String element) {
         this.element = element;
     }

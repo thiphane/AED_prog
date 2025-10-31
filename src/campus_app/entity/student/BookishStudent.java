@@ -7,13 +7,11 @@ package campus_app.entity.student;
 import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.StudentDoesntStoreVisitedServicesException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 import dataStructures.List;
-import dataStructures.ListInArray;
 
 public class BookishStudent extends StudentAbstract {
     protected List<Service> visited;
@@ -37,7 +35,7 @@ public class BookishStudent extends StudentAbstract {
     }
 
     @Override
-    public Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException {
+    public Iterator<Service> getVisitedServices() {
         return visited.iterator();
     }
 }

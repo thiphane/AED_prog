@@ -8,7 +8,7 @@ import campus_app.entity.service.Service;
 import dataStructures.Predicate;
 
 public class ServiceRatePredicate implements Predicate<Service> {
-    int rate;
+    final int rate;
     public ServiceRatePredicate(int rate) {
         this.rate = rate;
     }

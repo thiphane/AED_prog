@@ -12,7 +12,7 @@ class DoublyIterator<E> implements Iterator<E> {
     /**
      * Node with the first element in the iteration.
      */
-    private DoublyListNode<E> firstNode;
+    private final DoublyListNode<E> firstNode;
 
     /**
      * Node with the next element in the iteration.

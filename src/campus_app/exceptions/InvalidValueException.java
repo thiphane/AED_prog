@@ -7,7 +7,7 @@ package campus_app.exceptions;
 import campus_app.entity.service.ServiceType;
 
 public class InvalidValueException extends Exception {
-    ServiceType type;
+    final ServiceType type;
     public InvalidValueException(ServiceType type) {
         this.type = type;
     }

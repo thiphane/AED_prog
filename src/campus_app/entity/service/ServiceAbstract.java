@@ -7,7 +7,6 @@ import campus_app.exceptions.InvalidPriceException;
 import campus_app.exceptions.InvalidValueException;
 import dataStructures.*;
 import campus_app.app.Position;
-import campus_app.entity.student.Student;
 
 public abstract class ServiceAbstract implements Service {
     private final String name;

@@ -12,7 +12,6 @@ import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.*;
 import dataStructures.Iterator;
 import dataStructures.TwoWayIterator;
-import dataStructures.exceptions.NoSuchElementException;
 import user.Command;
 
 import java.util.Scanner;
@@ -97,11 +96,11 @@ public class Main {
                 case BOUNDS -> { // O(n)
                     long topLeftLat = in.nextLong();
                     long topLeftLon = in.nextLong();
-                    long botRightLat = in.nextLong();
-                    long botRightLon = in.nextLong();
+                    long bottomRightLat = in.nextLong();
+                    long bottomRightLong = in.nextLong();
                     String name = in.nextLine().trim();
                     try {
-                        app.createBounds(name, topLeftLat, topLeftLon, botRightLat, botRightLon);
+                        app.createBounds(name, topLeftLat, topLeftLon, bottomRightLat, bottomRightLong);
                         System.out.printf(BOUND_CREATED_FORMAT, name);
                     } catch (BoundNameExists e) {
                         System.out.println(BOUND_NAME_EXISTS);
@@ -291,7 +290,7 @@ public class Main {
                 case GO -> { // O(n)
                     String studentName = in.nextLine().trim();
                     String locationName = in.nextLine().trim();
-                    boolean isDistracted = false;
+                    boolean isDistracted;
                     try {
                         Student student = app.getStudent(studentName); // O(n)
                         Service home = app.getService(locationName); // O(n)
@@ -419,7 +418,7 @@ public class Main {
                 case EXIT -> { // O(n)
                     try {
                         app.saveCurrentArea(); // O(n)
-                    } catch (BoundsNotDefined e) {}
+                    } catch (BoundsNotDefined ignored) {}
                     System.out.println(EXIT_MESSAGE);
                 }
             }

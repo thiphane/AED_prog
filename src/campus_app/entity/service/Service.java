@@ -3,9 +3,7 @@
  * @author Rodrigo Moura 71429
  */
 package campus_app.entity.service;
-import dataStructures.*;
 import campus_app.app.Position;
-import campus_app.entity.student.Student;
 
 import java.io.Serializable;
 

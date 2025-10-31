@@ -7,7 +7,7 @@ package campus_app.exceptions;
 import campus_app.entity.service.Service;
 
 public class ServiceIsFullException extends Exception {
-    Service service;
+    final Service service;
 
     public ServiceIsFullException(Service service) {
         this.service = service;

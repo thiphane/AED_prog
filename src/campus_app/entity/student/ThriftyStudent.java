@@ -6,13 +6,9 @@ package campus_app.entity.student;
 
 import campus_app.entity.service.EatingService;
 import campus_app.entity.service.LodgingService;
-import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.*;
-import campus_app.exceptions.ServiceIsFullException;
-import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
-import dataStructures.ListInArray;
 
 public class ThriftyStudent extends StudentAbstract {
     EatingService cheapestEating;

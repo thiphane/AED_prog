@@ -4,17 +4,11 @@
  */
 package campus_app.app;
 
-import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.Service;
 import campus_app.entity.service.ServiceType;
 import campus_app.entity.student.Student;
 import campus_app.exceptions.*;
-import campus_app.exceptions.AlreadyExistsException;
-import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.ThriftyStudentIsDistracted;
-import dataStructures.FilterIterator;
 import dataStructures.Iterator;
-import dataStructures.exceptions.NoSuchElementException;
 
 public interface Bounds {
     static String getBoundFilename(String name) {
@@ -122,7 +116,7 @@ public interface Bounds {
      * O(n) time
      * @param student the student to add
      */
-    void addStudent(Student student) throws AlreadyExistsException;
+    void addStudent(Student student);
 
     /**
      * Gets the service with the given name

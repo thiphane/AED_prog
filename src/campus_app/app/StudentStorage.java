@@ -4,25 +4,17 @@
  */
 package campus_app.app;
 
-import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.ServiceType;
-import campus_app.entity.service.StudentStoringService;
-import campus_app.entity.student.BookishStudent;
-import campus_app.entity.student.StudentType;
-import campus_app.entity.student.ThriftyStudent;
 import campus_app.exceptions.*;
-import campus_app.exceptions.ServiceIsFullException;
 import dataStructures.*;
 import campus_app.entity.service.Service;
 import campus_app.entity.student.Student;
-import dataStructures.exceptions.InvalidPositionException;
-import dataStructures.exceptions.NoSuchElementException;
 
 import java.io.*;
 
 public class StudentStorage implements Serializable {
     // All students by order of insertion
-    protected List<Student> students;
+    protected final List<Student> students;
     // All students sorted alphabetically
     transient protected SortedList<Student> alphabeticalStudents;
 
@@ -31,7 +23,7 @@ public class StudentStorage implements Serializable {
         this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
     }
 
-    public void addStudent(Student student) throws AlreadyExistsException {
+    public void addStudent(Student student) {
         this.students.addLast(student); // O(1)
         this.alphabeticalStudents.add(student); // O(n) worst case, O(1) best case (student is the lowest in the alphabetical order)
     }
@@ -65,7 +57,7 @@ public class StudentStorage implements Serializable {
     }
 
     public Service findBestService(Student student, ServiceType type,  Iterator<Service> services) {
-        return student.findBestService(new FilterIterator<Service>(services, new ServiceTypePredicate(type)));
+        return student.findBestService(new FilterIterator<>(services, new ServiceTypePredicate(type)));
    }
 
     @Serial

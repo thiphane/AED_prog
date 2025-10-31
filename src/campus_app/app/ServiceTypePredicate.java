@@ -9,7 +9,7 @@ import campus_app.entity.service.ServiceType;
 import dataStructures.Predicate;
 
 public class ServiceTypePredicate implements Predicate<Service> {
-    private ServiceType type;
+    private final ServiceType type;
     public ServiceTypePredicate(ServiceType type) {
         this.type = type;
     }

@@ -7,11 +7,8 @@ package campus_app.entity.student;
 import campus_app.entity.service.LodgingService;
 import campus_app.exceptions.*;
 import campus_app.entity.service.StudentStoringService;
-import campus_app.exceptions.ServiceIsFullException;
 import dataStructures.*;
 import campus_app.entity.service.Service;
-import dataStructures.SortedDoublyLinkedList;
-import dataStructures.SortedList;
 
 public abstract class StudentAbstract implements Student {
     private final String name;

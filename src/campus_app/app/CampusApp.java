@@ -142,7 +142,7 @@ public interface CampusApp {
      * @throws CantShowUsersException if the given service doesn't store the users in it
      * @throws NoStudentsException if the given service is empty
      */
-    TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException;;
+    TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException;
     /**
      * List all students in alphabetical order
      * O(1) to create the iterator, O(n) to traverse it
@@ -191,9 +191,9 @@ public interface CampusApp {
      * @throws BoundsNotDefined if no bounds are defined
      * @throws InvalidTypeException if the given service type doesn't exist
      * @throws NoSuchElementOfGivenType if no student with the given name exists
-     * @throws NoSuchServiceWithGivenRate
-     * @throws StudentDoesNotExistException
-     * @throws InvalidRating
+     * @throws NoSuchServiceWithGivenRate if no services with the given rating exist
+     * @throws StudentDoesNotExistException if no student with the given name exists
+     * @throws InvalidRating if the rating is not within the bounds
      */
     Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException, InvalidRating;
     /**

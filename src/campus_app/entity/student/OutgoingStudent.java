@@ -6,7 +6,6 @@ package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
 import campus_app.exceptions.ServiceIsFullException;
-import campus_app.exceptions.StudentDoesntStoreVisitedServicesException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
@@ -35,7 +34,7 @@ public class OutgoingStudent extends StudentAbstract {
     }
 
     @Override
-    public Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException {
+    public Iterator<Service> getVisitedServices() {
         return visited.iterator();
     }
 }

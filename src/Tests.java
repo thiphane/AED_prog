@@ -45,7 +45,7 @@ public class Tests {
      * projecto. Para os outros projectos, tem de configurar os testes.
      */
     @Test
-    public void test01() throws IOException {
+    public void test01() {
         test("input1","output1");
     }
     @Test public void test02() { test("input2","output2"); }
@@ -155,9 +155,9 @@ public class Tests {
             fullInput = new String(Files.readAllBytes(input.toPath()));
             fullOutput = new String(Files.readAllBytes(output.toPath()));
             consoleStream.println("INPUT ============");
-            consoleStream.println(new String(fullInput));
+            consoleStream.println((fullInput));
             consoleStream.println("OUTPUT ESPERADO =============");
-            consoleStream.println(new String(fullOutput));
+            consoleStream.println((fullOutput));
             consoleStream.println("OUTPUT =============");
         } catch(Exception e) {
             e.printStackTrace();
@@ -173,10 +173,9 @@ public class Tests {
             e.printStackTrace();
             fail("Erro no programa");
         } finally {
-            byte[] outPrintBytes = outContent.toByteArray();
-            consoleStream.println(new String(outPrintBytes));
+            consoleStream.println(outContent.toString());
 
-            Assertions.assertEquals(removeCarriages(fullOutput), removeCarriages(new String(outContent.toByteArray())));
+            Assertions.assertEquals(removeCarriages(fullOutput), removeCarriages(outContent.toString()));
         }
     }
 

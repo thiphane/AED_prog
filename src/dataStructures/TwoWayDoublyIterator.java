@@ -15,7 +15,7 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
     /**
      * Node with the last element in the iteration.
      */
-    private DoublyListNode<E> lastNode;
+    private final DoublyListNode<E> lastNode;
     /**
      * Node with the previous element in the iteration.
      */

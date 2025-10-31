@@ -15,12 +15,12 @@ public class FilterIterator<E> implements Iterator<E> {
     /**
      * Iterator of elements to filter.
      */
-    Iterator<E> iterator;
+    final Iterator<E> iterator;
 
     /**
      * Filter.
      */
-    Predicate<E> criterion;
+    final Predicate<E> criterion;
 
     /**
      * Node with the next element in the iteration.

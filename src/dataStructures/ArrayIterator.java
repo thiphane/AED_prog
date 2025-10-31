@@ -7,8 +7,8 @@ package dataStructures;
  *
  */
 class ArrayIterator<E> implements Iterator<E> {
-    private E[] elems;
-    private int counter;
+    private final E[] elems;
+    private final int counter;
     private int current;
 
     /**

@@ -7,7 +7,6 @@ import campus_app.entity.service.*;
 import campus_app.entity.student.*;
 import campus_app.exceptions.*;
 import dataStructures.*;
-import dataStructures.exceptions.InvalidPositionException;
 import dataStructures.exceptions.NoSuchElementException;
 
 import java.nio.file.Files;
@@ -73,26 +72,16 @@ public class CampusAppClass implements CampusApp {
         }
         Service service;
         switch(actualType) { // O(1)
-            case LEISURE -> {
-                service = new LeisureService(serviceName, pos, price, value);
-            }
-            case EATING -> {
-                service = new EatingService(serviceName, pos, price, value);
-            }
-            case LODGING -> {
-                service = new LodgingService(serviceName, pos, price, value);
-            }
-            default -> {
-                // Compiler complains without default case
-                throw new RuntimeException("Invalid service type");
-            }
+            case LEISURE -> service = new LeisureService(serviceName, pos, price, value);
+            case EATING -> service = new EatingService(serviceName, pos, price, value);
+            case LODGING -> service = new LodgingService(serviceName, pos, price, value);
+            default -> throw new RuntimeException("Invalid service type"); // Compiler complains without default case, as service may be null
         }
         this.currentBounds.addService(service); // O(n)
     }
 
     @Override
     public void createStudent(String type, String name, String lodging, String country) throws InvalidTypeException, AlreadyExistsException, NoSuchElementOfGivenType, ServiceIsFullException, BoundsNotDefined {
-
         if (this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -118,15 +107,9 @@ public class CampusAppClass implements CampusApp {
 
         Student student = null;
         switch(studentType) { // Since lodging services store students, all students will take O(n) time to create
-            case BOOKISH -> {
-                student = new BookishStudent(name, country, home);
-            }
-            case THRIFTY -> {
-                student = new ThriftyStudent(name, country, home);
-            }
-            case OUTGOING -> {
-                student = new OutgoingStudent(name, country, home);
-            }
+            case BOOKISH -> student = new BookishStudent(name, country, home);
+            case THRIFTY -> student = new ThriftyStudent(name, country, home);
+            case OUTGOING -> student = new OutgoingStudent(name, country, home);
         }
         this.currentBounds.addStudent(student); // O(n)
     }
