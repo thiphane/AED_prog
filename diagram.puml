@@ -1,59 +1,26 @@
 @startuml
-abstract class campus_app.entity.student.StudentAbstract implements campus_app.entity.student.Student {
+abstract class entity.student.StudentAbstract implements entity.student.Student {
 - String name
 - String country
 - LodgingService home
 - Service location
 - void setHome(LodgingService)
-+ String getCountry()
-+ Service getHome()
-+ void moveHome(LodgingService)
-+ void updatePosition(Service)
-+ String getName()
-+ Service getLocation()
-+ Iterator<Service> findClosestServices(Iterator<Service>)
-+ boolean equals(Object)
-+ Service findBestService(Iterator<Service>)
 }
 
-class campus_app.app.BoundsClass extends campus_app.app.Bounds {
+class app.BoundsClass extends app.Bounds {
 - String name
 - Position topPosition
 - Position bottomPosition
 ~ StudentStorage students
 ~ ServiceStorage services
-+ Student getStudent(String)
-+ Student removeStudent(String)
-+ void updateStudentLocation(Student,Service)
-+ void moveHome(String,LodgingService)
-+ Iterator<Student> getAllStudents()
-+ Iterator<Student> getStudentsByCountry(String)
-+ Iterator<Service> listAllServices()
-+ Service findBestService(String,ServiceType)
-+ Iterator<Service> listVisitedServices(Student)
-+ void addService(Service)
-+ String getName()
-+ Position getTopPosition()
-+ Position getBottomPosition()
-+ void save()
-+ boolean isInside(Position)
-+ {static} Bounds loadBounds(String)
-+ Iterator<Service> findClosestService(String,Iterator<Service>)
-+ void addStudent(Student)
-+ Service getService(String)
-+ Iterator<Service> listServicesByRating()
-+ void addRating(int,String,String)
 }
 
 
-class campus_app.entity.service.LeisureService extends campus_app.entity.service.ServiceAbstract {
-- {static} ServiceType TYPE
-+ int getPrice()
-+ ServiceType getType()
+class entity.service.LeisureService extends entity.service.ServiceAbstract {
 }
 
 
-interface campus_app.app.CampusApp {
+interface app.CampusApp {
 ~ void createBounds(String,long,long,long,long)
 ~ Bounds saveCurrentArea()
 ~ Bounds loadArea(String)
@@ -76,24 +43,16 @@ interface campus_app.app.CampusApp {
 ~ Service findBestService(String,String)
 }
 
-class campus_app.entity.student.BookishStudent extends campus_app.entity.student.StudentAbstract  {
+class entity.student.BookishStudent extends entity.student.StudentAbstract  {
 # List<Service> visited
-+ StudentType getType()
-+ void updatePosition(Service)
-+ Iterator<Service> getVisitedServices()
 }
 
 
-class campus_app.entity.student.ThriftyStudent extends campus_app.entity.student.StudentAbstract {
+class entity.student.ThriftyStudent extends entity.student.StudentAbstract {
 ~ EatingService cheapestEating
-+ StudentType getType()
-+ void updatePosition(Service)
-+ Service findBestService(Iterator<Service>)
-+ void moveHome(LodgingService)
-+ Iterator<Service> getVisitedServices()
 }
 
-interface campus_app.entity.student.Student {
+interface entity.student.Student {
 ~ String getCountry()
 ~ String getName()
 ~ Service getLocation()
@@ -106,51 +65,46 @@ interface campus_app.entity.student.Student {
 ~ Iterator<Service> findClosestServices(Iterator<Service>)
 }
 
-class campus_app.app.ServiceRatePredicate {
+class app.ServiceRatePredicate {
 ~ int rate
 + boolean check(Service)
 }
 
 
-class campus_app.entity.student.OutgoingStudent extends campus_app.entity.student.StudentAbstract {
+class entity.student.OutgoingStudent extends entity.student.StudentAbstract {
 # List<Service> visited
-+ StudentType getType()
-+ void updatePosition(Service)
-+ Iterator<Service> getVisitedServices()
 }
 
 
-interface campus_app.entity.service.StudentStoringService extends campus_app.entity.service.Service {
+interface entity.service.StudentStoringService extends entity.service.Service {
 ~ void addUser(Student)
 ~ void removeUser(Student)
 ~ TwoWayIterator<Student> getUsers()
 }
 
-class campus_app.app.AlphabeticalStudentComparator {
+class app.AlphabeticalStudentComparator {
 + int compare(Student,Student)
 }
 
-class campus_app.entity.student.DistanceComparator {
+class entity.student.DistanceComparator {
 - Position position
 + int compare(Service,Service)
 }
 
-class campus_app.app.ByCountryPredicate {
+class app.ByCountryPredicate {
 ~ String country
 + boolean check(Student)
 }
 
 
-class campus_app.entity.service.LodgingService extends campus_app.entity.service.AbstractStudentStoringService {
-- {static} ServiceType TYPE
-+ ServiceType getType()
+class entity.service.LodgingService extends entity.service.AbstractStudentStoringService {
 }
 
-class campus_app.app.ServiceStarComparator {
+class app.ServiceStarComparator {
 + int compare(Service,Service)
 }
 
-class campus_app.app.StudentStorage {
+class app.StudentStorage {
 # List<Student> students
 # SortedList<Student> alphabeticalStudents
 + void addStudent(Student)
@@ -167,7 +121,7 @@ class campus_app.app.StudentStorage {
 }
 
 
-interface campus_app.app.Bounds {
+interface app.Bounds {
 ~ {static} String getBoundFilename(String)
 ~ String getName()
 ~ Position getTopPosition()
@@ -191,7 +145,7 @@ interface campus_app.app.Bounds {
 ~ void addRating(int,String,String)
 }
 
-class campus_app.app.ServiceStorage {
+class app.ServiceStorage {
 # List<Service> services
 # SortedList<Service> servicesByStar
 + void addService(Service)
@@ -202,128 +156,60 @@ class campus_app.app.ServiceStorage {
 - void readObject(ObjectInputStream)
 }
 
-abstract class campus_app.entity.service.ServiceAbstract implements campus_app.entity.service.Service {
+abstract class entity.service.ServiceAbstract implements entity.service.Service {
 - String name
 - Position position
 - int price
 - int value
 ~ int rating
 ~ List<String> ratings
-+ void addRating(int,String)
-+ int getRating()
-+ float getRealRating()
-+ int getPrice()
-+ String getName()
-+ Position getPosition()
 # int getValue()
-+ boolean hasTag(String)
-+ boolean equals(Object)
 }
 
 
-class campus_app.app.ServiceTagPredicate {
+class app.ServiceTagPredicate {
 - String tag
 + boolean check(Service)
 }
 
-class campus_app.entity.service.EatingService extends campus_app.entity.service.AbstractStudentStoringService {
-- {static} ServiceType TYPE
-+ ServiceType getType()
+class entity.service.EatingService extends entity.service.AbstractStudentStoringService {
 }
 
-enum campus_app.entity.service.ServiceType {
+enum entity.service.ServiceType {
 +  LEISURE
 +  EATING
 +  LODGING
 + {static} ServiceType getType(String)
 }
 
-class campus_app.app.CampusAppClass extends campus_app.app.CampusApp {
+class app.CampusAppClass extends app.CampusApp {
 ~ Bounds currentBounds
-+ void createBounds(String,long,long,long,long)
-+ Bounds saveCurrentArea()
-+ Bounds loadArea(String)
-+ void createService(String,String,long,long,int,int)
-+ void createStudent(String,String,String,String)
-+ Student getStudent(String)
-+ Service getService(String)
-+ Student removeStudent(String)
-+ boolean updateStudentPosition(Student,Service)
-+ void moveHome(String,String)
-+ void rateService(int,String,String)
-+ TwoWayIterator<Student> getUsersByService(String,Order)
-+ Iterator<Student> listAllStudents()
-+ Iterator<Student> listStudentsByCountry(String)
-+ Iterator<Service> listAllServices()
-+ Iterator<Service> listVisitedServices(Student)
-+ Iterator<Service> listServicesByRanking()
-+ Iterator<Service> listServicesByTag(String)
-+ Service findBestService(String,String)
-+ Iterator<Service> listClosestServicesByStudent(int,String,String)
 }
 
-enum campus_app.app.Order {
+enum app.Order {
 +  OLD_TO_NEW
 +  NEW_TO_OLD
 }
 
-enum campus_app.entity.student.StudentType {
+enum entity.student.StudentType {
 +  THRIFTY
 +  OUTGOING
 +  BOOKISH
 + {static} StudentType getType(String)
 }
 
-enum user.Command {
-+  BOUNDS
-+  SAVE
-+  LOAD
-+  SERVICE
-+  SERVICES
-+  STUDENT
-+  STUDENTS
-+  LEAVE
-+  GO
-+  MOVE
-+  USERS
-+  STAR
-+  WHERE
-+  VISITED
-+  RANKING
-+  RANKED
-+  TAG
-+  FIND
-+  HELP
-+  EXIT
-+  UNKNOWN
-- String description
-+ String getDescription()
-+ {static} Command getCommand(String)
-}
-
-class user.Main {
-    + void main(String[] args)
-}
-
-record campus_app.app.Position {
-- long latitude
-- long longitude
-+ long getManhattanDistance(Position)
-+ String toString()
+record app.Position {
 + long longitude()
 + long latitude()
++ long getManhattanDistance(Position)
 }
 
 
-abstract class campus_app.entity.service.AbstractStudentStoringService extends campus_app.entity.service.ServiceAbstract implements campus_app.entity.service.StudentStoringService {
+abstract class entity.service.AbstractStudentStoringService extends entity.service.ServiceAbstract implements entity.service.StudentStoringService {
 - TwoWayList<Student> users
-+ void addUser(Student)
-+ void removeUser(Student)
-+ TwoWayIterator<Student> getUsers()
 }
 
-
-interface campus_app.entity.service.Service {
+interface entity.service.Service {
 ~ String getName()
 ~ ServiceType getType()
 ~ Position getPosition()
@@ -334,10 +220,13 @@ interface campus_app.entity.service.Service {
 ~ boolean hasTag(String)
 }
 
-class campus_app.app.ServiceTypePredicate {
+class app.ServiceTypePredicate {
 - ServiceType type
 + boolean check(Service)
 }
 
+app.BoundsClass ..> app.ServiceStorage : Use
+app.BoundsClass ..> app.StudentStorage : Use
 
+entity.student.DistanceComparator ..[hidden]> entity.student.StudentType
 @enduml
