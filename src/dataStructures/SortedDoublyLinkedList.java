@@ -47,6 +47,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
     /**
      * Returns true iff the list contains no elements.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return true if list is empty
      */
     public boolean isEmpty() {
@@ -55,6 +56,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
     /**
      * Returns the number of elements in the list.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return number of elements in the list
      */
 
@@ -64,6 +66,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
     /**
      * Returns an iterator of the elements in the list (in proper sequence).
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return Iterator of the elements in the list
      */
     public Iterator<E> iterator() {
@@ -72,6 +75,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
     /**
      * Returns the first element of the list.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return first element in the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -82,6 +86,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
     /**
      * Returns the last element of the list.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return last element in the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -90,6 +95,11 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
         return this.tail.getElement();
     }
 
+    /**
+     * Time complexity: Best case: O(1), Base Case O(n), Worst case: O(n).
+     * @param element element to be found
+     * @return node within element
+     */
     private DoublyListNode<E> getNode(E element){
         if(this.tail != null && this.tail.getElement().equals(element)) {
             return this.tail;
@@ -102,6 +112,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
     }
 
     /**
+     * Time complexity: Best case: O(1), Base Case O(n), Worst case: O(n).
      * Returns the first occurrence of the element equals to the given element in the list.
      * @return element in the list or null
      */
@@ -113,7 +124,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
     /**
      * Returns true iff the element exists in the list.
-     *
+     *Time complexity: Best case: O(1), Base Case O(n), Worst case: O(n).
      * @param element to be found
      * @return true iff the element exists in the list.
      */
@@ -124,6 +135,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
     /**
      * Inserts the specified element at the list, according to the natural order.
      * If there is an equal element, the new element is inserted after it.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @param element to be inserted
      */
     public void add(E element) {
@@ -156,12 +168,20 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
         this.currentSize++;
     }
 
+    /**
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
+     * @param element Element to be added
+     */
     private void addLast(E element){
         this.tail.setNext(new DoublyListNode<>(element, this.tail, null));
         this.tail = this.tail.getNext();
         this.currentSize++;
     }
 
+    /**
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
+     * @param element Element to be added
+     */
     private void addFirst(E element) {
         this.head.setPrevious(new DoublyListNode<>(element, null, this.head));
         this.head = this.head.getPrevious();
@@ -170,6 +190,7 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
 
     /**
      * Removes and returns the first occurrence of the element equals to the given element in the list.
+     * Time complexity: Best case: O(1), Base Case O(n), Worst case: O(n).
      * @return element removed from the list or null if !belongs(element)
      */
     public E remove(E element) {
@@ -190,6 +211,10 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
         return ele;
     }
 
+    /**
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
+     * @return Element removed
+     */
     private E removeLast( ) {
         if(size() <= 0) { throw new NoSuchElementException(); }
         E element = this.tail.getElement();
@@ -199,6 +224,10 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
         return element;
     }
 
+    /**
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
+     * @return Element to be removed
+     */
     private E removeFirst( ) {
         if(size() <= 0) { throw new NoSuchElementException(); }
         E element = this.head.getElement();
@@ -233,11 +262,11 @@ public class SortedDoublyLinkedList<E> implements SortedList<E> {
     }
 
     @Serial
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         this.comparator = (Comparator<E>) ois.readObject();
         int size = ois.readInt();
         for(int i = 0; i < size; i++) {
-            @SuppressWarnings("unchecked")
             E element = (E)ois.readObject();
             if(this.isEmpty()) {
                 DoublyListNode<E> newNode = new DoublyListNode<>(element);

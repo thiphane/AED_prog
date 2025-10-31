@@ -33,7 +33,7 @@ class DoublyListNode<E> implements Serializable {
     private DoublyListNode<E> next;
 
     /**
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @param theElement - The element to be contained in the node
      * @param thePrevious - the previous node
      * @param theNext - the next node
@@ -46,7 +46,7 @@ class DoublyListNode<E> implements Serializable {
     }
 
     /**
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @param theElement to be contained in the node
      */
     public DoublyListNode(E theElement ) {
@@ -56,7 +56,7 @@ class DoublyListNode<E> implements Serializable {
     }
 
     /**
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return the element contained in the node
      */
     public E getElement( ) {
@@ -64,7 +64,7 @@ class DoublyListNode<E> implements Serializable {
     }
 
     /**
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return the previous node
      */
     public DoublyListNode<E> getPrevious( ) {
@@ -72,7 +72,7 @@ class DoublyListNode<E> implements Serializable {
     }
 
     /**
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return the next node
      */
     public DoublyListNode<E> getNext( ) {
@@ -80,7 +80,7 @@ class DoublyListNode<E> implements Serializable {
     }
 
     /**
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @param newElement - New element to replace the current element
      */
     public void setElement( E newElement ) {
@@ -88,7 +88,7 @@ class DoublyListNode<E> implements Serializable {
     }
 
     /**
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @param newPrevious - node to replace the current previous node
      */
     public void setPrevious( DoublyListNode<E> newPrevious ) {
@@ -96,7 +96,7 @@ class DoublyListNode<E> implements Serializable {
     }
 
     /**
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @param newNext - node to replace the next node
      */
     public void setNext( DoublyListNode<E> newNext ) {

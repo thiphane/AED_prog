@@ -42,6 +42,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Returns true iff the list contains no elements.
+     * Time complexity: Best case: O(1), Base CaseO(n), Worst case: O(n).
      * @return true if list is empty
      */
     public boolean isEmpty() {
@@ -50,6 +51,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Returns the number of elements in the list.
+     * Time complexity: Best case: O(1), Base CaseO(n), Worst case: O(n).
      * @return number of elements in the list
      */
 
@@ -59,7 +61,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Returns a two-way iterator of the elements in the list.
-     *
+     * Time complexity: Best case: O(1), Base CaseO(n), Worst case: O(n).
      * @return Two-Way Iterator of the elements in the list
      */
 
@@ -68,6 +70,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
     }
     /**
      * Returns an iterator of the elements in the list (in proper sequence).
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return Iterator of the elements in the list
      */
     public Iterator<E> iterator() {
@@ -76,6 +79,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Inserts the element at the first position in the list.
+     * Time complexity: Best case: O(1), Base CaseO(1), Worst case: O(1).
      * @param element - Element to be inserted
      */
     public void addFirst( E element ) {
@@ -91,6 +95,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Inserts the element at the last position in the list.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @param element - Element to be inserted
      */
     public void addLast( E element ) {
@@ -106,6 +111,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Returns the first element of the list.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return first element in the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -117,6 +123,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Returns the last element of the list.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return last element in the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -126,6 +133,11 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
         return this.tail.getElement();
     }
 
+    /**
+     * Time complexity: Best case: O(1), Base CaseO(n), Worst case: O(n).
+     * @param position Element position in the list
+     * @return Node within given position
+     */
     private DoublyListNode<E> getNode(int position) {
         if(position >= size() || position < 0) {
             throw new InvalidPositionException();
@@ -155,6 +167,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * Range of valid positions: 0, ..., size()-1.
      * If the specified position is 0, get corresponds to getFirst.
      * If the specified position is size()-1, get corresponds to getLast.
+     * Time complexity: Best case: O(1), Base CaseO(n), Worst case: O(n).
      * @param position - position of element to be returned
      * @return element at position
      * @throws InvalidPositionException if position is not valid in the list
@@ -167,6 +180,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * Returns the position of the first occurrence of the specified element
      * in the list, if the list contains the element.
      * Otherwise, returns -1.
+     * Time complexity:Best case: O(1), Base CaseO(n), Worst case: O(n).
      * @param element - element to be searched in list
      * @return position of the first occurrence of the element in the list (or -1)
      */
@@ -192,6 +206,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * Range of valid positions: 0, ..., size().
      * If the specified position is 0, add corresponds to addFirst.
      * If the specified position is size(), add corresponds to addLast.
+     * Time complexity: Best case: O(1), Base Case O(n), Worst case: O(n).
      * @param position - position where to insert element
      * @param element - element to be inserted
      * @throws InvalidPositionException - if position is not valid in the list
@@ -209,6 +224,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Removes and returns the element at the first position in the list.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return element removed from the first position of the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -223,6 +239,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
 
     /**
      * Removes and returns the element at the last position in the list.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return element removed from the last position of the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -235,6 +252,11 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
         return element;
     }
 
+    /**
+     * Time complexity: Best case: O(1), Base Case O(n), Worst case: O(n).
+     * @param position Position to remove
+     * @return Removed Element
+     */
     private E removeMiddle(int position) {
         // Remove middle
         DoublyListNode<E> toRemove = this.getNode(position);
@@ -249,6 +271,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * Range of valid positions: 0, ..., size()-1.
      * If the specified position is 0, remove corresponds to removeFirst.
      * If the specified position is size()-1, remove corresponds to removeLast.
+     * Time complexity: Best case: O(1), Base Case O(n), Worst case: O(n).
      * @param position - position of element to be removed
      * @return element removed at position
      * @throws InvalidPositionException - if position is not valid in the list

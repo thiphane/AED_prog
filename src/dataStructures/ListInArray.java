@@ -23,6 +23,7 @@ public class ListInArray<E> implements List<E> {
 
     /**
      * Construtor with capacity.
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @param dimension - initial capacity of array.
      */
     @SuppressWarnings("unchecked")
@@ -32,7 +33,7 @@ public class ListInArray<E> implements List<E> {
     }
     /**
      * Returns true iff the list contains no elements.
-     *
+     *Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return true if list is empty
      */
     public boolean isEmpty() {
@@ -41,7 +42,7 @@ public class ListInArray<E> implements List<E> {
 
     /**
      * Returns the number of elements in the list.
-     *
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return number of elements in the list
      */
     public int size() {
@@ -50,7 +51,7 @@ public class ListInArray<E> implements List<E> {
 
     /**
      * Returns an iterator of the elements in the list (in proper sequence).
-     *
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return Iterator of the elements in the list
      */
     public Iterator<E> iterator() {
@@ -59,7 +60,7 @@ public class ListInArray<E> implements List<E> {
 
     /**
      * Returns the first element of the list.
-     *
+     * Time complexity: Best case: O(1), Base Case O(1), Worst case: O(1).
      * @return first element in the list
      * @throws NoSuchElementException - if size() == 0
      */
