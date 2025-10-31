@@ -75,13 +75,6 @@ public class BoundsClass implements Bounds, Serializable {
         return students.getAllStudents();
     }
 
-    // TODO passar todos os comentários para as interfaces
-    /**
-     * Get all students from the given country
-     * O(1) to create an iterator, O(n) to traverse it
-     * @param country the country to get students of
-     * @return an iterator through all students from the given country in insertion order
-     */
     @Override
     public Iterator<Student> getStudentsByCountry(String country) {
         return students.getStudentsByCountry(country);
