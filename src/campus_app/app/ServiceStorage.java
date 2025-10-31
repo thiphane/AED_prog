@@ -6,6 +6,7 @@ package campus_app.app;
 
 import campus_app.entity.service.EatingService;
 import campus_app.entity.service.Service;
+import campus_app.entity.student.Student;
 import campus_app.exceptions.AlreadyExistsException;
 import campus_app.exceptions.InvalidPriceException;
 import campus_app.exceptions.InvalidValueException;
@@ -13,13 +14,13 @@ import campus_app.exceptions.ServiceDoesNotExistException;
 import dataStructures.*;
 import dataStructures.exceptions.NoSuchElementException;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class ServiceStorage implements Serializable {
     // All services by order of insertion
     protected List<Service> services;
     // All services by order of their rating
-    protected SortedList<Service> servicesByStar;
+    transient protected SortedList<Service> servicesByStar;
     public ServiceStorage() {
         this.services = new ListInArray<>(2500);
         this.servicesByStar = new SortedDoublyLinkedList<>(new ServiceStarComparator());
@@ -61,5 +62,16 @@ public class ServiceStorage implements Serializable {
 
     Iterator<Service> listServicesByRanking() {
         return servicesByStar.iterator();
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        // Evitar ler 2 listas do ficheiro, com conteúdo igual
+        this.servicesByStar = new SortedDoublyLinkedList<>(new ServiceStarComparator());
+        Iterator<Service> iter = this.services.iterator();
+        while(iter.hasNext()) {
+            servicesByStar.add(iter.next());
+        }
     }
 }

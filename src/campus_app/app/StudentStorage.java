@@ -18,13 +18,13 @@ import campus_app.entity.student.Student;
 import dataStructures.exceptions.InvalidPositionException;
 import dataStructures.exceptions.NoSuchElementException;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class StudentStorage implements Serializable {
     // All students by order of insertion
     protected List<Student> students;
     // All students sorted alphabetically
-    protected SortedList<Student> alphabeticalStudents;
+    transient protected SortedList<Student> alphabeticalStudents;
 
     public StudentStorage() {
         this.students = new DoublyLinkedList<>();
@@ -82,5 +82,16 @@ public class StudentStorage implements Serializable {
             throw new StudentDoesNotExistException();
         }
         return s.findClosestServices(services);
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        // Evitar ler 2 listas do ficheiro, com conteúdo igual
+        this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
+        Iterator<Student> iter = this.students.iterator();
+        while(iter.hasNext()) {
+            alphabeticalStudents.add(iter.next());
+        }
     }
 }
