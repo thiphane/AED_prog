@@ -65,12 +65,6 @@ interface entity.student.Student {
 ~ Iterator<Service> findClosestServices(Iterator<Service>)
 }
 
-class app.ServiceRatePredicate {
-~ int rate
-+ boolean check(Service)
-}
-
-
 class entity.student.OutgoingStudent extends entity.student.StudentAbstract {
 # List<Service> visited
 }
@@ -82,26 +76,7 @@ interface entity.service.StudentStoringService extends entity.service.Service {
 ~ TwoWayIterator<Student> getUsers()
 }
 
-class app.AlphabeticalStudentComparator {
-+ int compare(Student,Student)
-}
-
-class entity.student.DistanceComparator {
-- Position position
-+ int compare(Service,Service)
-}
-
-class app.ByCountryPredicate {
-~ String country
-+ boolean check(Student)
-}
-
-
 class entity.service.LodgingService extends entity.service.AbstractStudentStoringService {
-}
-
-class app.ServiceStarComparator {
-+ int compare(Service,Service)
 }
 
 class app.StudentStorage {
@@ -166,36 +141,11 @@ abstract class entity.service.ServiceAbstract implements entity.service.Service 
 # int getValue()
 }
 
-
-class app.ServiceTagPredicate {
-- String tag
-+ boolean check(Service)
-}
-
 class entity.service.EatingService extends entity.service.AbstractStudentStoringService {
-}
-
-enum entity.service.ServiceType {
-+  LEISURE
-+  EATING
-+  LODGING
-+ {static} ServiceType getType(String)
 }
 
 class app.CampusAppClass extends app.CampusApp {
 ~ Bounds currentBounds
-}
-
-enum app.Order {
-+  OLD_TO_NEW
-+  NEW_TO_OLD
-}
-
-enum entity.student.StudentType {
-+  THRIFTY
-+  OUTGOING
-+  BOOKISH
-+ {static} StudentType getType(String)
 }
 
 record app.Position {
@@ -220,13 +170,7 @@ interface entity.service.Service {
 ~ boolean hasTag(String)
 }
 
-class app.ServiceTypePredicate {
-- ServiceType type
-+ boolean check(Service)
-}
-
 app.BoundsClass ..> app.ServiceStorage : Use
 app.BoundsClass ..> app.StudentStorage : Use
-
-entity.student.DistanceComparator ..[hidden]> entity.student.StudentType
+app.Position <..[hidden] app.CampusApp
 @enduml
