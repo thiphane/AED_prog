@@ -94,7 +94,7 @@ public class Main {
                         }
                     }
                 }
-                case BOUNDS -> { // O(1)
+                case BOUNDS -> { // O(n)
                     long topLeftLat = in.nextLong();
                     long topLeftLon = in.nextLong();
                     long botRightLat = in.nextLong();

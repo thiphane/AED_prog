@@ -27,7 +27,7 @@ public class ServiceStorage implements Serializable {
     }
 
     /**
-     * Adds a new serviec
+     * Adds a new service
      * @param service the service to add
      * @throws AlreadyExistsException if a service with the given name already exists
      */
