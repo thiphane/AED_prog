@@ -42,8 +42,7 @@ public abstract class ServiceAbstract implements Service {
         return Math.round(this.getRealRating());
     }
 
-    @Override
-    public float getRealRating() {
+    private float getRealRating() {
         return (float)rating / (ratings.size()+1);
     }
 
