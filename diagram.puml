@@ -11,6 +11,7 @@ class app.BoundsClass {
 - String name
 - Position topPosition
 - Position bottomPosition
+- Service[] cheapestServices;
 ~ StudentStorage students
 ~ ServiceStorage services
 }
@@ -55,9 +56,9 @@ class app.StudentStorage {
 }
 
 class app.ServiceStorage {
-# SinglyLinkedList<Service> services
+# ListInArray<Service> services
 # SepChainHashTable<String, Service> servicesByName
-# ObjectRemovalSinglyList<Service>[5] servicesByStar
+# ObjectRemovalSinglyList<Service>[MAX_RATING] servicesByStar
 + void addService(Service)
 + void updateServiceRating(Service, int old)
 + Service getService(String)
@@ -79,7 +80,7 @@ abstract class entity.service.ServiceAbstract {
 class entity.service.EatingService extends entity.service.AbstractStudentStoringService {
 }
 
-class app.CampusAppClass extends app.CampusApp {
+class app.CampusAppClass {
 ~ Bounds currentBounds
 }
 

@@ -21,6 +21,7 @@ public class BoundsClass implements Bounds, Serializable {
     private final Position bottomPosition;
     StudentStorage students;
     ServiceStorage services;
+    private Service[] cheapestServices;
     public BoundsClass(String name, long topLongitude, long topLatitude, long bottomLongitude, long bottomLatitude) throws InvalidBoundPoints {
         this(name, new Position(topLatitude, topLongitude), new Position(bottomLatitude, bottomLongitude));
     }
@@ -34,6 +35,7 @@ public class BoundsClass implements Bounds, Serializable {
         this.bottomPosition = bottomRight;
         this.students = new StudentStorage();
         this.services = new ServiceStorage();
+        this.cheapestServices = new Service[ServiceType.values().length];
     }
 
     @Override
@@ -76,7 +78,8 @@ public class BoundsClass implements Bounds, Serializable {
     public Service findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException {
         Student st = students.getStudent(studentName); // O(n)
         if(st.getType().equals(StudentType.THRIFTY)) {
-            return st.findBestService(new FilterIterator<>(listAllServices(), new ServiceTypePredicate(type)));
+            if ( cheapestServices[type.ordinal()] == null) { return null; }
+            return cheapestServices[type.ordinal()];
         }else return st.findBestService(new FilterIterator<>(listServicesByRating(), new ServiceTypePredicate(type)));
     }
 
@@ -93,6 +96,10 @@ public class BoundsClass implements Bounds, Serializable {
      */
     @Override
     public void addService(Service service) throws AlreadyExistsException {
+        if ( cheapestServices[service.getType().ordinal()] == null ||
+                cheapestServices[service.getType().ordinal()].getPrice() > service.getPrice() ) {
+            cheapestServices[service.getType().ordinal()] = service;
+        }
         this.services.addService(service);
     }
 
