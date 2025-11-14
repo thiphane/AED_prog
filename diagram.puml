@@ -1,5 +1,5 @@
 @startuml
-abstract class entity.student.StudentAbstract implements entity.student.Student {
+abstract class entity.student.StudentAbstract {
 - String name
 - String country
 - LodgingService home
@@ -7,7 +7,7 @@ abstract class entity.student.StudentAbstract implements entity.student.Student 
 - void setHome(LodgingService)
 }
 
-class app.BoundsClass extends app.Bounds {
+class app.BoundsClass {
 - String name
 - Position topPosition
 - Position bottomPosition
@@ -19,12 +19,8 @@ class app.BoundsClass extends app.Bounds {
 class entity.service.LeisureService extends entity.service.ServiceAbstract {
 }
 
-
-interface app.CampusApp {
-}
-
 class entity.student.BookishStudent extends entity.student.StudentAbstract  {
-# List<Service> visited
+# SinglyLinkedList<Service> visited
 }
 
 
@@ -32,15 +28,12 @@ class entity.student.ThriftyStudent extends entity.student.StudentAbstract {
 ~ EatingService cheapestEating
 }
 
-interface entity.student.Student {
-}
-
 class entity.student.OutgoingStudent extends entity.student.StudentAbstract {
 # SinglyLinkedList<Service> visited
 }
 
 
-interface entity.service.StudentStoringService extends entity.service.Service {
+interface entity.service.StudentStoringService {
 ~ void addUser(Student)
 ~ void removeUser(Student)
 ~ TwoWayIterator<Student> getUsers()
@@ -61,10 +54,6 @@ class app.StudentStorage {
 - void readObject(ObjectInputStream)
 }
 
-
-interface app.Bounds {
-}
-
 class app.ServiceStorage {
 # SinglyLinkedList<Service> services
 # SepChainHashTable<String, Service> servicesByName
@@ -77,7 +66,7 @@ class app.ServiceStorage {
 - void readObject(ObjectInputStream)
 }
 
-abstract class entity.service.ServiceAbstract implements entity.service.Service {
+abstract class entity.service.ServiceAbstract {
 - String name
 - Position position
 - int price
@@ -103,9 +92,6 @@ record app.Position {
 
 abstract class entity.service.AbstractStudentStoringService extends entity.service.ServiceAbstract implements entity.service.StudentStoringService {
 - DoublyLinkedList<Student> users
-}
-
-interface entity.service.Service {
 }
 
 app.BoundsClass ..> app.ServiceStorage : Use
