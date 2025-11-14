@@ -12,13 +12,19 @@ import dataStructures.*;
 import java.io.*;
 
 public class ServiceStorage implements Serializable {
+    public static final int MAX_RATING = 5;
     // All services by order of insertion
     protected final List<Service> services;
     // All services by order of their rating
-    transient protected SortedList<Service> servicesByStar;
+    protected List<Service>[] servicesByStar;
+    @SuppressWarnings("unchecked")
     public ServiceStorage() {
         this.services = new ListInArray<>(2500);
-        this.servicesByStar = new SortedDoublyLinkedList<>(new ServiceStarComparator());
+        // TODO singly linked list
+        this.servicesByStar = new DoublyLinkedList[MAX_RATING];
+        for(int i = 0; i < servicesByStar.length; i++) {
+            this.servicesByStar[i] = new DoublyLinkedList<>();
+        }
     }
 
     /**
@@ -35,13 +41,14 @@ public class ServiceStorage implements Serializable {
             }
         }
         this.services.addLast(service); // O(1)
-        this.servicesByStar.add(service); // O(n) worst case, O(1) best case (all other services are 5 star)
+        this.servicesByStar[MAX_RATING - service.getRating()].addLast(service); // O(1)
     }
 
-    public void updateServiceRating(Service service) {
-        servicesByStar.remove(service);
-        servicesByStar.add(service);
+    public void updateServiceRating(Service service, int oldRating) {
+        servicesByStar[MAX_RATING - oldRating].remove(servicesByStar[MAX_RATING - oldRating].indexOf(service));
+        servicesByStar[MAX_RATING - service.getRating()].addLast(service);
     }
+
 
     public Service getService(String service) throws ServiceDoesNotExistException {
         Iterator<Service> iter = services.iterator();
@@ -56,17 +63,6 @@ public class ServiceStorage implements Serializable {
     }
 
     Iterator<Service> listServicesByRanking() {
-        return servicesByStar.iterator();
-    }
-
-    @Serial
-    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        ois.defaultReadObject(); // O(n)
-        // Evitar ler 2 listas do ficheiro, com conteúdo igual
-        this.servicesByStar = new SortedDoublyLinkedList<>(new ServiceStarComparator());
-        Iterator<Service> iter = this.services.iterator();
-        while(iter.hasNext()) { // O(n)
-            servicesByStar.add(iter.next());
-        }
+        return new ArrayOfListIterator<>(servicesByStar);
     }
 }

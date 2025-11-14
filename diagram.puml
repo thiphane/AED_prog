@@ -66,7 +66,7 @@ interface entity.student.Student {
 }
 
 class entity.student.OutgoingStudent extends entity.student.StudentAbstract {
-# List<Service> visited
+# SinglyLinkedList<Service> visited
 }
 
 
@@ -80,8 +80,9 @@ class entity.service.LodgingService extends entity.service.AbstractStudentStorin
 }
 
 class app.StudentStorage {
-# List<Student> students
-# SortedList<Student> alphabeticalStudents
+# SepChainHashTable<String, Student> studentsByName
+# SepChainHashTable<String, SinglyLinkedList<Student>> studentsByCountry
+# AVLSortedMap<String, Student> alphabeticalStudents
 + void addStudent(Student)
 + Student getStudent(String)
 + Student removeStudent(Student)
@@ -121,8 +122,9 @@ interface app.Bounds {
 }
 
 class app.ServiceStorage {
-# List<Service> services
-# SortedList<Service> servicesByStar
+# SinglyLinkedList<Service> services
+# SepChainHashTable<String, Service> servicesByName
+# DoublyLinkedList<Service>[5] servicesByStar
 + void addService(Service)
 + void rateService(String,int,String)
 + Service getService(String)
@@ -137,7 +139,7 @@ abstract class entity.service.ServiceAbstract implements entity.service.Service 
 - int price
 - int value
 ~ int rating
-~ List<String> ratings
+~ SepChainHashTable<String> tags
 # int getValue()
 }
 
@@ -156,7 +158,7 @@ record app.Position {
 
 
 abstract class entity.service.AbstractStudentStoringService extends entity.service.ServiceAbstract implements entity.service.StudentStoringService {
-- TwoWayList<Student> users
+- DoublyLinkedList<Student> users
 }
 
 interface entity.service.Service {

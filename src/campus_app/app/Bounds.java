@@ -137,5 +137,5 @@ public interface Bounds {
      * Updates the service's ranking
      * @param service the service to update
      */
-    void updateServiceRating(Service service);
+    void updateServiceRating(Service service, int oldRating);
 }

@@ -17,15 +17,17 @@ public class StudentStorage implements Serializable {
     protected final List<Student> students;
     // All students sorted alphabetically
     transient protected SortedList<Student> alphabeticalStudents;
+    transient protected Map<String, Student> studentsByName;
 
     public StudentStorage() {
         this.students = new DoublyLinkedList<>();
         this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
+        this.studentsByName = new SepChainHashTable<>();
     }
 
     public void addStudent(Student student) {
         this.students.addLast(student); // O(1)
-        this.alphabeticalStudents.add(student); // O(n) worst case, O(1) best case (student is the lowest in the alphabetical order)
+        this.alphabeticalStudents.add(student); // O(log n)
     }
 
     public Student getStudent(String student) throws StudentDoesNotExistException {
@@ -38,9 +40,9 @@ public class StudentStorage implements Serializable {
     }
 
     public Student removeStudent(Student student) throws StudentDoesNotExistException {
-        Student removed = alphabeticalStudents.remove(student);
+        Student removed = alphabeticalStudents.remove(student); // O(log n)
         if(removed == null) throw new StudentDoesNotExistException();
-        students.remove(students.indexOf(removed));
+        students.remove(students.indexOf(removed)); // O(n)
         return removed;
     }
 
@@ -51,14 +53,6 @@ public class StudentStorage implements Serializable {
     public Iterator<Student> getStudentsByCountry(String country) {
         return new FilterIterator<>(students.iterator(), new ByCountryPredicate(country));
     }
-
-    public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException {
-        return student.getVisitedServices();
-    }
-
-    public Service findBestService(Student student, ServiceType type,  Iterator<Service> services) {
-        return student.findBestService(new FilterIterator<>(services, new ServiceTypePredicate(type)));
-   }
 
     @Serial
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {

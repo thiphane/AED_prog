@@ -10,6 +10,7 @@ import campus_app.entity.service.StudentStoringService;
 import campus_app.entity.student.Student;
 import campus_app.entity.student.StudentType;
 import campus_app.exceptions.*;
+import dataStructures.FilterIterator;
 import dataStructures.Iterator;
 
 import java.io.*;
@@ -75,13 +76,13 @@ public class BoundsClass implements Bounds, Serializable {
     public Service findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException {
         Student st = students.getStudent(studentName); // O(n)
         if(st.getType().equals(StudentType.THRIFTY)) {
-            return students.findBestService(st,type,listAllServices());
-        }else return students.findBestService(st, type, listServicesByRating());
+            return st.findBestService(new FilterIterator<>(listAllServices(), new ServiceTypePredicate(type)));
+        }else return st.findBestService(new FilterIterator<>(listServicesByRating(), new ServiceTypePredicate(type)));
     }
 
     @Override
     public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException {
-        return students.listVisitedServices(student);
+        return student.getVisitedServices();
     }
 
     /**
@@ -159,7 +160,7 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public void updateServiceRating(Service service) {
-        services.updateServiceRating(service);
+    public void updateServiceRating(Service service, int oldRating) {
+        services.updateServiceRating(service, oldRating);
     }
 }

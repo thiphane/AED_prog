@@ -138,7 +138,7 @@ public class DoublyLinkedList<E> implements TwoWayList<E> {
      * @param position Element position in the list
      * @return Node within given position
      */
-    private DoublyListNode<E> getNode(int position) {
+    protected DoublyListNode<E> getNode(int position) {
         if(position >= size() || position < 0) {
             throw new InvalidPositionException();
         }
