@@ -45,7 +45,7 @@ public class ServiceStorage implements Serializable {
     }
 
     public void updateServiceRating(Service service, int oldRating) {
-        servicesByStar[MAX_RATING - oldRating].remove(servicesByStar[MAX_RATING - oldRating].indexOf(service));
+        assert servicesByStar[MAX_RATING - oldRating].remove(servicesByStar[MAX_RATING - oldRating].indexOf(service)).equals(service);
         servicesByStar[MAX_RATING - service.getRating()].addLast(service);
     }
 

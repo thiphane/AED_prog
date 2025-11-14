@@ -3,21 +3,21 @@ package dataStructures;
 import dataStructures.exceptions.NoSuchElementException;
 import dataStructures.exceptions.InvalidPositionException;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class SinglyLinkedList<E> implements List<E>, Serializable {
     /**
      *  Node at the head of the list.
      */
-    private SinglyListNode<E> head;
+    transient private SinglyListNode<E> head;
     /**
      * Node at the tail of the list.
      */
-    private SinglyListNode<E> tail;
+    transient private SinglyListNode<E> tail;
     /**
      * Number of elements in the list.
      */
-    private int currentSize;
+    transient private int currentSize;
     /**
      * Constructor of an empty singly linked list.
      * head and tail are initialized as null.
@@ -34,7 +34,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      * @return true if list is empty
      */
     public boolean isEmpty() {
-        return currentSize==0;
+        return size()==0;
     }
 
     /**
@@ -92,15 +92,15 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      */
     @Override
     public E get(int position) {
-        if ( position < 0 || position >= currentSize )
+        if ( position < 0 || position >= size() )
             throw new InvalidPositionException();
         if (position == 0)
             return getFirst();
-        if (position == currentSize-1)
+        if (position == size()-1)
             return getLast();
         return getNode(position).getElement();
     }
-    private SinglyListNode<E> getNode(int position) {
+    protected SinglyListNode<E> getNode(int position) {
         SinglyListNode<E> node = head;
         for ( int i = 0; i < position; i++)
             node = node.getNext();
@@ -169,11 +169,11 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      */
     @Override
     public void add(int position, E element) {
-        if ( position < 0 || position > currentSize )
+        if ( position < 0 || position > size() )
             throw new InvalidPositionException();
         if(position==0)
             this.addFirst(element);
-        else if(position==currentSize)
+        else if(position==size())
             this.addLast(element);
         else
             this.addMiddle(position,element);
@@ -235,11 +235,11 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      */
     @Override
     public E remove(int position) {
-        if ( position < 0 || position >= currentSize )
+        if ( position < 0 || position >= size() )
             throw new InvalidPositionException();
         if ( position == 0 )
             return this.removeFirst();
-        if ( position == currentSize - 1 )
+        if ( position == size() - 1 )
             return this.removeLast();
         return this.removeMiddle(position);
     }
@@ -249,5 +249,25 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
         prevNode.setNext(node.getNext());
         currentSize--;
         return node.getElement();
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeInt(this.size());
+        Iterator<E> iter = this.iterator();
+        while(iter.hasNext()) {
+            E cur = iter.next();
+            oos.writeObject(cur);
+        }
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        int size = ois.readInt();
+        for(int i = 0; i < size; i++) {
+            @SuppressWarnings("unchecked")
+            E element = (E)ois.readObject();
+            this.addLast(element);
+        }
     }
 }

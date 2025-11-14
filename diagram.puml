@@ -21,26 +21,6 @@ class entity.service.LeisureService extends entity.service.ServiceAbstract {
 
 
 interface app.CampusApp {
-~ void createBounds(String,long,long,long,long)
-~ Bounds saveCurrentArea()
-~ Bounds loadArea(String)
-~ void createService(String,String,long,long,int,int)
-~ void createStudent(String,String,String,String)
-~ Student getStudent(String)
-~ Service getService(String)
-~ Student removeStudent(String)
-~ boolean updateStudentPosition(Student,Service)
-~ void moveHome(String,String)
-~ void rateService(int,String,String)
-~ TwoWayIterator<Student> getUsersByService(String,Order)
-~ Iterator<Student> listAllStudents()
-~ Iterator<Student> listStudentsByCountry(String)
-~ Iterator<Service> listAllServices()
-~ Iterator<Service> listVisitedServices(Student)
-~ Iterator<Service> listServicesByRanking()
-~ Iterator<Service> listClosestServicesByStudent(int,String,String)
-~ Iterator<Service> listServicesByTag(String)
-~ Service findBestService(String,String)
 }
 
 class entity.student.BookishStudent extends entity.student.StudentAbstract  {
@@ -53,16 +33,6 @@ class entity.student.ThriftyStudent extends entity.student.StudentAbstract {
 }
 
 interface entity.student.Student {
-~ String getCountry()
-~ String getName()
-~ Service getLocation()
-~ StudentType getType()
-~ Service getHome()
-~ void moveHome(LodgingService)
-~ void updatePosition(Service)
-~ Service findBestService(Iterator<Service>)
-~ Iterator<Service> getVisitedServices()
-~ Iterator<Service> findClosestServices(Iterator<Service>)
 }
 
 class entity.student.OutgoingStudent extends entity.student.StudentAbstract {
@@ -86,47 +56,21 @@ class app.StudentStorage {
 + void addStudent(Student)
 + Student getStudent(String)
 + Student removeStudent(Student)
-+ void updateStudentLocation(Student,Service)
-+ void moveHome(String,LodgingService)
 + Iterator<Student> getAllStudents()
 + Iterator<Student> getStudentsByCountry(String)
-+ Iterator<Service> listVisitedServices(Student)
-+ Service findBestService(Student,ServiceType,Iterator<Service>)
-+ Iterator<Service> findClosestService(String,Iterator<Service>)
 - void readObject(ObjectInputStream)
 }
 
 
 interface app.Bounds {
-~ {static} String getBoundFilename(String)
-~ String getName()
-~ Position getTopPosition()
-~ Position getBottomPosition()
-~ void save()
-~ boolean isInside(Position)
-~ Student removeStudent(String)
-~ void addService(Service)
-~ Student getStudent(String)
-~ void updateStudentLocation(Student,Service)
-~ void moveHome(String,LodgingService)
-~ Iterator<Student> getAllStudents()
-~ Iterator<Student> getStudentsByCountry(String)
-~ Iterator<Service> listAllServices()
-~ Service findBestService(String,ServiceType)
-~ Iterator<Service> listVisitedServices(Student)
-~ Iterator<Service> findClosestService(String,Iterator<Service>)
-~ void addStudent(Student)
-~ Service getService(String)
-~ Iterator<Service> listServicesByRating()
-~ void addRating(int,String,String)
 }
 
 class app.ServiceStorage {
 # SinglyLinkedList<Service> services
 # SepChainHashTable<String, Service> servicesByName
-# DoublyLinkedList<Service>[5] servicesByStar
+# ObjectRemovalSinglyList<Service>[5] servicesByStar
 + void addService(Service)
-+ void rateService(String,int,String)
++ void updateServiceRating(Service, int old)
 + Service getService(String)
 + Iterator<Service> listAllServices()
 ~ Iterator<Service> listServicesByRanking()
@@ -162,17 +106,8 @@ abstract class entity.service.AbstractStudentStoringService extends entity.servi
 }
 
 interface entity.service.Service {
-~ String getName()
-~ ServiceType getType()
-~ Position getPosition()
-~ void addRating(int,String)
-~ int getRating()
-~ float getRealRating()
-~ int getPrice()
-~ boolean hasTag(String)
 }
 
 app.BoundsClass ..> app.ServiceStorage : Use
 app.BoundsClass ..> app.StudentStorage : Use
-app.Position <..[hidden] app.CampusApp
 @enduml
