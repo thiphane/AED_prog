@@ -32,7 +32,7 @@ public class ThriftyStudent extends StudentAbstract {
         }
     }
 
-    @Override
+   @Override
    public Service findBestService(Iterator<Service> services) {
         if(services.hasNext()) {
             Service best = services.next();
@@ -53,7 +53,7 @@ public class ThriftyStudent extends StudentAbstract {
     }
 
     @Override
-    public Iterator<Service> getVisitedServices()throws StudentDoesntStoreVisitedServicesException{
+    public Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException{
         throw new StudentDoesntStoreVisitedServicesException(this);
     }
 }
