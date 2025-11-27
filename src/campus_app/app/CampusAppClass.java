@@ -143,7 +143,6 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException {
-
         if(currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -152,9 +151,6 @@ public class CampusAppClass implements CampusApp {
         }
         if(!service.getType().equals(ServiceType.LEISURE) && !service.getType().equals(ServiceType.EATING)) {
             throw new InvalidTypeException();
-        }
-        if(student.getLocation().equals(service)) {
-            throw new StudentAlreadyThereException(student);
         }
         try {
             /*

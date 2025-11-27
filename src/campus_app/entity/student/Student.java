@@ -59,7 +59,7 @@ public interface Student extends Serializable {
      * @throws ThriftyStudentIsDistracted if the student was distracted by this moving; they are still moved if this is thrown
      * @throws ServiceIsFullException if the new position is full
      */
-    void updatePosition(Service position) throws ThriftyStudentIsDistracted, ServiceIsFullException;
+    void updatePosition(Service position) throws ThriftyStudentIsDistracted, ServiceIsFullException, StudentAlreadyThereException;
 
     /**
      * finds the best service for the user

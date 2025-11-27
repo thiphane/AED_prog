@@ -21,7 +21,7 @@ public class ThriftyStudent extends StudentAbstract {
     }
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted {
+    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted, StudentAlreadyThereException {
         super.updatePosition(position);
         if(position instanceof EatingService eat) {
             if(cheapestEating == null || eat.getPrice() <= cheapestEating.getPrice()) {
