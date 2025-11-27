@@ -103,15 +103,6 @@ public interface Bounds {
      */
     Service findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException;
     /**
-     * Gets the services visited by a student
-     * O(1) time to create the iterator, O(n) to traverse it
-     * @param student the student
-     * @return an iterator through all the services visited by a student, in visiting order
-     * @throws StudentDoesntStoreVisitedServicesException if the student doesn't remember the services they visited
-     */
-    Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException;
-
-    /**
      * Adds a new student to the bounds
      * O(n) time
      * @param student the student to add

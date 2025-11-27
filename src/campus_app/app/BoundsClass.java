@@ -83,11 +83,6 @@ public class BoundsClass implements Bounds, Serializable {
         }else return st.findBestService(new FilterIterator<>(listServicesByRating(), new ServiceTypePredicate(type)));
     }
 
-    @Override
-    public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException {
-        return student.getVisitedServices();
-    }
-
     /**
      * Adds a new service to the bounds
      * O(n)

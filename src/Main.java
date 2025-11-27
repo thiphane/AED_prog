@@ -338,7 +338,7 @@ public class Main {
                     String name = in.nextLine().trim();
                     try{
                         Student student = app.getStudent(name);
-                        Iterator<Service> it = app.listVisitedServices(student); // O(1)
+                        Iterator<Service> it = student.getVisitedServices();
                             while(it.hasNext()){ // O(n) time
                                 System.out.println(it.next().getName());
                             }

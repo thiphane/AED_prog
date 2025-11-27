@@ -165,16 +165,6 @@ public interface CampusApp {
      */
     Iterator<Service> listAllServices() throws BoundsNotDefined;
     /**
-     * Gets the services visited by a student
-     * O(1) time to create the iterator, O(n) to traverse it
-     * @param student the student
-     * @return an iterator through all the services visited by a student, in visiting order
-     * @throws StudentDoesntStoreVisitedServicesException if the student doesn't remember the services they visited
-     * @throws BoundsNotDefined if no bounds are not defined
-     * @throws NoVisitedServicesException if the student never visited a service
-     */
-    Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException, BoundsNotDefined, NoVisitedServicesException;
-    /**
      * Lists all the services in order of their ranking
      * O(1)
      * @return an iterator through all the services in order of their rating and when they received it

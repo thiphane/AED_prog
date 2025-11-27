@@ -259,7 +259,6 @@ public class CampusAppClass implements CampusApp {
 
     @Override
     public Iterator<Service> listAllServices() throws BoundsNotDefined {
-
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -267,20 +266,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listVisitedServices(Student student) throws StudentDoesntStoreVisitedServicesException, BoundsNotDefined, NoVisitedServicesException {
-        if(this.currentBounds == null) {
-            throw new BoundsNotDefined();
-        }
-        Iterator<Service> it = currentBounds.listVisitedServices(student); // O(1)
-        if(!it.hasNext()){
-            throw new NoVisitedServicesException(student);
-        }
-        return it;
-    }
-
-    @Override
     public Iterator<Service> listServicesByRanking() throws BoundsNotDefined {
-
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }return currentBounds.listServicesByRating(); // O(1)

@@ -6,6 +6,7 @@ package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
 import campus_app.entity.service.ServiceType;
+import campus_app.exceptions.NoVisitedServicesException;
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.DoublyLinkedList;
@@ -35,7 +36,10 @@ public class BookishStudent extends StudentAbstract {
     }
 
     @Override
-    public Iterator<Service> getVisitedServices() {
+    public Iterator<Service> getVisitedServices() throws NoVisitedServicesException {
+        if ( visited.isEmpty() ) {
+            throw new NoVisitedServicesException(this);
+        }
         return visited.iterator();
     }
 }

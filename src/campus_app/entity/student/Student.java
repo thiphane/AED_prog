@@ -75,7 +75,7 @@ public interface Student extends Serializable {
      * @return an iterator through services visited by the user in visiting order
      * @throws StudentDoesntStoreVisitedServicesException if the student does not store their visits
      */
-    Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException;
+    Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException, NoVisitedServicesException;
 
     /**
      * Finds the closest service(s) to the user
