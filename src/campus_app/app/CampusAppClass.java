@@ -293,8 +293,8 @@ public class CampusAppClass implements CampusApp {
             throw new BoundsNotDefined();
         }
         if(rate < 1 || rate > 5) throw new InvalidRating();
-
-        if(this.currentBounds.getStudent(studentName) == null){ // O(n)
+        Student s = this.currentBounds.getStudent(studentName);
+        if(s == null){ // O(n)
             throw new StudentDoesNotExistException();
         }
         ServiceType serviceType;
@@ -307,7 +307,6 @@ public class CampusAppClass implements CampusApp {
         if(!byType.hasNext())throw new NoSuchElementOfGivenType();
         Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate)); // O(1)
         if(!byTypeAndRate.hasNext())throw new NoSuchServiceWithGivenRate();
-        Student s = this.currentBounds.getStudent(studentName);
         return s.findClosestServices(byTypeAndRate);
     }
 
