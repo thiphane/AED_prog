@@ -134,15 +134,13 @@ public interface CampusApp {
      * Gets all the users in a given service
      * O(n) time
      * @param serviceName the name of the service
-     * @param order the order of the elements
      * @return a two-way iterator over all the students in the given service
-     * @throws InvalidOrderException if the order is null
      * @throws BoundsNotDefined if no bounds are defined
      * @throws ServiceDoesNotExistException if no service with the given name exists
      * @throws CantShowUsersException if the given service doesn't store the users in it
      * @throws NoStudentsException if the given service is empty
      */
-    TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException;
+    TwoWayIterator<Student> getUsersByService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException;
     /**
      * List all students in alphabetical order
      * O(1) to create the iterator, O(n) to traverse it

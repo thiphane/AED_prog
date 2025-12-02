@@ -217,11 +217,10 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public TwoWayIterator<Student> getUsersByService(String serviceName, Order order) throws InvalidOrderException, BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException {
+    public TwoWayIterator<Student> getUsersByService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        if(order == null)throw new InvalidOrderException(); // TODO este check pode ser feito na main: o campus não faz nada com essa informação
         Service service = this.getService(serviceName); // O(n)
         if(service == null) {
             throw new NoSuchElementException();
