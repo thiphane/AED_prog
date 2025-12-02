@@ -132,6 +132,4 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
     public Iterator<Entry<K, V>> iterator() {
         return new SepChainHashTableIterator<>(table);
     }
-
-
 }

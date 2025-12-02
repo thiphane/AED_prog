@@ -1,4 +1,10 @@
 package dataStructures;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+
 /**
  * Map with a singly linked list with head and size
  * @author AED  Team
@@ -9,9 +15,9 @@ package dataStructures;
 class MapSinglyList<K,V> implements Map<K, V> {
 
 
-    private SinglyListNode<Entry<K,V>> head;
+    transient private SinglyListNode<Entry<K,V>> head;
 
-    private int size;
+    transient private int size;
 
     public MapSinglyList() {
         this.head = null;
@@ -155,4 +161,31 @@ class MapSinglyList<K,V> implements Map<K, V> {
         return new KeysIterator(iterator());
     }
 
+    @Serial
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeInt(this.size);
+        Iterator<Map.Entry<K,V>> iter = this.iterator();
+        while(iter.hasNext()) {
+            Map.Entry<K,V> cur = iter.next();
+            oos.writeObject(cur);
+        }
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        int size = ois.readInt();
+        SinglyListNode<Map.Entry<K,V>> cur = null;
+        for(int i = 0; i < size; i++) {
+            @SuppressWarnings("unchecked")
+            Map.Entry<K,V> element = (Map.Entry<K,V>)ois.readObject();
+            if ( cur == null ) {
+                this.head = new SinglyListNode<>(element);
+                cur = this.head;
+            } else {
+                cur.setNext(new SinglyListNode<>(element));
+                cur = cur.getNext();
+            }
+        }
+        this.size = size;
+    }
 }
