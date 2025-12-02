@@ -18,15 +18,22 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
     public SepChainHashTable( ){
         this(DEFAULT_CAPACITY);
     }
-    
+
+    @SuppressWarnings("unchecked")
     public SepChainHashTable( int capacity ){
-        super(capacity);
-       //TODO: Left as exercise
+        super(nextPrime(capacity));
+        int primeCapacity = nextPrime(capacity);
+        this.table = new MapSinglyList[primeCapacity];
+        this.maxSize = Math.round(primeCapacity * MAX_LOAD_FACTOR);
     }
 
     // Returns the hash value of the specified key.
     protected int hash( K key ){
-        return Math.abs( key.hashCode() ) % table.length;
+        return this.hash(key, this.table.length);
+    }
+
+    protected int hash( K key, int size ){
+        return Math.abs( key.hashCode() ) % size;
     }
     /**
      * If there is an entry in the dictionary whose key is the specified key,
@@ -37,8 +44,11 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
      * or null if the dictionary does not have an entry with that key
      */
     public V get(K key) {
-        //TODO: Left as an exercise.
-    	return null;
+        Map<K,V> sub = this.table[this.hash(key)];
+        if(sub == null) {
+            return null;
+        }
+        return sub.get(key);
     }
 
     /**
@@ -54,14 +64,41 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
     public V put(K key, V value) {
         if (isFull())
             rehash();
-        //TODO: Left as an exercise.
-       
-        return null;
+        int hsh = this.hash(key);
+        Map<K,V> sub = this.table[hsh];
+        if(sub == null) {
+            sub = new MapSinglyList<>();
+            this.table[hsh] = sub;
+        }
+        V old = sub.put(key, value);
+        if(old == null) {
+            currentSize++;
+        }
+        return old;
     }
 
 
+    @SuppressWarnings("unchecked")
     private void rehash() {
-        //TODO: Left as an exercise.
+        Map<K,V>[] newTable;
+        newTable = new MapSinglyList[HashTable.nextPrime(this.table.length * 2)];
+        this.maxSize = Math.round(newTable.length * MAX_LOAD_FACTOR);
+        //System.out.printf("rehashing from %d -> %d\n", this.table.length, newTable.length);
+        for(Map<K,V> curTable : table) {
+            if(curTable == null) { continue; }
+            Iterator<Entry<K,V>> iter = curTable.iterator();
+            while(iter.hasNext()) {
+                Entry<K,V> cur = iter.next();
+                int hash = this.hash(cur.key(), newTable.length);
+                Map<K,V> chosen = newTable[hash];
+                if(chosen == null) {
+                    chosen = new MapSinglyList<>();
+                    newTable[hash] = chosen;
+                }
+                chosen.put(cur.key(), cur.value());
+            }
+        }
+        this.table = newTable;
     }
 
     /**
@@ -74,8 +111,17 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
      * or null if the dictionary does not an entry with that key
      */
     public V remove(K key) {
-        //TODO: Left as an exercise.
-        return null;
+        int hash = this.hash(key);
+        Map<K,V> sub = this.table[hash];
+        if(sub == null) {
+            sub = new MapSinglyList<>();
+            this.table[hash] = sub;
+        }
+        V old = sub.remove(key);
+        if (old != null) {
+            this.currentSize--;
+        }
+        return old;
     }
 
     /**

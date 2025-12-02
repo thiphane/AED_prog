@@ -18,6 +18,24 @@ abstract class AdvancedBSTree <K extends Comparable<K>,V> extends BSTSortedMap<K
    	 //TODO: Left as an exercise.
    	 //  a single rotation modifies a constant number of parent-child relationships,
     	// it can be implemented in O(1)time
+        BTNode<Entry<K,V>> y = (BTNode<Entry<K,V>>) z.getRightChild();
+        BTNode<Entry<K,V>> parent = (BTNode<Entry<K,V>>) z.getParent();
+        BTNode<Entry<K,V>> child = ((BTNode<Entry<K,V>>)y.getLeftChild());
+        z.setRightChild(child);
+        if ( child != null ) {
+            child.setParent(z);
+        }
+        y.setLeftChild(z);
+        y.setParent(parent);
+        z.setParent(y);
+        if ( parent != null ) {
+            if ( parent.getLeftChild() == z ) {
+                parent.setLeftChild(y);
+            } else {
+                assert parent.getRightChild() == z;
+                parent.setRightChild(y);
+            }
+        }
 	}
 
      /**
@@ -31,6 +49,24 @@ abstract class AdvancedBSTree <K extends Comparable<K>,V> extends BSTSortedMap<K
         //TODO: Left as an exercise.
         //  a single rotation modifies a constant number of parent-child relationships,
         // it can be implemented in O(1)time
+        BTNode<Entry<K,V>> y = (BTNode<Entry<K,V>>)z.getLeftChild();
+        BTNode<Entry<K,V>> parent = (BTNode<Entry<K,V>>) z.getParent();
+        BTNode<Entry<K,V>> child = ((BTNode<Entry<K,V>>)y.getRightChild());
+        z.setLeftChild(child);
+        if ( child != null ) {
+            ((BTNode<Entry<K,V>>)y.getRightChild()).setParent(z);
+        }
+        y.setRightChild(z);
+        y.setParent(z.getParent());
+        z.setParent(y);
+        if ( parent != null ) {
+            if ( parent.getLeftChild() == z ) {
+                parent.setLeftChild(y);
+            } else {
+                assert parent.getRightChild() == z;
+                parent.setRightChild(y);
+            }
+        }
     }
 
     /**
@@ -56,6 +92,33 @@ abstract class AdvancedBSTree <K extends Comparable<K>,V> extends BSTSortedMap<K
         // The double rotation arises when position x has the middle of the three relevant keys
         // and is first rotated above its parent Y, and then above what was originally its grandparent Z.
         // In any of the cases, the trinode restructuring is completed with O(1)running time
-        return null;
+        BTNode<Entry<K,V>> y = (BTNode<Entry<K,V>>) x.getParent();
+        BTNode<Entry<K,V>> z = (BTNode<Entry<K,V>>) y.getParent();
+        if ( z.getLeftChild() == y ) { // TODO caderno LC
+            if ( y.getLeftChild() == x ) {
+                // Caso 1: linha para a esquerda: x > y > z
+                this.rotateRight(z);
+                return y;
+            } else {
+                assert y.getRightChild() == x;
+                // Caso 2: z > x > y
+                this.rotateLeft(y);
+                this.rotateRight(z);
+                return x;
+            }
+        } else {
+            assert z.getRightChild() == y;
+            if ( y.getLeftChild() == x ) {
+                // Caso 3: y > x > z
+                this.rotateRight(y);
+                this.rotateLeft(z);
+                return x;
+            } else {
+                // Caso 4: linha para a direita: z > y > x
+                assert y.getRightChild() == x;
+                this.rotateLeft(z);
+                return y;
+            }
+        }
     }
 }

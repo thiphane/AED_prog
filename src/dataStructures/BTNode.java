@@ -44,6 +44,10 @@ class BTNode<E> implements Node<E> {
      */
     BTNode(E elem, BTNode<E> parent, BTNode<E> leftChild, BTNode<E> rightChild){
         //TODO: Left as an exercise.
+        this.element = elem;
+        this.parent = parent;
+        this.leftChild = leftChild;
+        this.rightChild = rightChild;
     }
 
     /**
@@ -128,25 +132,41 @@ class BTNode<E> implements Node<E> {
 
     public int getHeight() {
         //TODO: Left as an exercise.
-        return 0;
+        return getHeightRec(0);
+    }
+
+    private int getHeightRec(int rec) {
+        if ( this.getLeftChild() == null && this.getRightChild() == null) {
+            return rec;
+        } else if (this.getLeftChild() == null) { return ((BTNode<E>)this.getRightChild()).getHeightRec(rec+1); }
+        else if (this.getRightChild() == null) { return ((BTNode<E>)this.getLeftChild()).getHeightRec(rec+1); }
+        return Math.max(((BTNode<E>)this.getLeftChild()).getHeightRec(rec+1), ((BTNode<E>)this.getRightChild()).getHeightRec(rec+1));
     }
 
     /**
      *
-     * @return
+     * @return the element furthest to the left
      */
     BTNode<E> furtherLeftElement() {
         //TODO: Left as an exercise.
-	return null;
+        BTNode<E> cur = this;
+        while (cur.getLeftChild() != null) {
+            cur = (BTNode<E>)cur.getLeftChild();
+        }
+        return cur;
     }
 
    /**
      *
-     * @return
+     * @return the element furthest to the right
      */
     BTNode<E> furtherRightElement() {
          //TODO: Left as an exercise.
-	return null;
+        BTNode<E> cur = this;
+        while (cur.getRightChild() != null) {
+            cur = (BTNode<E>)cur.getRightChild();
+        }
+        return cur;
     }
 
    //new methods: Left as an exercise.

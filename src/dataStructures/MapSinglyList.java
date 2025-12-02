@@ -14,7 +14,8 @@ class MapSinglyList<K,V> implements Map<K, V> {
     private int size;
 
     public MapSinglyList() {
-        //TODO: Left as exercise
+        this.head = null;
+        this.size = 0;
     }
 
     /**
@@ -24,8 +25,7 @@ class MapSinglyList<K,V> implements Map<K, V> {
      */
   
     public boolean isEmpty() {
-	//TODO: Left as exercise
-        return false;
+        return size == 0;
     }
 
     /**
@@ -35,8 +35,7 @@ class MapSinglyList<K,V> implements Map<K, V> {
      */
     @Override
     public int size() {
-	//TODO: Left as exercise
-        return 0;
+        return this.size;
     }
 
     /**
@@ -49,10 +48,24 @@ class MapSinglyList<K,V> implements Map<K, V> {
      */
     @Override
     public V get(K key) {
-        //TODO: Left as exercise
+        Iterator<Entry<K,V>> iter = this.iterator();
+        while(iter.hasNext()) {
+            Entry<K,V> cur = iter.next();
+            if(cur.key().equals(key)) {
+                return cur.value();
+            }
+        }
         return null;
     }
     
+    private SinglyListNode<Entry<K,V>> getNode(K key) {
+        if(this.isEmpty()) { return null; }
+        SinglyListNode<Entry<K,V>> cur = this.head;
+        while (cur.getNext() != null && !cur.getElement().key().equals(key)) {
+            cur = cur.getNext();
+        }
+        return cur.getElement().key().equals(key) ? cur : null;
+    }
 
     /**
      * If there is an entry in the dictionary whose key is the specified key,
@@ -66,8 +79,17 @@ class MapSinglyList<K,V> implements Map<K, V> {
      */
     
     public V put(K key, V value) {
-        //TODO: Left as an exercise.
-        return null;
+        Entry<K,V> entry = new Entry<>(key, value);
+        SinglyListNode<Entry<K,V>> node = this.getNode(key);
+        if(node == null) {
+            size++;
+            this.head = new SinglyListNode<>(entry, this.head);
+            return null;
+        } else {
+            V res = node.getElement().value();
+            node.setElement(entry);
+            return res;
+        }
     }
 
     /**
@@ -80,8 +102,28 @@ class MapSinglyList<K,V> implements Map<K, V> {
      * or null if the dictionary does not an entry with that key
      */
     public V remove(K key) {
-        //TODO: Left as an exercise.
-        return null;
+        if(this.isEmpty()) { return null; }
+        if(this.head.getElement().key().equals(key)) {
+            V res = this.head.getElement().value();
+            this.head.setElement(null);
+            this.head = this.head.getNext();
+            this.size--;
+            return res;
+        }
+        SinglyListNode<Entry<K,V>> cur = this.head;
+        while(cur.getNext() != null && !cur.getNext().getElement().key().equals(key)) {
+            cur = cur.getNext();
+        }
+        boolean found = cur.getNext() != null && cur.getNext().getElement().key().equals(key);
+        if (found) {
+            V res = cur.getNext().getElement().value();
+            cur.getNext().setElement(null);
+            cur.setNext(cur.getNext().getNext());
+            this.size--;
+            return res;
+        } else {
+            return null;
+        }
     }
 
     /**
