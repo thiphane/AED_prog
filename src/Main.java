@@ -270,6 +270,7 @@ public class Main {
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
                         } else {
+                            it.fullForward();
                             while (it.hasPrevious()) { // O(n)
                                 Student s = it.previous();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());

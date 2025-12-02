@@ -45,9 +45,26 @@ package dataStructures;
      // specified number; or zero if all such primes are greater
      // than Integer.MAX VALUE.
      protected static int nextPrime( int number ){
-         //TODO: Left as exercise
-        
+         //System.out.println("nextprime " + number);
+         int cur = number; if (cur % 2 == 0) { cur++; }
+         for(; cur < Integer.MAX_VALUE; cur += 2) {
+             if (isPrime(cur)) {
+                 //System.out.println(number);
+                 return cur;
+             }
+         }
          return 0;
+     }
+
+     private static boolean isPrime( int number ) {
+         //System.out.println("prime checking " + number);
+         if ( number % 2 == 0 ) { return true; }
+         int trgt = Math.toIntExact(Math.round(Math.sqrt(number)));
+         for(int i = 3; i < trgt; i += 2) {
+             if ( number % i == 0 ) { return false; }
+         }
+         //System.out.println(number + " is prime");
+         return true;
      }
 
      // Returns true iff the hash table cannot contain more entries.

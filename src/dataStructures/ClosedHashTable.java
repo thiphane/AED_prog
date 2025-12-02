@@ -43,14 +43,31 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
     int hash( K key, int i ){
         return Math.abs( key.hashCode() + i) % table.length;
     }
+
+    int linearGetTarget(K key, boolean returnDeleted) {
+        for(int i = 0; i < table.length; i++) {
+            int h = hash(key, i);
+            if ( table[h] == null ) { return h; }
+            if ( table[h] != null && key.equals(table[h].key()) ) {
+                return h;
+            }
+            if ( returnDeleted && table[h] != null && table[h] == REMOVED_CELL ) {
+                return h;
+            }
+        }
+        return NOT_FOUND;
+    }
     /**
      * Linear Proving
      * @param key to search
      * @return the index of the table, where is the entry with the specified key, or null
      */
     int searchLinearProving(K key) {
-        //TODO: Left as an exercise.      
-        return NOT_FOUND; 
+        //TODO: Left as an exercise.
+        int i = linearGetTarget(key, false);
+        if ( i == -1 ) { return NOT_FOUND; }
+        if ( table[i] == null ) { return NOT_FOUND; }
+        return key.equals(table[i].key()) ? i : NOT_FOUND;
     }
 
     
@@ -65,8 +82,11 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
     @Override
     public V get(K key) {
         //TODO: Left as an exercise.
-        
-        return null;
+        int p = searchLinearProving(key);
+        if ( p == NOT_FOUND ) {
+            return null;
+        }
+        return table[p].value();
     }
 
     /**
@@ -83,12 +103,24 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
     public V put(K key, V value) {
         if (isFull())
             rehash();
-        //TODO: Left as an exercise.
-        return null;
+        int i = linearGetTarget(key, true);
+        if ( i == -1 ) { throw new RuntimeException("closed put"); }
+        V old = table[i] == null || table[i] == REMOVED_CELL ? null : table[i].value();
+        table[i] = new Entry<>(key, value);
+        return old;
     }
 
+    @SuppressWarnings("unchecked")
      private void rehash(){
- //TODO: Left as an exercise.
+        //TODO: Left as an exercise.
+         int arrSize = HashTable.nextPrime(this.table.length * 2);
+         Entry<K,V>[] oldTable = table;
+         this.table = (Entry<K,V>[])new Entry[arrSize];
+        for (Entry<K, V> cur : oldTable) {
+            if (cur != REMOVED_CELL && cur != null) {
+                this.put(cur.key(), cur.value());
+            }
+        }
      }
 
    
@@ -101,11 +133,17 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
      * @return previous value associated with key,
      * or null if the dictionary does not an entry with that key
      */
+    @SuppressWarnings("unchecked")
     @Override
     public V remove(K key) {
         //TODO: Left as an exercise.
-        
-        return null;
+        int i = searchLinearProving(key);
+        if ( i == -1 ) {
+            return null;
+        }
+        V old = table[i].value();
+        table[i] = (Entry<K,V>)REMOVED_CELL;
+        return old;
     }
 
     /**
@@ -116,8 +154,7 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
     @Override
     public Iterator<Entry<K, V>> iterator() {
          //TODO: Left as an exercise.
-        
-        return null;
+        return new FilterIterator<>(new ArrayIterator<>(this.table, this.table.length), (f) -> f != null && f != REMOVED_CELL);
     }
 
 }
