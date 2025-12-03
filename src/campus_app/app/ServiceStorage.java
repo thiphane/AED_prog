@@ -16,17 +16,16 @@ public class ServiceStorage implements Serializable {
     public static final int MAX_RATING = 5;
     // All services by order of insertion
     protected final List<Service> services;
-    protected Map<String, Service> servicesByName;
     // All services by order of their rating
-    protected List<Service>[] servicesByStar;
+    protected ObjectRemovalList<Service>[] servicesByStar;
+    transient protected Map<String, Service> servicesByName;
     @SuppressWarnings("unchecked")
     public ServiceStorage() {
         this.services = new ListInArray<>(EXPECTED_SERVICE_COUNT);
-        this.servicesByName = new SepChainHashTable<>(EXPECTED_SERVICE_COUNT);
-        // TODO singly linked list
-        this.servicesByStar = new List[MAX_RATING];
+        this.servicesByName = new ClosedHashTable<>(EXPECTED_SERVICE_COUNT);
+        this.servicesByStar = new ObjectRemovalList[MAX_RATING];
         for(int i = 0; i < servicesByStar.length; i++) {
-            this.servicesByStar[i] = new SinglyLinkedList<>();
+            this.servicesByStar[i] = new ObjectRemovalSinglyList<>();
         }
     }
 
@@ -36,20 +35,18 @@ public class ServiceStorage implements Serializable {
      * @throws AlreadyExistsException if a service with the given name already exists
      */
     public void addService(Service service) throws AlreadyExistsException {
-        Iterator<Service> iter = services.iterator();
-        while(iter.hasNext()) { // O(n)
-            Service cur = iter.next();
-            if(cur.getName().equalsIgnoreCase(service.getName())) {
-                throw new AlreadyExistsException(cur.getName());
-            }
+        try {
+            Service s = this.getService(service.getName());
+            throw new AlreadyExistsException(s.getName());
+        } catch ( ServiceDoesNotExistException e) {
+            this.services.addLast(service); // O(1)
+            this.servicesByStar[MAX_RATING - service.getRating()].addLast(service); // O(1)
+            this.servicesByName.put(service.getName().toLowerCase(), service); // O(1)
         }
-        this.services.addLast(service); // O(1)
-        this.servicesByStar[MAX_RATING - service.getRating()].addLast(service); // O(1)
-        this.servicesByName.put(service.getName().toLowerCase(), service);
     }
 
     public void updateServiceRating(Service service, int oldRating) {
-        assert servicesByStar[MAX_RATING - oldRating].remove(servicesByStar[MAX_RATING - oldRating].indexOf(service)).equals(service);
+        assert servicesByStar[MAX_RATING - oldRating].remove(service).equals(service);
         servicesByStar[MAX_RATING - service.getRating()].addLast(service);
     }
 
@@ -68,5 +65,15 @@ public class ServiceStorage implements Serializable {
 
     Iterator<Service> listServicesByRanking() {
         return new ArrayOfListIterator<>(servicesByStar);
+    }
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        Iterator<Service> iter = this.services.iterator();
+        this.servicesByName = new ClosedHashTable<>(EXPECTED_SERVICE_COUNT);
+        while ( iter.hasNext() ) {
+            Service c = iter.next();
+            this.servicesByName.put(c.getName().toLowerCase(), c);
+        }
     }
 }

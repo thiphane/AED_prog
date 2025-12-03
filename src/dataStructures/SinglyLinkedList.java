@@ -100,6 +100,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
             return getLast();
         return getNode(position).getElement();
     }
+
     protected SinglyListNode<E> getNode(int position) {
         SinglyListNode<E> node = head;
         for ( int i = 0; i < position; i++)
@@ -243,12 +244,22 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
             return this.removeLast();
         return this.removeMiddle(position);
     }
-    private E removeMiddle(int position){
-        SinglyListNode<E> prevNode = this.getNode(position-1);
+
+    E removeAfter(SinglyListNode<E> prevNode) {
         SinglyListNode<E> node = prevNode.getNext();
         prevNode.setNext(node.getNext());
         currentSize--;
+        if ( node.getNext() == null ) {
+            assert node == tail;
+            tail = prevNode;
+        }
+        node.setNext(null);
         return node.getElement();
+    }
+
+    private E removeMiddle(int position){
+        SinglyListNode<E> prevNode = this.getNode(position-1);
+        return removeAfter(prevNode);
     }
 
     @Serial

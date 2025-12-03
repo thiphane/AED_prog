@@ -16,7 +16,7 @@ public class StudentStorage implements Serializable {
     private static final int EXPECTED_COUNTRY_COUNT = 10;
     // We only serialize studentsByCountry because it needs to save the insertion order
     // All students by order of insertion
-    protected final Map<String, List<Student>> studentsByCountry;
+    protected final Map<String, ObjectRemovalList<Student>> studentsByCountry;
     // All students sorted alphabetically
     transient protected SortedList<Student> alphabeticalStudents;
     transient protected Map<String, Student> studentsByName;
@@ -29,9 +29,9 @@ public class StudentStorage implements Serializable {
 
     public void addStudent(Student student) {
         String cnty = student.getCountry().toLowerCase();
-        List<Student> countryList = this.studentsByCountry.get(cnty);
+        ObjectRemovalList<Student> countryList = this.studentsByCountry.get(cnty);
         if ( countryList == null ) {
-            countryList = new SinglyLinkedList<Student>();
+            countryList = new ObjectRemovalSinglyList<>();
             this.studentsByCountry.put(cnty, countryList);
         }
         countryList.addLast(student); // O(1)
@@ -67,11 +67,11 @@ public class StudentStorage implements Serializable {
 
     @Serial
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        ois.defaultReadObject(); // Ler os estudantes: O(n)
+        ois.defaultReadObject(); // Ler os estudantes por pais: O(n)
         // Evitar ler 2 listas do ficheiro, com conteúdo igual
         this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
         this.studentsByName = new SepChainHashTable<>(EXPECTED_STUDENT_COUNT);
-        Iterator<Map.Entry<String, List<Student>>> mapIter = this.studentsByCountry.iterator();
+        Iterator<Map.Entry<String, ObjectRemovalList<Student>>> mapIter = this.studentsByCountry.iterator();
         while(mapIter.hasNext()) { // O(n)
             Iterator<Student> iter = mapIter.next().value().iterator();
             while ( iter.hasNext()) {
