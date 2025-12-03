@@ -7,6 +7,7 @@ import campus_app.app.CampusApp;
 import campus_app.app.CampusAppClass;
 import campus_app.app.Order;
 import campus_app.entity.service.Service;
+import campus_app.entity.service.ServiceRead;
 import campus_app.entity.student.Student;
 import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.*;
@@ -112,13 +113,14 @@ public class Main {
                     in.nextLine();
 
                     try{
-                        Iterator<Service> services = app.listAllServices(); // O(1)
+                        Iterator<ServiceRead> services = app.listAllServices(); // O(1)
                         if (!services.hasNext()) {
                             System.out.println(NO_SERVICES);
-                        }
-                        while (services.hasNext()) { // O(n)
-                            Service s = services.next();
-                            System.out.printf(SERVICE_LIST_FORMAT, s.getName(), s.getType().toString().toLowerCase(), s.getPosition().latitude(), s.getPosition().longitude());
+                        } else {
+                            while (services.hasNext()) { // O(n)
+                                ServiceRead s = services.next();
+                                System.out.printf(SERVICE_LIST_FORMAT, s.getName(), s.getType().toString().toLowerCase(), s.getPosition().latitude(), s.getPosition().longitude());
+                            }
                         }
                     }catch(BoundsNotDefined e){
                         System.out.println(BOUNDS_NOT_DEFINED);
@@ -235,10 +237,10 @@ public class Main {
                     int rate = in.nextInt();
                     String name = in.nextLine().trim();
                     try {
-                        Iterator<Service> it = app.listClosestServicesByStudent(rate, type, name); // O(n)
+                        Iterator<ServiceRead> it = app.listClosestServicesByStudent(rate, type, name); // O(n)
                         System.out.printf(RANKED_HEADER, type, rate);
                         while (it.hasNext()) { // O(n)
-                            Service s = it.next();
+                            ServiceRead s = it.next();
                             System.out.println(s.getName());
                         }
                     } catch (BoundsNotDefined e) {
@@ -293,8 +295,9 @@ public class Main {
                     boolean isDistracted;
                     try {
                         Student student = app.getStudent(studentName); // O(n)
-                        Service home = app.getService(locationName); // O(n)
-                        isDistracted = app.updateStudentPosition(student, home); // O(1) best case, O(n) worst case, expected O(n)
+                        ServiceRead home = app.getService(locationName); // O(n)
+                        // TODO don't cast to service
+                        isDistracted = app.updateStudentPosition(student, (Service)home); // O(1) best case, O(n) worst case, expected O(n)
                         if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, student.getName(), home.getName());}
                         else System.out.printf(LOCATION_CHANGED_FORMAT, student.getName(), home.getName());
                     } catch (BoundsNotDefined e) {
@@ -319,7 +322,7 @@ public class Main {
                         app.moveHome(name, lodging); // O(n)
                         // TODO arranjar forma de não usar getService e getUser e devolver com moveHome ou algo assim
                         Student student = app.getStudent(name); // O(n)
-                        Service home = app.getService(lodging); // O(n)
+                        ServiceRead home = app.getService(lodging); // O(n)
                         System.out.printf(STUDENT_MOVED_FORMAT, home.getName(), student.getName());
                     } catch(BoundsNotDefined e){
                         System.out.println(BOUNDS_NOT_DEFINED);
@@ -338,7 +341,7 @@ public class Main {
                     String name = in.nextLine().trim();
                     try{
                         Student student = app.getStudent(name);
-                        Iterator<Service> it = student.getVisitedServices();
+                        Iterator<ServiceRead> it = student.getVisitedServices();
                             while(it.hasNext()){ // O(n) time
                                 System.out.println(it.next().getName());
                             }
@@ -363,11 +366,11 @@ public class Main {
                     }
                 }case RANKING -> { // O(n)
                     try {
-                        Iterator<Service> iter = app.listServicesByRanking(); // O(1)
+                        Iterator<ServiceRead> iter = app.listServicesByRanking(); // O(1)
                         if(iter.hasNext()) System.out.println(RANKING_HEADER);
                         else System.out.println(EMPTY_RANKING);
                         while(iter.hasNext()){ // O(n)
-                            Service ser =  iter.next();
+                            ServiceRead ser =  iter.next();
                             System.out.printf(RANKING_FORMAT, ser.getName(), ser.getRating());
                         }
                     } catch (BoundsNotDefined e) {
@@ -376,10 +379,10 @@ public class Main {
                 }case TAG -> { // O(n^2)
                     String tagName = in.nextLine().toLowerCase().trim();
                     try {
-                        Iterator<Service> iter = app.listServicesByTag(tagName); // O(1)
+                        Iterator<ServiceRead> iter = app.listServicesByTag(tagName); // O(1)
                         if(iter.hasNext()){
                             while(iter.hasNext()) { // traversing the iterator is O(n^2)
-                                Service ser = iter.next();
+                                ServiceRead ser = iter.next();
                                 System.out.printf(TAG_FORMAT, ser.getType().name().toLowerCase(), ser.getName());
                             }
                         }else System.out.println(NO_SUCH_TAG);
@@ -390,7 +393,7 @@ public class Main {
                         String studentName = in.nextLine().trim();
                         String type = in.nextLine().trim();
                         try {
-                            Service bestServices = app.findBestService(studentName, type); // O(1) best case, O(n) worst case
+                            ServiceRead bestServices = app.findBestService(studentName, type); // O(1) best case, O(n) worst case
                             if(bestServices == null)System.out.printf(NO_SERVICES_OF_GIVEN_TYPE, type.toLowerCase());
                             else System.out.println(bestServices.getName());
                         } catch (BoundsNotDefined e) {

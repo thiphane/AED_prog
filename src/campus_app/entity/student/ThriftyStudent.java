@@ -6,6 +6,7 @@ package campus_app.entity.student;
 
 import campus_app.entity.service.EatingService;
 import campus_app.entity.service.LodgingService;
+import campus_app.entity.service.ServiceRead;
 import campus_app.exceptions.*;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
@@ -53,7 +54,7 @@ public class ThriftyStudent extends StudentAbstract {
     }
 
     @Override
-    public Iterator<Service> getVisitedServices() throws StudentDoesntStoreVisitedServicesException{
+    public Iterator<ServiceRead> getVisitedServices() throws StudentDoesntStoreVisitedServicesException{
         throw new StudentDoesntStoreVisitedServicesException(this);
     }
 }

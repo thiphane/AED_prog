@@ -253,31 +253,30 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listAllServices() throws BoundsNotDefined {
+    public Iterator<ServiceRead> listAllServices() throws BoundsNotDefined {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return currentBounds.listAllServices(); // O(n)
+        return new TransformerIterator<>(currentBounds.listAllServices()); // O(1)
     }
 
     @Override
-    public Iterator<Service> listServicesByRanking() throws BoundsNotDefined {
+    public Iterator<ServiceRead> listServicesByRanking() throws BoundsNotDefined {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
-        }return currentBounds.listServicesByRating(); // O(1)
+        }return new TransformerIterator<>(currentBounds.listServicesByRating()); // O(1)
     }
 
     @Override
-    public Iterator<Service> listServicesByTag(String tagName) throws BoundsNotDefined {
+    public Iterator<ServiceRead> listServicesByTag(String tagName) throws BoundsNotDefined {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return new FilterIterator<>(currentBounds.listAllServices(), new ServiceTagPredicate(tagName)); // O(1), traversing it is O(n^2)
+        return new TransformerIterator<>(new FilterIterator<>(currentBounds.listAllServices(), new ServiceTagPredicate(tagName)));
     }
 
     @Override
     public Service findBestService(String studentName, String type) throws BoundsNotDefined, StudentDoesNotExistException, InvalidTypeException {
-
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -287,7 +286,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException, InvalidRating {
+    public Iterator<ServiceRead> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException, InvalidRating {
         if(currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -306,7 +305,7 @@ public class CampusAppClass implements CampusApp {
         if(!byType.hasNext())throw new NoSuchElementOfGivenType();
         Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate)); // O(1)
         if(!byTypeAndRate.hasNext())throw new NoSuchServiceWithGivenRate();
-        return s.findClosestServices(byTypeAndRate);
+        return new TransformerIterator<>(s.findClosestServices(byTypeAndRate));
     }
 
 }

@@ -5,6 +5,7 @@
 package campus_app.entity.student;
 
 import campus_app.entity.service.LodgingService;
+import campus_app.entity.service.ServiceRead;
 import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.NoVisitedServicesException;
 import campus_app.exceptions.ServiceIsFullException;
@@ -14,6 +15,7 @@ import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 import dataStructures.List;
+import dataStructures.TransformerIterator;
 
 public class BookishStudent extends StudentAbstract {
     protected List<Service> visited;
@@ -37,10 +39,10 @@ public class BookishStudent extends StudentAbstract {
     }
 
     @Override
-    public Iterator<Service> getVisitedServices() throws NoVisitedServicesException {
+    public Iterator<ServiceRead> getVisitedServices() throws NoVisitedServicesException {
         if ( visited.isEmpty() ) {
             throw new NoVisitedServicesException(this);
         }
-        return visited.iterator();
+        return new TransformerIterator<>(visited.iterator());
     }
 }

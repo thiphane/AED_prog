@@ -3,6 +3,7 @@
  * @author Rodrigo Moura 71429
  */
 package campus_app.app;
+import campus_app.entity.service.ServiceRead;
 import campus_app.exceptions.*;
 import dataStructures.*;
 import campus_app.entity.service.Service;
@@ -84,7 +85,7 @@ public interface CampusApp {
      * @throws BoundsNotDefined if no bounds are defined
      * @throws ServiceDoesNotExistException if no service with the given name exists
      */
-    Service getService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException;
+    ServiceRead getService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException;
     /**
      * Removes a student from the bounds
      * O(n^2)
@@ -161,14 +162,14 @@ public interface CampusApp {
      * @return an iterator through all services in order of insertion
      * @throws BoundsNotDefined if no bounds are defined
      */
-    Iterator<Service> listAllServices() throws BoundsNotDefined;
+    Iterator<ServiceRead> listAllServices() throws BoundsNotDefined;
     /**
      * Lists all the services in order of their ranking
      * O(1)
      * @return an iterator through all the services in order of their rating and when they received it
      * @throws BoundsNotDefined if no bounds are defined
      */
-    Iterator<Service> listServicesByRanking() throws BoundsNotDefined;
+    Iterator<ServiceRead> listServicesByRanking() throws BoundsNotDefined;
     /**
      * Lists the services tied to be closest to the student with a given rating and type
      * O(n) time
@@ -183,7 +184,7 @@ public interface CampusApp {
      * @throws StudentDoesNotExistException if no student with the given name exists
      * @throws InvalidRating if the rating is not within the bounds
      */
-    Iterator<Service> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException, InvalidRating;
+    Iterator<ServiceRead> listClosestServicesByStudent(int rate, String type, String studentName) throws BoundsNotDefined, InvalidTypeException, IllegalArgumentException, NoSuchElementOfGivenType, NoSuchServiceWithGivenRate, StudentDoesNotExistException, InvalidRating;
     /**
      * Lists all services with a comment with the given tag
      * O(1) to create, O(n^2) to traverse, since for each service,
@@ -192,7 +193,7 @@ public interface CampusApp {
      * @return an iterator through all services with the given tag
      * @throws BoundsNotDefined if no bounds are defined
      */
-    Iterator<Service> listServicesByTag(String tagName) throws BoundsNotDefined;
+    Iterator<ServiceRead> listServicesByTag(String tagName) throws BoundsNotDefined;
     /**
      * Finds the best service of the given type for the given student
      * O(n) for thrifty students, O(1) otherwise
@@ -203,5 +204,5 @@ public interface CampusApp {
      * @throws StudentDoesNotExistException if the student does not exist
      * @throws InvalidTypeException if the given type does not exist
      */
-    Service findBestService(String studentName, String type) throws BoundsNotDefined, StudentDoesNotExistException, InvalidTypeException;
+    ServiceRead findBestService(String studentName, String type) throws BoundsNotDefined, StudentDoesNotExistException, InvalidTypeException;
 }

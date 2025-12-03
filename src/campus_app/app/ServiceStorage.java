@@ -60,7 +60,7 @@ public class ServiceStorage implements Serializable {
     }
 
     public Iterator<Service> listAllServices() {
-        return services.iterator(); // O(n)
+        return services.iterator(); // O(1)
     }
 
     Iterator<Service> listServicesByRanking() {
