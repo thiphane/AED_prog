@@ -73,12 +73,12 @@ public abstract class ServiceAbstract implements Service {
     public boolean hasTag(String tagName) {
         String formated = " "+tagName+" ";
         char[] pattern = formated.toCharArray();
-
+        int[] failTable = computeFail(pattern);
         Iterator<String> iter = ratings.iterator();
         int position = -1;
         while(iter.hasNext() && position<0) {
             char[] text = iter.next().toCharArray();
-            position = findPattern(text, pattern);
+            position = findPatternPrecalc(text, pattern, failTable);
         }
         return position>0;
     }
@@ -98,15 +98,23 @@ public abstract class ServiceAbstract implements Service {
         }return failTable;
     }
     private int findPattern(char[]text, char[]pattern){
-        int n = text.length;
+        if ( pattern.length == 0 ) { return -1; }
+        int[] failTable = computeFail(pattern);
+        return findPatternPrecalc(text, pattern, failTable);
+    }
+
+    /**
+     * If checking for the same pattern on multiple strings, no need to recalculate the LPS table
+     */
+    private int findPatternPrecalc(char[] text, char[] pattern, int[] failTable) {
         int m = pattern.length;
         if(m==0)return 0;
-        int[] failTable = computeFail(pattern);
+        int n = text.length;
         int j = 0;
         int k = 0;
         while (j < n) {
             if(text[j] == pattern[k]){
-                if(k== m-1)return j=m+1; //match found
+                if(k== m-1) return m+1; //match found
                 j++;
                 k++;
             }else if(k>0)
