@@ -28,13 +28,10 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
     }
 
     // Returns the hash value of the specified key.
-    protected int hash( K key ){
-        return this.hash(key, this.table.length);
+    protected int hash( K key){
+        return Math.abs( key.hashCode() ) % this.table.length;
     }
 
-    protected int hash( K key, int size ){
-        return Math.abs( key.hashCode() ) % size;
-    }
     /**
      * If there is an entry in the dictionary whose key is the specified key,
      * returns its value; otherwise, returns null.
@@ -80,25 +77,24 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
 
     @SuppressWarnings("unchecked")
     private void rehash() {
-        Map<K,V>[] newTable;
-        newTable = new MapSinglyList[HashTable.nextPrime(this.table.length * 2)];
-        this.maxSize = Math.round(newTable.length * MAX_LOAD_FACTOR);
-        //System.out.printf("rehashing from %d -> %d\n", this.table.length, newTable.length);
-        for(Map<K,V> curTable : table) {
+        Map<K,V>[] oldTable = this.table;
+        this.table = new MapSinglyList[HashTable.nextPrime(this.table.length * 2)];
+        this.maxSize = Math.round(this.table.length * MAX_LOAD_FACTOR);
+        System.out.printf("rehashing from %d -> %d\n", oldTable.length, this.table.length);
+        for(Map<K,V> curTable : oldTable) {
             if(curTable == null) { continue; }
             Iterator<Entry<K,V>> iter = curTable.iterator();
             while(iter.hasNext()) {
                 Entry<K,V> cur = iter.next();
-                int hash = this.hash(cur.key(), newTable.length);
-                Map<K,V> chosen = newTable[hash];
+                int hash = this.hash(cur.key());
+                Map<K,V> chosen = this.table[hash];
                 if(chosen == null) {
                     chosen = new MapSinglyList<>();
-                    newTable[hash] = chosen;
+                    this.table[hash] = chosen;
                 }
                 chosen.put(cur.key(), cur.value());
             }
         }
-        this.table = newTable;
     }
 
     /**
