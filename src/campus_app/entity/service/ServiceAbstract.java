@@ -33,7 +33,8 @@ public abstract class ServiceAbstract implements Service {
     @Override
     public void addRating(int rating, String description) {
         this.rating+=rating;
-        ratings.addLast(description); // O(1)
+        String formatted = " "+description+" ";
+        ratings.addLast(formatted); // O(1)
     }
 
     @Override
@@ -70,17 +71,48 @@ public abstract class ServiceAbstract implements Service {
      */
     @Override
     public boolean hasTag(String tagName) {
-        // TODO talvez guardar as tags únicamente, em vez de guardar os comentários todos
+        String formated = " "+tagName+" ";
+        char[] pattern = formated.toCharArray();
+
         Iterator<String> iter = ratings.iterator();
-        while(iter.hasNext()) {
-            String[] cur = iter.next().split(" ");
-            for(String c : cur) {
-                if(c.equalsIgnoreCase(tagName)) {
-                    return true;
-                }
-            }
+        int position = -1;
+        while(iter.hasNext() && position<0) {
+            char[] text = iter.next().toCharArray();
+            position = findPattern(text, pattern);
         }
-        return false;
+        return position>0;
+    }
+    private int[] computeFail(char[] pattern){
+        int n = pattern.length;
+        int[] failTable = new int[n];
+        int j = 1;
+        int k = 0;
+        while(j < n){
+            if(pattern[j]==pattern[k]){
+                failTable[j] = k+1;
+                j++;
+                k++;
+            } else if(k>0)
+                k = failTable[k-1];
+            else j++;
+        }return failTable;
+    }
+    private int findPattern(char[]text, char[]pattern){
+        int n = text.length;
+        int m = pattern.length;
+        if(m==0)return 0;
+        int[] failTable = computeFail(pattern);
+        int j = 0;
+        int k = 0;
+        while (j < n) {
+            if(text[j] == pattern[k]){
+                if(k== m-1)return j=m+1; //match found
+                j++;
+                k++;
+            }else if(k>0)
+                k = failTable[k-1];
+            else j++;
+        }return -1;//not found
     }
 
     @Override
