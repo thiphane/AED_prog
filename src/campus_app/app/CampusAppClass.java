@@ -210,7 +210,7 @@ public class CampusAppClass implements CampusApp {
         }
         Service service = currentBounds.getService(serviceName);
         int oldRating = service.getRating();
-        service.addRating(rate, description); // O(n)
+        service.addRating(rate, description.toLowerCase()); // O(n)
         if(service.getRating() != oldRating) {
             currentBounds.updateServiceRating(service, oldRating);
         }

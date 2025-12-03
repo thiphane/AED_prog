@@ -10,7 +10,7 @@ import dataStructures.Predicate;
 public class ServiceTagPredicate implements Predicate<Service> {
     private final String tag;
     public ServiceTagPredicate(String tag) {
-        this.tag = tag;
+        this.tag = tag.toLowerCase();
     }
 
     public boolean check(Service service) {

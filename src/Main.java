@@ -377,7 +377,7 @@ public class Main {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     }
                 }case TAG -> { // O(n^2)
-                    String tagName = in.nextLine().toLowerCase().trim();
+                    String tagName = in.nextLine().trim();
                     try {
                         Iterator<ServiceRead> iter = app.listServicesByTag(tagName); // O(1)
                         if(iter.hasNext()){
@@ -405,7 +405,7 @@ public class Main {
                         }
                 }case STAR ->{ // O(n)
                     int rating = in.nextInt();String serviceName = in.nextLine().trim();
-                    String description =  in.nextLine().toLowerCase().trim();
+                    String description =  in.nextLine().trim();
                     try{
                         app.rateService(rating, serviceName, description); // O(n)
                         System.out.println(RATING_SUCCESS_FORMAT);
