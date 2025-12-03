@@ -31,7 +31,6 @@ class TwoWayDoublyIterator<E> extends DoublyIterator<E>
     public TwoWayDoublyIterator(DoublyListNode<E> first, DoublyListNode<E> last) {
         super(first);
         this.lastNode = last;
-        this.prevToReturn = last;
     }
 
     /**

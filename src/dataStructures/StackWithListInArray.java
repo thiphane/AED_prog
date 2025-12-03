@@ -24,7 +24,7 @@ public class StackWithListInArray<E> implements Stack<E> {
 
     public StackWithListInArray( int capacity ) {
         array =  new ListInArray(capacity);
-	this.capacity=capacity;
+	    this.capacity=capacity;
     }
 
     public StackWithListInArray( ) {
@@ -40,7 +40,7 @@ public class StackWithListInArray<E> implements Stack<E> {
     @Override
     public boolean isEmpty() {
 	//TODO: Left as an exercise.
-        return false;
+        return array.isEmpty();
     }
 
     /**
@@ -51,7 +51,7 @@ public class StackWithListInArray<E> implements Stack<E> {
     @Override
     public int size() {
         //TODO: Left as an exercise.
-	return 0;
+        return array.size();
     }
 
     /**
@@ -64,7 +64,7 @@ public class StackWithListInArray<E> implements Stack<E> {
     @Override
     public E top() {
        //TODO: Left as an exercise.
-        return null;
+        return array.getLast();
     }
 
     /**
@@ -77,6 +77,7 @@ public class StackWithListInArray<E> implements Stack<E> {
     @Override
     public void push(E element) {
         //TODO: Left as an exercise.
+        array.addLast(element);
     }
 
     
@@ -89,8 +90,6 @@ public class StackWithListInArray<E> implements Stack<E> {
      */
     @Override
     public E pop() {
-       //TODO: Left as an exercise.
-
-        return null;
+        return array.removeLast();
     }
 }

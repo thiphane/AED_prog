@@ -9,11 +9,23 @@ package dataStructures;
 import dataStructures.exceptions.NoSuchElementException;
 
 class SepChainHashTableIterator<K,V> implements Iterator<Map.Entry<K,V>> {
-
-    //TODO: Left as exercise
+    Map<K,V>[] table;
+    int counter;
+    Iterator<Map.Entry<K, V>> inner;
 
     public SepChainHashTableIterator(Map<K,V>[] table) {
-        //TODO: Left as exercise
+        this.table = table;
+        this.counter = 0;
+        advance();
+        if (this.counter < this.table.length && this.table[this.counter] != null) {
+            this.inner = this.table[this.counter].iterator();
+        } else { this.inner = null; }
+    }
+
+    private void advance() {
+        while (this.counter < this.table.length && this.table[this.counter] == null) {
+            this.counter++;
+        }
     }
 
     /**
@@ -23,8 +35,7 @@ class SepChainHashTableIterator<K,V> implements Iterator<Map.Entry<K,V>> {
      * @return true iff the iteration has more elements
      */
     public boolean hasNext() {
-	//TODO: Left as exercise
-        return false;
+        return inner != null && inner.hasNext();
     }
 
     /**
@@ -34,8 +45,16 @@ class SepChainHashTableIterator<K,V> implements Iterator<Map.Entry<K,V>> {
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
     public Map.Entry<K,V> next() {
-        //TODO: Left as exercise
-        return null;
+        if(!this.hasNext()) { throw new NoSuchElementException(); }
+        Map.Entry<K,V> res = inner.next();
+        if (!inner.hasNext()) {
+            this.counter++;
+            advance();
+            if (this.counter < this.table.length && this.table[this.counter] != null) {
+                inner = this.table[this.counter].iterator();
+            } else { inner = null; }
+        }
+        return res;
     }
 
     /**
@@ -43,7 +62,9 @@ class SepChainHashTableIterator<K,V> implements Iterator<Map.Entry<K,V>> {
      * After rewind, if the iteration is not empty, next will return the first element.
      */
     public void rewind() {
-        //TODO: Left as exercise
+        this.counter = 0;
+        this.inner = null;
+        this.advance();
     }
 }
 

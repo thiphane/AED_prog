@@ -29,6 +29,5 @@ public interface SortedMap<K extends Comparable<K>, V>
      * @throws EmptyMapException
      */
     Entry<K,V> maxEntry( );
-
-} 
+}
 

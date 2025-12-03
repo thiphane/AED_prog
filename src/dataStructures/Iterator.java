@@ -2,6 +2,8 @@ package dataStructures;
 
 import dataStructures.exceptions.NoSuchElementException;
 
+import java.io.Serializable;
+
 /**
  * Iterator Abstract Data Type 
  * Includes description of general methods for one way iterator.

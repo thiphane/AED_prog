@@ -56,10 +56,21 @@ public class InOrderIterator<E> implements Iterator<E> {
     }
 
     private void advance() {
-        //TODO: Left as an exercise.
-        
+        // next is never null, since then next() would throw an exception and not call advance()
+        if ( this.next.getRightChild() != null ) {
+            // if we just printed a node which also has a right node, we can assume we came from the left since
+            // we're going in ascending order
+            // so, return the furthest left element of the right node (smallest element that is also bigger than the current)
+            this.next = ((BTNode<E>) this.next.getRightChild()).furtherLeftElement();
+        } else {
+            // if it doesn't have a right child, go up until we come from the left or we get to the root and then return the parent
+            BTNode<E> cur = this.next;
+            while ( cur.getParent() != null && cur == ((BTNode<E>) cur.getParent()).getRightChild() ) {
+                cur = (BTNode<E>)cur.getParent();
+            }
+            this.next = (BTNode<E>)cur.getParent();
+        }
     }
-
 
     /**
      * Restarts the iteration.

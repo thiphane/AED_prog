@@ -262,23 +262,23 @@ public class Main {
                     if (order.equals("<")) actualOrder = Order.NEW_TO_OLD;
                     if (order.equals(">")) actualOrder = Order.OLD_TO_NEW;
                     try {
-                        TwoWayIterator<Student> it = app.getUsersByService(serviceName, actualOrder); // O(n)
-                        assert actualOrder != null;
-                        if (actualOrder.equals(Order.OLD_TO_NEW)) {
+                        TwoWayIterator<Student> it = app.getUsersByService(serviceName); // O(n)
+                        if (actualOrder == (Order.OLD_TO_NEW)) {
                             while (it.hasNext()) { // O(n)
                                 Student s = it.next();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
-                        } else {
+                        } else if ( actualOrder == (Order.NEW_TO_OLD)){
+                            it.fullForward();
                             while (it.hasPrevious()) { // O(n)
                                 Student s = it.previous();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
+                        } else {
+                            System.out.println(THIS_ORDER_DOES_NOT_EXISTS);
                         }
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
-                    } catch (InvalidOrderException e) {
-                        System.out.println(THIS_ORDER_DOES_NOT_EXISTS);
                     } catch (ServiceDoesNotExistException e) {
                         System.out.printf(ELEMENT_DOES_NOT_EXIST, serviceName);
                     } catch (CantShowUsersException e) {
