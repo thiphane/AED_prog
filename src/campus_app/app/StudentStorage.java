@@ -11,6 +11,9 @@ import campus_app.entity.student.Student;
 import java.io.*;
 
 public class StudentStorage implements Serializable {
+    // TODO decidir quantidades
+    private static final int EXPECTED_STUDENT_COUNT = 200;
+    private static final int EXPECTED_COUNTRY_COUNT = 10;
     // We only serialize studentsByCountry because it needs to save the insertion order
     // All students by order of insertion
     protected final Map<String, List<Student>> studentsByCountry;
@@ -19,11 +22,9 @@ public class StudentStorage implements Serializable {
     transient protected Map<String, Student> studentsByName;
 
     public StudentStorage() {
-        // TODO quantos países?
-        this.studentsByCountry = new SepChainHashTable<>(10);
+        this.studentsByCountry = new SepChainHashTable<>(EXPECTED_COUNTRY_COUNT);
         this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
-        // TODO quantos estudantes?
-        this.studentsByName = new SepChainHashTable<>(200);
+        this.studentsByName = new SepChainHashTable<>(EXPECTED_STUDENT_COUNT);
     }
 
     public void addStudent(Student student) {
@@ -69,7 +70,7 @@ public class StudentStorage implements Serializable {
         ois.defaultReadObject(); // Ler os estudantes: O(n)
         // Evitar ler 2 listas do ficheiro, com conteúdo igual
         this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
-        this.studentsByName = new SepChainHashTable<>(200);
+        this.studentsByName = new SepChainHashTable<>(EXPECTED_STUDENT_COUNT);
         Iterator<Map.Entry<String, List<Student>>> mapIter = this.studentsByCountry.iterator();
         while(mapIter.hasNext()) { // O(n)
             Iterator<Student> iter = mapIter.next().value().iterator();

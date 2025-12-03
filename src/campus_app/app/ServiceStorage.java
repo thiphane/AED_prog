@@ -12,18 +12,21 @@ import dataStructures.*;
 import java.io.*;
 
 public class ServiceStorage implements Serializable {
+    private static final int EXPECTED_SERVICE_COUNT = 2500;
     public static final int MAX_RATING = 5;
     // All services by order of insertion
     protected final List<Service> services;
+    protected Map<String, Service> servicesByName;
     // All services by order of their rating
     protected List<Service>[] servicesByStar;
     @SuppressWarnings("unchecked")
     public ServiceStorage() {
-        this.services = new ListInArray<>(2500);
+        this.services = new ListInArray<>(EXPECTED_SERVICE_COUNT);
+        this.servicesByName = new SepChainHashTable<>(EXPECTED_SERVICE_COUNT);
         // TODO singly linked list
-        this.servicesByStar = new DoublyLinkedList[MAX_RATING];
+        this.servicesByStar = new List[MAX_RATING];
         for(int i = 0; i < servicesByStar.length; i++) {
-            this.servicesByStar[i] = new DoublyLinkedList<>();
+            this.servicesByStar[i] = new SinglyLinkedList<>();
         }
     }
 
@@ -42,6 +45,7 @@ public class ServiceStorage implements Serializable {
         }
         this.services.addLast(service); // O(1)
         this.servicesByStar[MAX_RATING - service.getRating()].addLast(service); // O(1)
+        this.servicesByName.put(service.getName().toLowerCase(), service);
     }
 
     public void updateServiceRating(Service service, int oldRating) {
@@ -51,11 +55,11 @@ public class ServiceStorage implements Serializable {
 
 
     public Service getService(String service) throws ServiceDoesNotExistException {
-        Iterator<Service> iter = services.iterator();
-        while(iter.hasNext()) {
-            Service cur = iter.next();
-            if(cur.getName().equalsIgnoreCase(service))return cur;
-        } throw new ServiceDoesNotExistException();
+        Service s = this.servicesByName.get(service.toLowerCase());
+        if ( s == null ) {
+            throw new ServiceDoesNotExistException();
+        }
+        return s;
     }
 
     public Iterator<Service> listAllServices() {
