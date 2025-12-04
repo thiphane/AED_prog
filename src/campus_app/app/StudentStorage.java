@@ -18,13 +18,11 @@ public class StudentStorage implements Serializable {
     // All students by order of insertion
     protected final Map<String, ObjectRemovalList<Student>> studentsByCountry;
     // All students sorted alphabetically
-    transient protected SortedList<Student> alphabeticalStudents;
-    transient protected Map<String, Student> studentsByName;
+    transient protected SortedMap<String, Student> alphabeticalStudentsByName;
 
     public StudentStorage() {
         this.studentsByCountry = new SepChainHashTable<>(EXPECTED_COUNTRY_COUNT);
-        this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
-        this.studentsByName = new SepChainHashTable<>(EXPECTED_STUDENT_COUNT);
+        this.alphabeticalStudentsByName = new AVLSortedMap<>();
     }
 
     public void addStudent(Student student) {
@@ -35,28 +33,26 @@ public class StudentStorage implements Serializable {
             this.studentsByCountry.put(cnty, countryList);
         }
         countryList.addLast(student); // O(1)
-        this.alphabeticalStudents.add(student); // O(log n)
-        this.studentsByName.put(student.getName().toLowerCase(), student);
+        this.alphabeticalStudentsByName.put(student.getName().toLowerCase(), student); // O(log n)
     }
 
     public Student getStudent(String student) throws StudentDoesNotExistException {
-        Student s = studentsByName.get(student.toLowerCase());
+        Student s = this.alphabeticalStudentsByName.get(student.toLowerCase());
         if ( s == null ) { throw new StudentDoesNotExistException(); }
         return s;
     }
 
     public Student removeStudent(Student student) throws StudentDoesNotExistException {
-        Student removed = alphabeticalStudents.remove(student); // O(log n)
+        Student removed = alphabeticalStudentsByName.remove(student.getName().toLowerCase()); // O(log n)
         if(removed == null) throw new StudentDoesNotExistException();
         List<Student> cList = studentsByCountry.get(student.getCountry().toLowerCase());
         // TODO não usar remove(indexof()), ObjectRemovalSinglyList
         assert cList.remove(cList.indexOf(student)) != null; // O(n)
-        assert studentsByName.remove(student.getName().toLowerCase()) != null;
         return removed;
     }
 
     public Iterator<Student> getAllStudents() {
-        return alphabeticalStudents.iterator();
+        return alphabeticalStudentsByName.values();
     }
 
     public Iterator<Student> getStudentsByCountry(String country) {
@@ -69,15 +65,13 @@ public class StudentStorage implements Serializable {
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject(); // Ler os estudantes por pais: O(n)
         // Evitar ler 2 listas do ficheiro, com conteúdo igual
-        this.alphabeticalStudents = new SortedDoublyLinkedList<>(new AlphabeticalStudentComparator());
-        this.studentsByName = new SepChainHashTable<>(EXPECTED_STUDENT_COUNT);
+        this.alphabeticalStudentsByName = new AVLSortedMap<>();
         Iterator<Map.Entry<String, ObjectRemovalList<Student>>> mapIter = this.studentsByCountry.iterator();
         while(mapIter.hasNext()) { // O(n)
             Iterator<Student> iter = mapIter.next().value().iterator();
             while ( iter.hasNext()) {
                 Student cur = iter.next();
-                alphabeticalStudents.add(cur);
-                studentsByName.put(cur.getName().toLowerCase(), cur);
+                alphabeticalStudentsByName.put(cur.getName().toLowerCase(), cur);
             }
         }
     }

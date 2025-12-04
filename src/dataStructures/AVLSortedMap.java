@@ -10,21 +10,17 @@ package dataStructures;
 public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V>{
 
     private void rebalance(AVLNode<Entry<K,V>> cur, boolean remove) {
-        // if we are inserting in the root, no need to rebalance
-        if ( cur.getParent() != null ) {
-            // Only the (grand...)parents of cur got their height changed, so we only check those
-            AVLNode<Entry<K,V>> parent = cur;
-            while ( parent != null ) {
-                if ( parent.isUnbalanced() ) {
-                    AVLNode<Entry<K,V>> newRoot = (AVLNode<Entry<K,V>>) restructure(getHighestChild(getHighestChild(parent)));
-                    if ( newRoot.getParent() == null ) { this.root = newRoot; }
-                    if ( !remove ) {
-                        break;
-                    }
+        AVLNode<Entry<K,V>> parent = cur;
+        while ( parent != null ) {
+            if ( parent.isUnbalanced() ) {
+                AVLNode<Entry<K,V>> newRoot = (AVLNode<Entry<K,V>>) restructure(getHighestChild(getHighestChild(parent)));
+                if ( newRoot.getParent() == null ) { this.root = newRoot; }
+                if ( !remove ) {
+                    break;
                 }
-                parent = (AVLNode<Entry<K,V>>) parent.getParent();
             }
-        } else { assert cur == this.root; }
+            parent = (AVLNode<Entry<K,V>>) parent.getParent();
+        }
         assert this.debug_isBalanced();
     }
 
@@ -91,7 +87,7 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
         int rh = yr == null ? -1 : yr.getHeight();
         AVLNode<Entry<K,V>> yl = (AVLNode<Entry<K,V>>) y.getLeftChild();
         int lh = yl == null ? -1 : yl.getHeight();
-        if ( lh >= rh ) {
+        if ( lh > rh) {
             return yl;
         } else {
             return yr;
@@ -147,7 +143,9 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
                 parent.setRightChild(replacingWith);
             }
             node.setElement(null);
-            rebalance((AVLNode<Entry<K,V>>) replacingWith, true);
+            if ( parent != null ) {
+                rebalance((AVLNode<Entry<K,V>>) parent, true);
+            }
             replacingWith.setParent(parent);
         }
         else {
@@ -178,7 +176,7 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
     }
 
     public boolean debug_isBalanced() {
-        //return true; // only uncomment during debugging
+        //return true; // comment this during debugging
         return isBalancedRec((AVLNode<Entry<K,V>>) root);
     }
 

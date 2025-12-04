@@ -28,7 +28,7 @@ public class OutgoingStudent extends StudentAbstract {
     @Override
     public boolean updatePosition(Service position) throws ServiceIsFullException, StudentAlreadyThereException {
         super.updatePosition(position);
-        if(visited == null) { // TODO updatePosition é usado pelo construtor do abstrato, então não se consegue inicializar a lista antes
+        if(visited == null) { // TODO updatePosition é usado pelo construtor do abstrato, então não se consegue inicializar a lista antes; alternativa?
             visited = new DoublyLinkedList<>();
         }
         if(visited.indexOf(position) == -1){

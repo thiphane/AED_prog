@@ -94,7 +94,7 @@ abstract class AdvancedBSTree <K extends Comparable<K>,V> extends BSTSortedMap<K
         // In any of the cases, the trinode restructuring is completed with O(1)running time
         BTNode<Entry<K,V>> y = (BTNode<Entry<K,V>>) x.getParent();
         BTNode<Entry<K,V>> z = (BTNode<Entry<K,V>>) y.getParent();
-        if ( z.getLeftChild() == y ) { // TODO caderno LC
+        if ( z.getLeftChild() == y ) {
             if ( y.getLeftChild() == x ) {
                 // Caso 1: linha para a esquerda: x > y > z
                 this.rotateRight(z);
