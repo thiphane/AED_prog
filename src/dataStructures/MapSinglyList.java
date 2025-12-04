@@ -160,7 +160,7 @@ class MapSinglyList<K,V> implements Map<K, V> {
     public Iterator<K> keys() {
         return new KeysIterator(iterator());
     }
-
+    
     @Serial
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.writeInt(this.size);
@@ -170,7 +170,7 @@ class MapSinglyList<K,V> implements Map<K, V> {
             oos.writeObject(cur);
         }
     }
-
+    
     @Serial
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         int size = ois.readInt();

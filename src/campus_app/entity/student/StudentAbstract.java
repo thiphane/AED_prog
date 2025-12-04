@@ -78,7 +78,7 @@ public abstract class StudentAbstract implements Student {
     }
 
     @Override
-    public Service getLocation() {
+    public ServiceRead getLocation() {
         return this.location;
     }
 
@@ -89,9 +89,9 @@ public abstract class StudentAbstract implements Student {
      * @return an iterator through the services tied for distance from the user
      */
     @Override
-    public Iterator<Service> findClosestServices(Iterator<Service> services) {
+    public Iterator<ServiceRead> findClosestServices(Iterator<Service> services) {
         DistanceComparator comparator = new DistanceComparator(this.getLocation().getPosition());
-        List<Service> list = new DoublyLinkedList<>();
+        List<ServiceRead> list = null; // initialized in the first iteration, as closest = null
         Service closest = null;
         while(services.hasNext()) {
             Service cur = services.next();
@@ -103,7 +103,7 @@ public abstract class StudentAbstract implements Student {
                 list.addLast(cur);
             }
         }
-        return list.iterator();
+        return list == null ? new EmptyIterator<>() : list.iterator();
     }
 
     @Override
@@ -115,7 +115,7 @@ public abstract class StudentAbstract implements Student {
     }
 
     @Override
-    public Service findBestService(Iterator<Service> services) {
+    public ServiceRead findBestService(Iterator<ServiceRead> services) {
         if(services.hasNext())return services.next();
         else return null;
     }

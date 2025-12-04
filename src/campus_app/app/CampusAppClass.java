@@ -142,7 +142,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException {
+    public boolean updateStudentPosition(StudentRead student, ServiceRead service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException {
         if(currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -158,7 +158,7 @@ public class CampusAppClass implements CampusApp {
              * and neither does the service they're moving from
              * Worst case: O(n), if any of those apply
              */
-            student.updatePosition(service);
+            ((Student)student).updatePosition((Service)service);
         }catch (ThriftyStudentIsDistracted e){
             return true;
         }
@@ -217,7 +217,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public TwoWayIterator<Student> getUsersByService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException {
+    public TwoWayIterator<StudentRead> getUsersByService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -232,24 +232,24 @@ public class CampusAppClass implements CampusApp {
         if(!students.hasNext()) {
             throw new NoStudentsException(storingService);
         }
-        return students;
+        return new TransformerTwoWayIterator<>(students);
     }
 
     @Override
-    public Iterator<Student> listAllStudents() throws BoundsNotDefined {
+    public Iterator<StudentRead> listAllStudents() throws BoundsNotDefined {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return currentBounds.getAllStudents();
+        return new TransformerIterator<>(currentBounds.getAllStudents());
     }
 
     @Override
-    public Iterator<Student> listStudentsByCountry(String country) throws BoundsNotDefined {
+    public Iterator<StudentRead> listStudentsByCountry(String country) throws BoundsNotDefined {
 
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return currentBounds.getStudentsByCountry(country); // O(n)
+        return new TransformerIterator<>(currentBounds.getStudentsByCountry(country)); // O(n)
     }
 
     @Override
@@ -276,7 +276,7 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public Service findBestService(String studentName, String type) throws BoundsNotDefined, StudentDoesNotExistException, InvalidTypeException {
+    public ServiceRead findBestService(String studentName, String type) throws BoundsNotDefined, StudentDoesNotExistException, InvalidTypeException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }

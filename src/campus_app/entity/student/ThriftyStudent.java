@@ -34,11 +34,11 @@ public class ThriftyStudent extends StudentAbstract {
     }
 
    @Override
-   public Service findBestService(Iterator<Service> services) {
+   public ServiceRead findBestService(Iterator<ServiceRead> services) {
         if(services.hasNext()) {
-            Service best = services.next();
+            ServiceRead best = services.next();
             while (services.hasNext()) {
-                Service curr = services.next();
+                ServiceRead curr = services.next();
                 if(curr.getPrice() < best.getPrice())best = curr;
             }
             return best;

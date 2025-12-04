@@ -4,10 +4,10 @@
  */
 package campus_app.app;
 import campus_app.entity.service.ServiceRead;
+import campus_app.entity.student.StudentRead;
 import campus_app.exceptions.*;
 import dataStructures.*;
 import campus_app.entity.service.Service;
-import campus_app.entity.student.Student;
 
 public interface CampusApp {
     /**
@@ -76,7 +76,7 @@ public interface CampusApp {
      * @throws BoundsNotDefined if no bounds are defined
      * @throws StudentDoesNotExistException if no user with the given name exists
      */
-    Student getStudent(String student) throws BoundsNotDefined, StudentDoesNotExistException;
+    StudentRead getStudent(String student) throws BoundsNotDefined, StudentDoesNotExistException;
     /**
      * Gets the service with the given name
      * O(n)
@@ -94,7 +94,7 @@ public interface CampusApp {
      * @throws BoundsNotDefined if no bounds are defined
      * @throws StudentDoesNotExistException if no student with the given name exists
      */
-    Student removeStudent(String studentName) throws BoundsNotDefined, StudentDoesNotExistException;
+    StudentRead removeStudent(String studentName) throws BoundsNotDefined, StudentDoesNotExistException;
     /**
      * Changes the user's current position
      * O(1) best case, O(n) worst case, expected O(n) time
@@ -106,7 +106,7 @@ public interface CampusApp {
      * @throws StudentAlreadyThereException if the student is already at the service
      * @throws ServiceIsFullException if the service is full
      */
-    boolean updateStudentPosition(Student student, Service service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
+    boolean updateStudentPosition(StudentRead student, ServiceRead service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
     /**
      * Moves the student's home with a given name to the service with the given name
      * O(n) time
@@ -141,14 +141,14 @@ public interface CampusApp {
      * @throws CantShowUsersException if the given service doesn't store the users in it
      * @throws NoStudentsException if the given service is empty
      */
-    TwoWayIterator<Student> getUsersByService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException;
+    TwoWayIterator<StudentRead> getUsersByService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException, CantShowUsersException, NoStudentsException;
     /**
      * List all students in alphabetical order
      * O(1) to create the iterator, O(n) to traverse it
      * @return an iterator over all students in alphabetical order
      * @throws BoundsNotDefined if no bounds are defined
      */
-    Iterator<Student> listAllStudents() throws BoundsNotDefined;
+    Iterator<StudentRead> listAllStudents() throws BoundsNotDefined;
     /**
      * List all students from a specific country in order of insertion
      * O(n) time to both create and traverse the iterator
@@ -156,7 +156,7 @@ public interface CampusApp {
      * @return an iterator over all students from a specific country in order of insertion
      * @throws BoundsNotDefined if no bounds are defined
      */
-    Iterator<Student> listStudentsByCountry(String country) throws BoundsNotDefined;
+    Iterator<StudentRead> listStudentsByCountry(String country) throws BoundsNotDefined;
     /**
      * Creating the iterator is O(1), traversing it is O(n)
      * @return an iterator through all services in order of insertion

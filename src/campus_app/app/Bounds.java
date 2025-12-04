@@ -5,6 +5,7 @@
 package campus_app.app;
 
 import campus_app.entity.service.Service;
+import campus_app.entity.service.ServiceRead;
 import campus_app.entity.service.ServiceType;
 import campus_app.entity.student.Student;
 import campus_app.exceptions.*;
@@ -101,7 +102,7 @@ public interface Bounds {
      * @return the best service of the given type for the student
      * @throws StudentDoesNotExistException if the student does not exist
      */
-    Service findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException;
+    ServiceRead findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException;
     /**
      * Adds a new student to the bounds
      * O(n) time

@@ -10,6 +10,7 @@ import campus_app.entity.service.Service;
 import campus_app.entity.service.ServiceRead;
 import campus_app.entity.student.Student;
 import campus_app.entity.service.ServiceType;
+import campus_app.entity.student.StudentRead;
 import campus_app.exceptions.*;
 import dataStructures.Iterator;
 import dataStructures.TwoWayIterator;
@@ -176,7 +177,7 @@ public class Main {
                 }
                 case STUDENTS -> { // O(n)
                     String country = in.nextLine().trim();
-                    Iterator<Student> students;
+                    Iterator<StudentRead> students;
                     try {
                         if (country.equalsIgnoreCase(ALL_STUDENTS)) {
                             students = app.listAllStudents(); // O(1)
@@ -190,7 +191,7 @@ public class Main {
                             }
                         }
                         while (students.hasNext()) { // O(n)
-                            Student cur = students.next();
+                            StudentRead cur = students.next();
                             System.out.printf(STUDENT_LIST_FORMAT, cur.getName(), cur.getType().toString().toLowerCase(), cur.getLocation().getName());
                         }
                     }catch(BoundsNotDefined e){
@@ -221,8 +222,8 @@ public class Main {
                 case WHERE -> { // O(n)
                     String name = in.nextLine().trim();
                     try {
-                        Student student = app.getStudent(name); // O(n)
-                        Service location = student.getLocation(); // O(1)
+                        StudentRead student = app.getStudent(name); // O(n)
+                        ServiceRead location = student.getLocation(); // O(1)
                         System.out.printf(STUDENT_LOCATION_FORMAT, student.getName(), location.getName(), location.getType().toString().toLowerCase(), location.getPosition());
                         }
                     catch (BoundsNotDefined e){
@@ -264,16 +265,16 @@ public class Main {
                     if (order.equals("<")) actualOrder = Order.NEW_TO_OLD;
                     if (order.equals(">")) actualOrder = Order.OLD_TO_NEW;
                     try {
-                        TwoWayIterator<Student> it = app.getUsersByService(serviceName); // O(n)
+                        TwoWayIterator<StudentRead> it = app.getUsersByService(serviceName); // O(n)
                         if (actualOrder == (Order.OLD_TO_NEW)) {
                             while (it.hasNext()) { // O(n)
-                                Student s = it.next();
+                                StudentRead s = it.next();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
                         } else if ( actualOrder == (Order.NEW_TO_OLD)){
                             it.fullForward();
                             while (it.hasPrevious()) { // O(n)
-                                Student s = it.previous();
+                                StudentRead s = it.previous();
                                 System.out.printf(USER_FORMAT, s.getName(), s.getType().toString().toLowerCase());
                             }
                         } else {
@@ -294,7 +295,7 @@ public class Main {
                     String locationName = in.nextLine().trim();
                     boolean isDistracted;
                     try {
-                        Student student = app.getStudent(studentName); // O(n)
+                        StudentRead student = app.getStudent(studentName); // O(n)
                         ServiceRead home = app.getService(locationName); // O(n)
                         // TODO don't cast to service
                         isDistracted = app.updateStudentPosition(student, (Service)home); // O(1) best case, O(n) worst case, expected O(n)
@@ -321,7 +322,7 @@ public class Main {
                     try {
                         app.moveHome(name, lodging); // O(n)
                         // TODO arranjar forma de não usar getService e getUser e devolver com moveHome ou algo assim
-                        Student student = app.getStudent(name); // O(n)
+                        StudentRead student = app.getStudent(name); // O(n)
                         ServiceRead home = app.getService(lodging); // O(n)
                         System.out.printf(STUDENT_MOVED_FORMAT, home.getName(), student.getName());
                     } catch(BoundsNotDefined e){
@@ -340,7 +341,7 @@ public class Main {
                 }case VISITED -> { // O(n)
                     String name = in.nextLine().trim();
                     try{
-                        Student student = app.getStudent(name);
+                        StudentRead student = app.getStudent(name);
                         Iterator<ServiceRead> it = student.getVisitedServices();
                             while(it.hasNext()){ // O(n) time
                                 System.out.println(it.next().getName());
@@ -357,7 +358,7 @@ public class Main {
                 }case LEAVE -> { // O(n^2)
                     String name = in.nextLine().trim();
                     try{
-                        Student student = app.removeStudent(name); // O(n^2)
+                        StudentRead student = app.removeStudent(name); // O(n^2)
                         System.out.printf(STUDENT_HAS_LEFT, student.getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);

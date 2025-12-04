@@ -1,5 +1,7 @@
 package dataStructures;
 
+import dataStructures.exceptions.NoSuchElementException;
+
 public class EmptyIterator<E> implements Iterator<E> {
     @Override
     public boolean hasNext() {
@@ -8,7 +10,7 @@ public class EmptyIterator<E> implements Iterator<E> {
 
     @Override
     public E next() {
-        return null;
+        throw new NoSuchElementException();
     }
 
     @Override

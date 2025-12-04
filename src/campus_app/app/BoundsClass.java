@@ -5,6 +5,7 @@
 package campus_app.app;
 
 import campus_app.entity.service.Service;
+import campus_app.entity.service.ServiceRead;
 import campus_app.entity.service.ServiceType;
 import campus_app.entity.service.StudentStoringService;
 import campus_app.entity.student.Student;
@@ -12,6 +13,7 @@ import campus_app.entity.student.StudentType;
 import campus_app.exceptions.*;
 import dataStructures.FilterIterator;
 import dataStructures.Iterator;
+import dataStructures.TransformerIterator;
 
 import java.io.*;
 
@@ -75,12 +77,12 @@ public class BoundsClass implements Bounds, Serializable {
     }
 
     @Override
-    public Service findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException {
+    public ServiceRead findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException {
         Student st = students.getStudent(studentName); // O(n)
         if(st.getType().equals(StudentType.THRIFTY)) {
             if ( cheapestServices[type.ordinal()] == null) { return null; }
             return cheapestServices[type.ordinal()];
-        }else return st.findBestService(new FilterIterator<>(listServicesByRating(), new ServiceTypePredicate(type)));
+        }else return st.findBestService(new TransformerIterator<>(new FilterIterator<Service>(listServicesByRating(), new ServiceTypePredicate(type))));
     }
 
     /**
