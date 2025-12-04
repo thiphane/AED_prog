@@ -17,7 +17,7 @@ import dataStructures.List;
 import dataStructures.TransformerIterator;
 
 public class OutgoingStudent extends StudentAbstract {
-    protected List<Service> visited;
+    protected List<ServiceRead> visited;
     public OutgoingStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);
     }

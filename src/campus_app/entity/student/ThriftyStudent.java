@@ -12,7 +12,7 @@ import dataStructures.Iterator;
 import campus_app.entity.service.Service;
 
 public class ThriftyStudent extends StudentAbstract {
-    EatingService cheapestEating;
+    ServiceRead cheapestEating;
     public ThriftyStudent(String name, String country, LodgingService home) throws ServiceIsFullException {
         super(name, country, home);
         this.cheapestEating = null;
