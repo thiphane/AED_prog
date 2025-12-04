@@ -80,7 +80,7 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
         Map<K,V>[] oldTable = this.table;
         this.table = new MapSinglyList[HashTable.nextPrime(this.table.length * 2)];
         this.maxSize = Math.round(this.table.length * MAX_LOAD_FACTOR);
-        System.out.printf("rehashing from %d -> %d\n", oldTable.length, this.table.length);
+       // System.out.printf("rehashing from %d -> %d\n", oldTable.length, this.table.length);
         for(Map<K,V> curTable : oldTable) {
             if(curTable == null) { continue; }
             Iterator<Entry<K,V>> iter = curTable.iterator();
