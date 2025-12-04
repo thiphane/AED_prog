@@ -120,7 +120,7 @@ public interface CampusApp {
      * @throws ServiceDoesNotExistException if the given service does not exist
      * @throws StudentDoesNotExistException if the given student does not exist
      */
-    void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException;
+    UpdatePositionResult moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException;
     /**
      * Adds a new evaluation to the given service
      * O(n)

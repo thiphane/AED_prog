@@ -176,8 +176,8 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
     }
 
     public boolean debug_isBalanced() {
-        //return true; // comment this during debugging
-        return isBalancedRec((AVLNode<Entry<K,V>>) root);
+        return true; // comment this during debugging
+        //return isBalancedRec((AVLNode<Entry<K,V>>) root);
     }
 
     private boolean isBalancedRec(AVLNode<Entry<K,V>> cur) {

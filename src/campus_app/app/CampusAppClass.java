@@ -173,7 +173,7 @@ public class CampusAppClass implements CampusApp {
      * @throws StudentDoesNotExistException if the given student does not exist
      */
     @Override
-    public void moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException {
+    public UpdatePositionResult moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
@@ -183,6 +183,7 @@ public class CampusAppClass implements CampusApp {
         }
         Student student = this.currentBounds.getStudent(studentName); // O(n)
         student.moveHome(lodging); // O(n)
+        return new UpdatePositionResult(student, newHomeService, false);
     }
 
     /**

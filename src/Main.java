@@ -316,11 +316,8 @@ public class Main {
                     String name = in.nextLine().trim();
                     String lodging = in.nextLine().trim();
                     try {
-                        app.moveHome(name, lodging); // O(n)
-                        // TODO arranjar forma de não usar getService e getUser e devolver com moveHome ou algo assim
-                        StudentRead student = app.getStudent(name); // O(n)
-                        ServiceRead home = app.getService(lodging); // O(n)
-                        System.out.printf(STUDENT_MOVED_FORMAT, home.getName(), student.getName());
+                        CampusApp.UpdatePositionResult res = app.moveHome(name, lodging); // O(n)
+                        System.out.printf(STUDENT_MOVED_FORMAT, res.service().getName(), res.student().getName());
                     } catch(BoundsNotDefined e){
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (ServiceDoesNotExistException e) {
