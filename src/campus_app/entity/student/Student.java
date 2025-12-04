@@ -25,8 +25,8 @@ public interface Student extends Serializable, StudentRead {
      * changes the user's current position
      * O(1) best case, O(n) worst case, expected O(n)
      * @param position the new position
-     * @throws ThriftyStudentIsDistracted if the student was distracted by this moving; they are still moved if this is thrown
      * @throws ServiceIsFullException if the new position is full
+     * @return whether moving to the service distracted the student
      */
-    void updatePosition(Service position) throws ThriftyStudentIsDistracted, ServiceIsFullException, StudentAlreadyThereException;
+    boolean updatePosition(Service position) throws ServiceIsFullException, StudentAlreadyThereException;
 }

@@ -22,7 +22,7 @@ public abstract class StudentAbstract implements Student {
         this.home = home;
         try {
             this.updatePosition(home);
-        } catch (ThriftyStudentIsDistracted | StudentAlreadyThereException e) {
+        } catch (StudentAlreadyThereException e) {
             throw new RuntimeException(e);
         }
     }
@@ -32,7 +32,7 @@ public abstract class StudentAbstract implements Student {
             this.updatePosition(home); // O(n)
             this.home.removeUser(this); // O(n)
             this.home = home;
-        } catch (ThriftyStudentIsDistracted | StudentAlreadyThereException e) {
+        } catch (StudentAlreadyThereException e) {
             throw new RuntimeException(e);
         }
     }
@@ -60,16 +60,17 @@ public abstract class StudentAbstract implements Student {
      * O(1) best case (neither one stores students)
      * @param position the new position
      * @throws ServiceIsFullException if the given position is full
-     * @throws ThriftyStudentIsDistracted if the user gets distracted by going to this service
+     * @return if the student got distracted by moving there
      */
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted, StudentAlreadyThereException {
+    public boolean updatePosition(Service position) throws ServiceIsFullException, StudentAlreadyThereException {
         Service oldLocation = this.location;
         if ( oldLocation != null && oldLocation.equals(position) ) { throw new StudentAlreadyThereException(this); }
         if(position instanceof StudentStoringService service)service.addUser(this); // O(n)
         this.location = position;
         if(oldLocation instanceof StudentStoringService loc && !oldLocation.equals(home))
             loc.removeUser(this); // O(n)
+        return false;
     }
 
     @Override

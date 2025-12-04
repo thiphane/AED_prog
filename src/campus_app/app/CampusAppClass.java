@@ -142,27 +142,22 @@ public class CampusAppClass implements CampusApp {
     }
 
     @Override
-    public boolean updateStudentPosition(StudentRead student, ServiceRead service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException {
+    public UpdatePositionResult updateStudentPosition(String studentName, String serviceName) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException, StudentDoesNotExistException, ServiceDoesNotExistException {
         if(currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        if(service == null) {
-            throw new NoSuchElementException();
-        }
+        Student student = this.currentBounds.getStudent(studentName);
+        Service service = this.currentBounds.getService(serviceName);
         if(!service.getType().equals(ServiceType.LEISURE) && !service.getType().equals(ServiceType.EATING)) {
             throw new InvalidTypeException();
         }
-        try {
-            /*
-             * Best case: O(1), if the student doesn't store services of this type, the service they're moving to doesn't store users,
-             * and neither does the service they're moving from
-             * Worst case: O(n), if any of those apply
-             */
-            ((Student)student).updatePosition((Service)service);
-        }catch (ThriftyStudentIsDistracted e){
-            return true;
-        }
-        return false;
+        /*
+         * Best case: O(1), if the student doesn't store services of this type, the service they're moving to doesn't store users,
+         * and neither does the service they're moving from
+         * Worst case: O(n), if any of those apply
+         */
+        boolean distracted = (student).updatePosition(service);
+        return new UpdatePositionResult(student, service, distracted);
     }
 
     /**

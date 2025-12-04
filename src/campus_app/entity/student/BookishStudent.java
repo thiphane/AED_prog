@@ -10,7 +10,6 @@ import campus_app.entity.service.ServiceType;
 import campus_app.exceptions.NoVisitedServicesException;
 import campus_app.exceptions.ServiceIsFullException;
 import campus_app.exceptions.StudentAlreadyThereException;
-import campus_app.exceptions.ThriftyStudentIsDistracted;
 import dataStructures.DoublyLinkedList;
 import dataStructures.Iterator;
 import campus_app.entity.service.Service;
@@ -29,13 +28,14 @@ public class BookishStudent extends StudentAbstract {
 
 
     @Override
-    public void updatePosition(Service position) throws ServiceIsFullException, ThriftyStudentIsDistracted, StudentAlreadyThereException {
+    public boolean updatePosition(Service position) throws ServiceIsFullException, StudentAlreadyThereException {
         super.updatePosition(position);
         if(visited == null) { // updatePosition é usado pelo construtor do abstrato, então não se consegue inicializar a lista antes
             visited = new DoublyLinkedList<>();
         }
         if(position.getType().equals(ServiceType.LEISURE) && (visited.indexOf(position) == -1)) // O(n)
             visited.addLast(position);
+        return false;
     }
 
     @Override

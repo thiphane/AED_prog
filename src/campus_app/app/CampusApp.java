@@ -95,6 +95,7 @@ public interface CampusApp {
      * @throws StudentDoesNotExistException if no student with the given name exists
      */
     StudentRead removeStudent(String studentName) throws BoundsNotDefined, StudentDoesNotExistException;
+    record UpdatePositionResult(StudentRead student, ServiceRead service, boolean distracted) {}
     /**
      * Changes the user's current position
      * O(1) best case, O(n) worst case, expected O(n) time
@@ -106,7 +107,7 @@ public interface CampusApp {
      * @throws StudentAlreadyThereException if the student is already at the service
      * @throws ServiceIsFullException if the service is full
      */
-    boolean updateStudentPosition(StudentRead student, ServiceRead service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException;
+    UpdatePositionResult updateStudentPosition(String student, String service) throws BoundsNotDefined, InvalidTypeException, StudentAlreadyThereException, ServiceIsFullException, StudentDoesNotExistException, ServiceDoesNotExistException;
     /**
      * Moves the student's home with a given name to the service with the given name
      * O(n) time

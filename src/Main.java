@@ -293,14 +293,10 @@ public class Main {
                 case GO -> { // O(n)
                     String studentName = in.nextLine().trim();
                     String locationName = in.nextLine().trim();
-                    boolean isDistracted;
                     try {
-                        StudentRead student = app.getStudent(studentName); // O(n)
-                        ServiceRead home = app.getService(locationName); // O(n)
-                        // TODO don't cast to service
-                        isDistracted = app.updateStudentPosition(student, (Service)home); // O(1) best case, O(n) worst case, expected O(n)
-                        if(isDistracted){System.out.printf(STUDENT_IS_DISTRACTED, student.getName(), home.getName());}
-                        else System.out.printf(LOCATION_CHANGED_FORMAT, student.getName(), home.getName());
+                        CampusApp.UpdatePositionResult res = app.updateStudentPosition(studentName, locationName); // O(1) best case, O(n) worst case, expected O(n)
+                        if(res.distracted()){System.out.printf(STUDENT_IS_DISTRACTED, res.student().getName(), res.service().getName());}
+                        else System.out.printf(LOCATION_CHANGED_FORMAT, res.student().getName(), res.service().getName());
                     } catch (BoundsNotDefined e) {
                         System.out.println(BOUNDS_NOT_DEFINED);
                     } catch (ServiceDoesNotExistException e) {
