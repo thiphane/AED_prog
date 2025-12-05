@@ -8,7 +8,14 @@ package dataStructures;
  * @param <V> Generic Value
  */
 public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V>{
-
+    /**
+     * "rebalance" from the given node to the root, calling restructure when a subtree is unbalanced
+     * if "rebalance" is called after an add operation, it stops after the first restructure
+     * time complexity in worst case is O(h) - h is the height of the tree -
+     * when the node to be restructured is the root.
+     * @param cur node where to start
+     * @param remove true if rebalance operation is called after a remove operation
+     */
     private void rebalance(AVLNode<Entry<K,V>> cur, boolean remove) {
         AVLNode<Entry<K,V>> parent = cur;
         while ( parent != null ) {
@@ -24,6 +31,14 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
         assert this.debug_isBalanced();
     }
 
+    /**
+     * Add a new node when its parent is a leaf
+     * Time complexity O(1)
+     * @param cur new node's parent
+     * @param key new node key
+     * @param value new node value
+     * @param left if new node is left child
+     */
     private void addLeafNode(AVLNode<Entry<K,V>> cur, K key, V value, boolean left) {
         int oldHeight = cur.getHeight();
         AVLNode<Entry<K,V>> newNode = new AVLNode<>(new Entry<>(key, value), cur);
@@ -39,10 +54,11 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
     }
 
     /**
-     * 
-     * @param key
-     * @param value
-     * @return
+     * Inserts a new key-value pair into the tree, or update an existing entry, if key already exists
+     * time complexity is O(h), where h is the height of the tree for expected case
+     * @param key key to the new entry
+     * @param value value to the new entry
+     * @return old value if key already exists of return null if it's a new entry
      */
     public V put(K key, V value) {
         if ( root == null ) {
@@ -95,9 +111,10 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
     }
 
     /**
-     *
+     * Remove a given key from the tree,
+     * time complexity of expected case if O(h), where h is the tree height
      * @param key whose entry is to be removed from the map
-     * @return
+     * @return value of the removed entry  or null if entry does not exist
      */
     public V remove(K key) {
         //TODO: Left as an exercise.
