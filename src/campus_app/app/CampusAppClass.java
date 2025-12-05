@@ -288,7 +288,7 @@ public class CampusAppClass implements CampusApp {
             throw new BoundsNotDefined();
         }
         if(rate < 1 || rate > 5) throw new InvalidRating();
-        Student s = this.currentBounds.getStudent(studentName);
+        Student s = this.currentBounds.getStudent(studentName); // O(log n)
         if(s == null){ // O(1)
             throw new StudentDoesNotExistException();
         }

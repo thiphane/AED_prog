@@ -96,7 +96,7 @@ public interface Bounds {
 
     /**
      * Finds the best service of the given type for the given student
-     * O(n) for thrifty students, O(1) otherwise
+     * O(1)
      * @param studentName the name of the student
      * @param type the type of service
      * @return the best service of the given type for the student

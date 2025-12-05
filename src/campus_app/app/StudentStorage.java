@@ -35,7 +35,7 @@ public class StudentStorage implements Serializable {
      */
     public void addStudent(Student student) {
         String cnty = student.getCountry().toLowerCase();
-        ObjectRemovalList<Student> countryList = this.studentsByCountry.get(cnty);
+        ObjectRemovalList<Student> countryList = this.studentsByCountry.get(cnty); // O(log n)
         if ( countryList == null ) {
             countryList = new ObjectRemovalSinglyList<>();
             this.studentsByCountry.put(cnty, countryList);

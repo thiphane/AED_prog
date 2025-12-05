@@ -174,7 +174,7 @@ public interface CampusApp {
     Iterator<ServiceRead> listServicesByRanking() throws BoundsNotDefined;
     /**
      * Lists the services tied to be closest to the student with a given rating and type
-     * O(n) time to create and traverse
+     * O(n) time to create
      * @param rate the rating of the services to get
      * @param type the type of services to get
      * @param studentName the name of the student to get services closest to
