@@ -92,7 +92,8 @@ public class LinkedHashMap<K,V> implements Map<K,V>{
      * If there is an entry in the dictionary whose key is the specified key,
      * removes it from the dictionary and returns its value;
      * otherwise, returns null.
-     *
+     * Time complexity for expected case is O(1), in worst case is O(n),
+     * for when then table needs to be rehashed
      * @param key whose entry is to be removed from the map
      * @return previous value associated with key,
      * or null if the dictionary does not an entry with that key

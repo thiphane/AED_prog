@@ -9,10 +9,13 @@ import dataStructures.exceptions.NoSuchElementException;
  */
 class ValuesIterator<E> implements Iterator<E> {
 
-    Iterator<Map.Entry<?, E>> iter;
+    Iterator<Map.Entry<?, E>> inner;
 
+    /**
+     * For all methods, the time complexity is the one of the inner iterator
+     */
     public ValuesIterator(Iterator<Map.Entry<?,E>> it) {
-        this.iter = it;
+        this.inner = it;
     }
 
     /**
@@ -23,7 +26,7 @@ class ValuesIterator<E> implements Iterator<E> {
      */
     @Override
     public boolean hasNext() {
-        return iter.hasNext();
+        return inner.hasNext();
     }
 
     /**
@@ -34,7 +37,7 @@ class ValuesIterator<E> implements Iterator<E> {
      */
     @Override
     public E next() {
-        return iter.next().value();
+        return inner.next().value();
     }
 
     /**
@@ -43,6 +46,6 @@ class ValuesIterator<E> implements Iterator<E> {
      */
     @Override
     public void rewind() {
-        iter.rewind();
+        inner.rewind();
     }
 }

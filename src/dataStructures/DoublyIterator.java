@@ -22,7 +22,7 @@ class DoublyIterator<E> implements Iterator<E> {
 
     /**
      * DoublyIterator constructor
-     *
+     * Time complexity: O(1).
      * @param first - Node with the first element of the iteration
      */
     public DoublyIterator(DoublyListNode<E> first) {

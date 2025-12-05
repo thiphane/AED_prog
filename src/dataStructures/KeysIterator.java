@@ -9,10 +9,13 @@ import dataStructures.exceptions.NoSuchElementException;
  */
 class KeysIterator<E> implements Iterator<E> {
 
-    Iterator<Map.Entry<E, ?>> iter;
+    Iterator<Map.Entry<E, ?>> inner;
 
+    /**
+     * For all methods, the time complexity is the one of the inner iterator
+     */
     public KeysIterator(Iterator<Map.Entry<E,?>> it) {
-        this.iter = it;
+        this.inner = it;
     }
 
     /**
@@ -22,7 +25,7 @@ class KeysIterator<E> implements Iterator<E> {
      * @return true iff the iteration has more elements
      */
     public boolean hasNext() {
-        return iter.hasNext();
+        return inner.hasNext();
     }
 
     /**
@@ -32,7 +35,7 @@ class KeysIterator<E> implements Iterator<E> {
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
     public E next() {
-	    return iter.next().key();
+	    return inner.next().key();
     }
 
     /**
@@ -40,6 +43,6 @@ class KeysIterator<E> implements Iterator<E> {
      * After rewind, if the iteration is not empty, next will return the first element.
      */
     public void rewind() {
-        iter.rewind();
+        inner.rewind();
     }
 }

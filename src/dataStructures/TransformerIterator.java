@@ -15,16 +15,24 @@ public class TransformerIterator<F,T> implements Iterator<T> {
         this(inner, (s) -> (T)s);
     }
 
+    // Same time complexity as the inner iterator
     @Override
     public boolean hasNext() {
         return inner.hasNext();
     }
 
+    /**
+     * The time complexity will be the highest between
+     * the transformer's transform() and the iterator's next()
+     */
     @Override
     public T next() {
         return transformer.transform(inner.next());
     }
 
+    /**
+     * The same time complexity as the inner iterator
+     */
     @Override
     public void rewind() {
         this.inner.rewind();

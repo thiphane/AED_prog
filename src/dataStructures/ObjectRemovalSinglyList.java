@@ -3,8 +3,9 @@ package dataStructures;
 public class ObjectRemovalSinglyList<E> extends SinglyLinkedList<E> implements ObjectRemovalList<E> {
     /**
      * Custom method to remove a given object
-     * SinglyLinkedList remove method don't allow direct removal, this custom class allow direct removal
-     *
+     * SinglyLinkedList only allows to remove through an index,
+     * this allows to remove through an equal object
+     * Time complexity is O(n)
      * @param object to be removed
      * @return removed element
      */

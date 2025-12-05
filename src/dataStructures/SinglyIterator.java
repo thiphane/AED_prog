@@ -22,6 +22,7 @@ class SinglyIterator<E>  implements Iterator<E> {
 
     /**
      * SinglyIterator constructor
+     * O(1)
      * @param first - Node with the first element of the iteration
      */
     public SinglyIterator(SinglyListNode<E> first) {
@@ -29,6 +30,7 @@ class SinglyIterator<E>  implements Iterator<E> {
         nextToReturn=first;
     }
 
+    // O(1)
     @Override
     public boolean hasNext( ) {
         return nextToReturn != null;
@@ -36,7 +38,7 @@ class SinglyIterator<E>  implements Iterator<E> {
 
     /**
      * Returns the next element in the iteration.
-     *
+     * O(1)
      * @return the next element in the iteration
      * @throws NoSuchElementException - if call is made without verifying pre-condition
      */
@@ -51,6 +53,7 @@ class SinglyIterator<E>  implements Iterator<E> {
 
     /**
      * Restart the iterator
+     * O(1)
      */
     @Override
     public void rewind() {
