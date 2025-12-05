@@ -17,7 +17,7 @@ public abstract class AbstractStudentStoringService extends ServiceAbstract impl
 
     public AbstractStudentStoringService(String serviceName, Position position, int price, int value, ServiceType type) throws InvalidPriceException, InvalidValueException {
         super(serviceName, position, price, value, type);
-        this.users = new HashMapList<>(EXPECTED_STUDENTS_IN_SERVICE);
+        this.users = new HashMapList<>(EXPECTED_STUDENTS_IN_SERVICE, new StudentNameTransformer());
     }
 
     /**

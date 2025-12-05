@@ -8,22 +8,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
 
-public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, ContainCheckingList<V> {
+public class HashMapList<K,V> implements TwoWayList<V>, ObjectRemovalList<V>, ContainCheckingList<V> {
 
     transient protected DoublyListNode<V> head;
     transient protected DoublyListNode<V> tail;
-    transient private Map<V,DoublyListNode<V>> map;
+    transient private Map<K,DoublyListNode<V>> map;
     transient protected int currentSize;
+    protected Transformer<V,K> transformer;
 
-    transient private boolean hasSerialized; // This is necessary because objects returned by ois.readObject aren't fully initialized,
-    transient private Queue<V> serializedToAdd; // so since getNode needs to call .equals that results in an exception if accessed before
-
-    public HashMapList(int capacity) {
-        map = new SepChainHashTable<>(capacity); // this is only used for the services, which are never removed
+    public HashMapList(int capacity, Transformer<V,K> objectToKeyTransformer) {
+        map = new SepChainHashTable<>(capacity);
         head = null;
         tail = null;
         currentSize = 0;
-        hasSerialized = false;
+        this.transformer = objectToKeyTransformer;
     }
 
     /**
@@ -33,7 +31,6 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
      */
     @Override
     public boolean isEmpty() {
-        checkSerialization();
         return head==null;
     }
 
@@ -44,37 +41,31 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
      */
     @Override
     public int size() {
-        checkSerialization();
         return currentSize;
     }
 
     @Override
     public Iterator<V> iterator() {
-        checkSerialization();
         return new DoublyIterator<>(this.head);
     }
 
     @Override
     public TwoWayIterator<V> twoWayiterator() {
-        checkSerialization();
         return new TwoWayDoublyIterator<>(this.head, this.tail);
     }
 
     @Override
     public V getFirst() {
-        checkSerialization();
         return this.head.getElement();
     }
 
     @Override
     public V getLast() {
-        checkSerialization();
         return this.tail.getElement();
     }
 
     @Override
     public V get(int position) {
-        checkSerialization();
         if ( position < 0 || position >= size()) {
             throw new NoSuchElementException();
         }
@@ -89,7 +80,6 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
     }
 
     protected DoublyListNode<V> getNode(int position) {
-        checkSerialization();
         if(position >= size() || position < 0) {
             throw new InvalidPositionException();
         }
@@ -115,7 +105,6 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
 
     @Override
     public int indexOf(V element) {
-        checkSerialization();
         DoublyListNode<V> cur = head;
         int idx = 0;
         while(cur != null && !cur.getElement().equals(element)) {
@@ -128,12 +117,11 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
 
     @Override
     public boolean contains(V object) {
-        return this.map.get(object) != null;
+        return this.map.get(transformer.transform(object)) != null;
     }
 
     @Override
     public void addFirst(V element) {
-        checkSerialization();
         if(this.head == null) {
             this.head = new DoublyListNode<>(element);
             this.tail = this.head;
@@ -141,16 +129,16 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
             this.head.setPrevious(new DoublyListNode<>(element, null, this.head));
             this.head = this.head.getPrevious();
         }
-        if ( map.get(element) != null ) {
+        K key = transformer.transform(element);
+        if ( map.get(key) != null ) {
             throw new RuntimeException("repet element in hashmaplist");
         }
-        map.put(element, this.head);
+        map.put(key, this.head);
         currentSize++;
     }
 
     @Override
     public void addLast(V element) {
-        checkSerialization();
         if(this.tail == null) {
             this.tail = new DoublyListNode<>(element);
             this.head = this.tail;
@@ -158,13 +146,12 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
             this.tail.setNext(new DoublyListNode<>(element, this.tail, null));
             this.tail = this.tail.getNext();
         }
-        this.map.put(element, this.tail);
+        this.map.put(transformer.transform(element), this.tail);
         currentSize++;
     }
 
     @Override
     public void add(int position, V element) {
-        checkSerialization();
         if(position == 0) { this.addFirst(element); return; }
         if(position == size()) { this.addLast(element); return; }
         // Add to middle
@@ -172,36 +159,33 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
         DoublyListNode<V> node = new DoublyListNode<>(element, newNext.getPrevious(), newNext);
         newNext.setPrevious(node);
         node.getPrevious().setNext(node);
-        this.map.put(element, node);
+        this.map.put(transformer.transform(element), node);
         currentSize++;
     }
 
     @Override
     public V removeFirst() {
-        checkSerialization();
         if(size() <= 0) { throw new NoSuchElementException(); }
         V element = this.head.getElement();
         this.head = this.head.getNext();
         if(this.head == null) { this.tail = null; } else { this.head.setPrevious(null); }
         currentSize--;
-        this.map.remove(element);
+        this.map.remove(transformer.transform(element));
         return element;
     }
 
     @Override
     public V removeLast() {
-        checkSerialization();
         if(size() <= 0) { throw new NoSuchElementException(); }
         V element = this.tail.getElement();
         this.tail = this.tail.getPrevious();
         if(this.tail == null) { this.head = null; } else { this.tail.setNext(null); }
         currentSize--;
-        this.map.remove(element);
+        this.map.remove(transformer.transform(element));
         return element;
     }
 
     private V removeMiddle(DoublyListNode<V> toRemove) {
-        checkSerialization();
         // Remove middle
         toRemove.getPrevious().setNext(toRemove.getNext());
         toRemove.getNext().setPrevious(toRemove.getPrevious());
@@ -212,7 +196,6 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
 
     @Override
     public V remove(int position) {
-        checkSerialization();
         if(position < 0 || position > size()) {
             throw new InvalidPositionException();
         }
@@ -224,8 +207,7 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
     // O(1)
     @Override
     public V remove(V object) {
-        checkSerialization();
-        DoublyListNode<V> node = this.map.remove(object);
+        DoublyListNode<V> node = this.map.remove(transformer.transform(object));
         if (node != null) {
             if ( node.getPrevious() == null ) {
                 return removeFirst();
@@ -237,17 +219,6 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
         return null;
     }
 
-    private void checkSerialization() {
-        // https://stackoverflow.com/questions/3298915/deserialized-object-has-null-in-all-fields
-        if ( hasSerialized ) {
-            hasSerialized = false;
-            while ( !serializedToAdd.isEmpty() ) {
-                this.addLast(serializedToAdd.dequeue());
-            }
-            serializedToAdd = null;
-        }
-    }
-
     @Serial
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject();
@@ -255,21 +226,32 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
         Iterator<V> iter = this.iterator();
         while(iter.hasNext()) {
            V cur = iter.next();
-            oos.writeObject(cur);
+           oos.writeObject(transformer.transform(cur));
+           oos.writeObject(cur);
         }
     }
 
     @Serial
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
-        serializedToAdd = new QueueInList<>();
         int size = ois.readInt();
         this.map = new SepChainHashTable<>(size);
         for(int i = 0; i < size; i++) {
-            @SuppressWarnings("unchecked")
+            K key = (K)ois.readObject();
             V element = (V)ois.readObject();
-            serializedToAdd.enqueue(element);
+            // https://stackoverflow.com/questions/3298915/deserialized-object-has-null-in-all-fields
+            // Reading a student with ois.readObject() may result in them having null fields
+            // so the transformer won't work, so manually addLast with the deserialized key
+            if(this.tail == null) {
+                this.tail = new DoublyListNode<>(element);
+                this.head = this.tail;
+            } else {
+                this.tail.setNext(new DoublyListNode<>(element, this.tail, null));
+                this.tail = this.tail.getNext();
+            }
+            this.map.put(key, this.tail);
+            currentSize++;
         }
-        hasSerialized = true;
     }
 }
