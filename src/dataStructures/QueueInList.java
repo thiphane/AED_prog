@@ -16,7 +16,7 @@ public class QueueInList<E> implements Queue<E> {
 
     /**
      * Returns true iff the queue contains no elements.
-     *
+     * O(1)
      * @return true if queue is empty, otherwise false
      */
     @Override
@@ -26,7 +26,7 @@ public class QueueInList<E> implements Queue<E> {
 
     /**
      * Returns the number of elements in the queue.
-     *
+     * O(1)
      * @return queue size
      */
     @Override
@@ -36,7 +36,7 @@ public class QueueInList<E> implements Queue<E> {
 
     /**
      * Inserts the specified element at the rear of the queue.
-     *
+     * O(1)
      * @param element to be added into the queue
      */
     @Override
@@ -46,7 +46,7 @@ public class QueueInList<E> implements Queue<E> {
 
     /**
      * Removes and returns the element at the front of the queue.
-     *
+     * O(1)
      * @return the element at the front of this queue
      * @throws EmptyQueueException if the queue is empty
      */
@@ -59,7 +59,7 @@ public class QueueInList<E> implements Queue<E> {
     }
     /**
      * Returns the element at the front of the queue.
-     *
+     * O(1)
      * @return the element at the front of this queue
      * @throws EmptyQueueException if the queue is empty
      */

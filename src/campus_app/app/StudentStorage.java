@@ -12,7 +12,6 @@ import java.io.*;
 
 public class StudentStorage implements Serializable {
     // TODO decidir quantidades
-    private static final int EXPECTED_STUDENT_COUNT = 200;
     private static final int EXPECTED_COUNTRY_COUNT = 10;
     // We only serialize studentsByCountry because it needs to save the insertion order
     // All students by order of insertion

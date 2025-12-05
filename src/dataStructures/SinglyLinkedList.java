@@ -56,7 +56,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
 
     /**
      * Returns the first element of the list.
-     *
+     * Time complexity is O(1)
      * @return first element in the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -69,7 +69,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
 
     /**
      * Returns the last element of the list.
-     *
+     * Time complexity is O(1)
      * @return last element in the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -85,7 +85,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      * Range of valid positions: 0, ..., size()-1.
      * If the specified position is 0, get corresponds to getFirst.
      * If the specified position is size()-1, get corresponds to getLast.
-     *
+     * Time complexity is O(n)
      * @param position - position of element to be returned
      * @return element at position
      * @throws InvalidPositionException if position is not valid in the list
@@ -103,13 +103,16 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
 
     /**
      * search for a node in a given position
-     * Time complexity is O(1) for best case when position is 0,
-     * overall time complexity is O(n), where n is the number of node within the list
+     * Time complexity is O(1) for best case when position is 0 or the last,
+     * overall time complexity is O(n), where n is the number of nodes in the list
      * @param position node's position
      * @return target node
      */
     protected SinglyListNode<E> getNode(int position) {
         SinglyListNode<E> node = head;
+        if ( position == size() - 1) {
+            return tail;
+        }
         for ( int i = 0; i < position; i++)
             node = node.getNext();
         return node;
@@ -120,7 +123,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      * Returns the position of the first occurrence of the specified element
      * in the list, if the list contains the element.
      * Otherwise, returns -1.
-     * Time complexity is O(1) for best case when element is the head,
+     * Time complexity is O(1) for best case when element is the head or tail,
      * overall time complexity is O(n).
      * @param element - element to be searched in list
      * @return position of the first occurrence of the element in the list (or -1)
@@ -128,6 +131,9 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
     @Override
     public int indexOf(E element) {
         SinglyListNode<E> node = head;
+        if ( tail.getElement().equals(element) ) {
+            return size() - 1;
+        }
         int position = 0;
         while ( node != null && !node.getElement().equals(element) ) {
             node = node.getNext();
@@ -171,7 +177,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      * Range of valid positions: 0, ..., size().
      * If the specified position is 0, add corresponds to addFirst.
      * If the specified position is size(), add corresponds to addLast.
-     * time complexity is O(1) for best case, when position is 0 or position is equal size
+     * time complexity is O(1) for best case, when inserting the first or last element
      * overall time complexity is O(n)
      * @param position - position where to insert element
      * @param element  - element to be inserted
@@ -238,6 +244,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      * Range of valid positions: 0, ..., size()-1.
      * If the specified position is 0, remove corresponds to removeFirst.
      * If the specified position is size()-1, remove corresponds to removeLast.
+     * Best case is when the element to remove is head, in O(1),
      * time complexity is O(n) overall
      * @param position - position of element to be removed
      * @return element removed at position
@@ -254,6 +261,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
         return this.removeMiddle(position);
     }
 
+    // O(1)
     E removeAfter(SinglyListNode<E> prevNode) {
         SinglyListNode<E> node = prevNode.getNext();
         prevNode.setNext(node.getNext());

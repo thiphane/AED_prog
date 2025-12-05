@@ -33,31 +33,29 @@ public class StackWithListInArray<E> implements Stack<E> {
     /**
      * Returns true iff the stack contains no
      * elements.
-     *
+     * O(1)
      * @return true iff the stack contains no
      * elements, false otherwise
      */
     @Override
     public boolean isEmpty() {
-	//TODO: Left as an exercise.
         return array.isEmpty();
     }
 
     /**
      * Returns the number of elements in the stack.
-     *
+     * O(1)
      * @return number of elements in the stack
      */
     @Override
     public int size() {
-        //TODO: Left as an exercise.
         return array.size();
     }
 
     /**
      * Returns the element at the top of the stack.
-     * Requires
-     *
+     * Requires the stack not to be empty
+     * O(1)
      * @return element at top of stack
      * @throws EmptyStackException when size = 0
      */
@@ -70,7 +68,7 @@ public class StackWithListInArray<E> implements Stack<E> {
     /**
      * Inserts the specified <code>element</code> onto
      * the top of the stack.
-     *
+     * O(1)
      * @param element element to be inserted onto the stack
      * @throws FullStackException when size = capacity
      */
@@ -84,7 +82,7 @@ public class StackWithListInArray<E> implements Stack<E> {
     /**
      * Removes and returns the element at the top of the
      * stack.
-     *
+     * O(1)
      * @return element removed from top of stack
      * @throws EmptyStackException when size = 0
      */

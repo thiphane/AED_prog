@@ -12,7 +12,7 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
      * "rebalance" from the given node to the root, calling restructure when a subtree is unbalanced
      * if "rebalance" is called after an add operation, it stops after the first restructure
      * time complexity in worst case is O(h) - h is the height of the tree -
-     * when the node to be restructured is the root.
+     * when the node to be restructured is the root, leading to O(log n).
      * @param cur node where to start
      * @param remove true if rebalance operation is called after a remove operation
      */
@@ -38,6 +38,7 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
      * @param key new node key
      * @param value new node value
      * @param left if new node is left child
+     * @pre cur is a leaf node
      */
     private void addLeafNode(AVLNode<Entry<K,V>> cur, K key, V value, boolean left) {
         int oldHeight = cur.getHeight();
@@ -56,6 +57,7 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
     /**
      * Inserts a new key-value pair into the tree, or update an existing entry, if key already exists
      * time complexity is O(h), where h is the height of the tree for expected case
+     * h will be around log n, leading to O(log n)
      * @param key key to the new entry
      * @param value value to the new entry
      * @return old value if key already exists of return null if it's a new entry
@@ -94,6 +96,7 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
     /**
      * Gets the child with the biggest height,
      * or the left one if both are the same height
+     * O(1)
      * @param y the parent
      * @return the child with the biggest height
      * @pre y != null && (y.getRightChild() != null || y.getLeftChild() != null)
@@ -112,15 +115,12 @@ public class AVLSortedMap <K extends Comparable<K>,V> extends AdvancedBSTree<K,V
 
     /**
      * Remove a given key from the tree,
-     * time complexity of expected case if O(h), where h is the tree height
+     * time complexity of expected case if O(h), where h is the tree height,
+     * and the tree's height will be around log n, leading to O(log n)
      * @param key whose entry is to be removed from the map
      * @return value of the removed entry  or null if entry does not exist
      */
     public V remove(K key) {
-        //TODO: Left as an exercise.
-        // If does not exist a entry with this Key, return null
-        // otherwise, remove the node where is the element with this key,
-        // "rebalance" from the removal position and return value
         BTNode<Entry<K, V>> node = getNode((BTNode<Entry<K,V>>) root, key);
         if ( node == null ) { return null; }
         BTNode<Entry<K,V>> parent = ((BTNode<Entry<K,V>>) node.getParent());
