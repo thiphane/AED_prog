@@ -28,7 +28,8 @@ public class StudentStorage implements Serializable {
     }
 
     /**
-     * Inserting in a Map has Complexity O(log(n))
+     * Inserting in a Map has Complexity O(log(n)), so expected case complexity is O(log n)
+     * worst case complexity when map needs to be rehashed, so Time complexity is O(n)
      *
      * @param student to be inserted.
      */
