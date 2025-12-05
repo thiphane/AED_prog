@@ -27,23 +27,34 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
         this(DEFAULT_CAPACITY);
     }
 
+    /**
+     * O(1)
+     * @param capacity the initial capacity for the table
+     */
     @SuppressWarnings("unchecked")
     public ClosedHashTable( int capacity ){
         super(capacity);
         int arraySize = HashTable.nextPrime((int) (capacity / IDEAL_LOAD_FACTOR));
-        // Compiler gives a warning.
         table = (Entry<K,V>[]) new Entry[arraySize];
-        for ( int i = 0; i < arraySize; i++ )
-            table[i] = null;
         maxSize = (int)(arraySize * MAX_LOAD_FACTOR);
     }
 
     //Methods for handling collisions.
     // Returns the hash value of the specified key.
+    // O(1)
     int hash( K key, int i ){
         return Math.abs( key.hashCode() + i) % table.length;
     }
 
+    /**
+     * O(1) best and expected case if no collisions happened,
+     * O(n) worst case if a lot of collisions
+     * happened and most elements are concentrated
+     * at the hash's index
+     * @param key the key to search for
+     * @param returnDeleted whether deleted entries should be returned
+     * @return the index of the key, or to place the key
+     */
     int linearGetTarget(K key, boolean returnDeleted) {
         for(int i = 0; i < table.length; i++) {
             int h = hash(key, i);
@@ -59,6 +70,8 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
     }
     /**
      * Linear Proving
+     *
+     * Same time complexity as linearGetTarget
      * @param key to search
      * @return the index of the table, where is the entry with the specified key, or null
      */
@@ -74,7 +87,7 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
     /**
      * If there is an entry in the dictionary whose key is the specified key,
      * returns its value; otherwise, returns null.
-     *
+     * Same time complexity as linearGetTarget
      * @param key whose associated value is to be returned
      * @return value of entry in the dictionary whose key is the specified key,
      * or null if the dictionary does not have an entry with that key
@@ -93,7 +106,8 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
      * If there is an entry in the dictionary whose key is the specified key,
      * replaces its value by the specified value and returns the old value;
      * otherwise, inserts the entry (key, value) and returns null.
-     *
+     * Best case has same time complexity as linearGetTarget(),
+     * worst case if rehashing is needed, going to O(n)
      * @param key   with which the specified value is to be associated
      * @param value to be associated with the specified key
      * @return previous value associated with key,
@@ -110,6 +124,9 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
         return old;
     }
 
+    /**
+     * Time complexity O(n)
+     */
     @SuppressWarnings("unchecked")
      private void rehash(){
         //TODO: Left as an exercise.
@@ -128,7 +145,7 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
      * If there is an entry in the dictionary whose key is the specified key,
      * removes it from the dictionary and returns its value;
      * otherwise, returns null.
-     *
+     * Same time complexity as linearGetTarget
      * @param key whose entry is to be removed from the map
      * @return previous value associated with key,
      * or null if the dictionary does not an entry with that key
@@ -138,7 +155,7 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
     public V remove(K key) {
         //TODO: Left as an exercise.
         int i = searchLinearProving(key);
-        if ( i == -1 ) {
+        if ( i == NOT_FOUND ) {
             return null;
         }
         V old = table[i].value();
@@ -153,7 +170,6 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
      */
     @Override
     public Iterator<Entry<K, V>> iterator() {
-         //TODO: Left as an exercise.
         return new FilterIterator<>(new ArrayIterator<>(this.table, this.table.length), (f) -> f != null && f != REMOVED_CELL);
     }
 
