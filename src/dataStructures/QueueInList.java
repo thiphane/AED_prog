@@ -7,6 +7,9 @@ public class QueueInList<E> implements Queue<E> {
     // Memory of the queue: a list.
     private List<E> list;
 
+    /**
+     * Creates a new empty queue, initializing the memory
+     */
     public QueueInList( ){
         list = new SinglyLinkedList<E>();
     }
@@ -14,46 +17,41 @@ public class QueueInList<E> implements Queue<E> {
     /**
      * Returns true iff the queue contains no elements.
      *
-     * @return
+     * @return true if queue is empty, otherwise false
      */
-    @Override       //TODO: Left as an exercise.
-
+    @Override
     public boolean isEmpty() {
-        //TODO: Left as an exercise.
         return list.isEmpty();
     }
 
     /**
      * Returns the number of elements in the queue.
      *
-     * @return
+     * @return queue size
      */
     @Override
     public int size() {
-        //TODO: Left as an exercise.
         return list.size();
     }
 
     /**
      * Inserts the specified element at the rear of the queue.
      *
-     * @param element
+     * @param element to be added into the queue
      */
     @Override
     public void enqueue(E element) {
-        //TODO: Left as an exercise.
         list.addLast(element);
     }
 
     /**
      * Removes and returns the element at the front of the queue.
      *
-     * @return
-     * @throws EmptyQueueException
+     * @return the element at the front of this queue
+     * @throws EmptyQueueException if the queue is empty
      */
     @Override
     public E dequeue() {
-        //TODO: Left as an exercise.
         if ( this.isEmpty() ) {
             throw new EmptyQueueException();
         }
@@ -62,12 +60,11 @@ public class QueueInList<E> implements Queue<E> {
     /**
      * Returns the element at the front of the queue.
      *
-     * @return
-     * @throws EmptyQueueException
+     * @return the element at the front of this queue
+     * @throws EmptyQueueException if the queue is empty
      */
     @Override
     public E peek() {
-        //TODO: Left as an exercise.
         if ( this.isEmpty() ) {
             throw new EmptyQueueException();
         }
