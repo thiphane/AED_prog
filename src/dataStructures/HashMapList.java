@@ -244,6 +244,7 @@ public class HashMapList<V> implements TwoWayList<V>, ObjectRemovalList<V>, Cont
             while ( !serializedToAdd.isEmpty() ) {
                 this.addLast(serializedToAdd.dequeue());
             }
+            serializedToAdd = null;
         }
     }
 
