@@ -77,7 +77,7 @@ public class CampusAppClass implements CampusApp {
             case LODGING -> service = new LodgingService(serviceName, pos, price, value);
             default -> throw new RuntimeException("Invalid service type"); // Compiler complains without default case, as service may be null
         }
-        this.currentBounds.addService(service); // O(n)
+        this.currentBounds.addService(service); // O(1)
     }
 
     @Override
@@ -100,6 +100,7 @@ public class CampusAppClass implements CampusApp {
         if (!(serviceObj instanceof LodgingService home)) {
             throw new NoSuchElementOfGivenType();
         }
+
         try {
             Student s = currentBounds.getStudent(name);
             throw new AlreadyExistsException(s.getName());
@@ -111,7 +112,7 @@ public class CampusAppClass implements CampusApp {
             case THRIFTY -> student = new ThriftyStudent(name, country, home);
             case OUTGOING -> student = new OutgoingStudent(name, country, home);
         }
-        this.currentBounds.addStudent(student); // O(n)
+        this.currentBounds.addStudent(student); // O(log n)
     }
 
     @Override
@@ -119,7 +120,7 @@ public class CampusAppClass implements CampusApp {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        return currentBounds.getStudent(student); // O(n)
+        return currentBounds.getStudent(student); // O(log n)
     }
 
     @Override
@@ -206,9 +207,9 @@ public class CampusAppClass implements CampusApp {
         }
         Service service = currentBounds.getService(serviceName);
         int oldRating = service.getRating();
-        service.addRating(rate, description.toLowerCase()); // O(n)
+        service.addRating(rate, description.toLowerCase()); // O(1)
         if(service.getRating() != oldRating) {
-            currentBounds.updateServiceRating(service, oldRating);
+            currentBounds.updateServiceRating(service, oldRating); // O(n)
         }
     }
 
@@ -217,7 +218,7 @@ public class CampusAppClass implements CampusApp {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        Service service = this.getService(serviceName); // O(n)
+        Service service = this.getService(serviceName); // O(1)
         if(service == null) {
             throw new NoSuchElementException();
         }
@@ -288,7 +289,7 @@ public class CampusAppClass implements CampusApp {
         }
         if(rate < 1 || rate > 5) throw new InvalidRating();
         Student s = this.currentBounds.getStudent(studentName);
-        if(s == null){ // O(n)
+        if(s == null){ // O(1)
             throw new StudentDoesNotExistException();
         }
         ServiceType serviceType;
@@ -301,7 +302,7 @@ public class CampusAppClass implements CampusApp {
         if(!byType.hasNext())throw new NoSuchElementOfGivenType();
         Iterator<Service> byTypeAndRate = new FilterIterator<>(byType, new ServiceRatePredicate(rate)); // O(1)
         if(!byTypeAndRate.hasNext())throw new NoSuchServiceWithGivenRate();
-        return new TransformerIterator<>(s.findClosestServices(byTypeAndRate));
+        return new TransformerIterator<>(s.findClosestServices(byTypeAndRate)); // O(n) to create
     }
 
 }

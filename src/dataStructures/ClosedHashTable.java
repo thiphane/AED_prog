@@ -121,6 +121,7 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
         if ( i == -1 ) { throw new RuntimeException("closed put"); }
         V old = table[i] == null || table[i] == REMOVED_CELL ? null : table[i].value();
         table[i] = new Entry<>(key, value);
+        currentSize++;
         return old;
     }
 
@@ -133,7 +134,8 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
          int arrSize = HashTable.nextPrime(this.table.length * 2);
          Entry<K,V>[] oldTable = table;
          this.table = (Entry<K,V>[])new Entry[arrSize];
-        for (Entry<K, V> cur : oldTable) {
+         this.currentSize = 0;
+         for (Entry<K, V> cur : oldTable) {
             if (cur != REMOVED_CELL && cur != null) {
                 this.put(cur.key(), cur.value());
             }
@@ -160,6 +162,7 @@ public class ClosedHashTable<K,V> extends HashTable<K,V> {
         }
         V old = table[i].value();
         table[i] = (Entry<K,V>)REMOVED_CELL;
+        currentSize--;
         return old;
     }
 

@@ -59,7 +59,7 @@ public interface Bounds {
 
     /**
      * Adds a new service to the area
-     * O(n) time
+     * O(1) time
      * @param service the service to add
      * @throws AlreadyExistsException if a service with the same name already exists
      */

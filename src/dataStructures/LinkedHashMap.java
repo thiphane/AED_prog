@@ -5,6 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
 
+/**
+ * A map which stores the order its entries were inserted in
+ * @param <K> the type of the keys
+ * @param <V> the type of the values
+ */
 public class LinkedHashMap<K,V> implements Map<K,V>{
 
     transient protected DoublyListNode<Entry<K,V>> head;
@@ -13,7 +18,7 @@ public class LinkedHashMap<K,V> implements Map<K,V>{
 
 
     public LinkedHashMap(int capacity) {
-        map = new SepChainHashTable<>(capacity);
+        map = new ClosedHashTable<>(capacity); // this is only used for the services, which are never removed
         head = null;
         tail = null;
     }
@@ -160,7 +165,7 @@ public class LinkedHashMap<K,V> implements Map<K,V>{
     @Serial
     private void readObject(ObjectInputStream ois)throws IOException, ClassNotFoundException {
         int size = ois.readInt();
-        this.map = new SepChainHashTable<>(size);
+        this.map = new ClosedHashTable<>(size);
         for(int i = 0; i < size; i++) {
             @SuppressWarnings("unchecked")
             Entry<K,V> element = (Entry<K,V>)ois.readObject();

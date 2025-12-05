@@ -39,7 +39,7 @@ public interface CampusApp {
     Bounds loadArea(String areaName) throws BoundsNotDefined;
     /**
      * Creates a new service
-     * O(n) time
+     * O(1) time
      * @param type the type of service
      * @param serviceName the name of the service
      * @param latitude    the latitude of the service's position
@@ -70,7 +70,7 @@ public interface CampusApp {
     void createStudent(String type, String name, String lodging, String country) throws AlreadyExistsException, InvalidTypeException, BoundsNotDefined, NoSuchElementOfGivenType, ServiceIsFullException;
     /**
      * Gets a student by name
-     * O(n)
+     * O(log n)
      * @param student the name of a student
      * @return the student with the given name
      * @throws BoundsNotDefined if no bounds are defined
@@ -79,7 +79,7 @@ public interface CampusApp {
     StudentRead getStudent(String student) throws BoundsNotDefined, StudentDoesNotExistException;
     /**
      * Gets the service with the given name
-     * O(n)
+     * O(1)
      * @param serviceName the name of the service to get
      * @return the service with the given name
      * @throws BoundsNotDefined if no bounds are defined
@@ -123,7 +123,8 @@ public interface CampusApp {
     UpdatePositionResult moveHome(String studentName, String newHome) throws ServiceIsFullException, MoveNotAcceptable, SameHomeException, BoundsNotDefined, ServiceDoesNotExistException, StudentDoesNotExistException;
     /**
      * Adds a new evaluation to the given service
-     * O(n)
+     * O(1) if the service's average stays the same,
+     * O(n) otherwise
      * @param rate the rating
      * @param serviceName the name of the service
      * @param description the description of the evaluation
@@ -134,7 +135,7 @@ public interface CampusApp {
     void rateService(int rate, String serviceName, String description) throws BoundsNotDefined, InvalidRating, ServiceDoesNotExistException;
     /**
      * Gets all the users in a given service
-     * O(n) time
+     * O(1) time
      * @param serviceName the name of the service
      * @return a two-way iterator over all the students in the given service
      * @throws BoundsNotDefined if no bounds are defined
@@ -152,7 +153,7 @@ public interface CampusApp {
     Iterator<StudentRead> listAllStudents() throws BoundsNotDefined;
     /**
      * List all students from a specific country in order of insertion
-     * O(n) time to both create and traverse the iterator
+     * O(n) time to traverse the iterator
      * @param country the country to get students of
      * @return an iterator over all students from a specific country in order of insertion
      * @throws BoundsNotDefined if no bounds are defined
@@ -173,7 +174,7 @@ public interface CampusApp {
     Iterator<ServiceRead> listServicesByRanking() throws BoundsNotDefined;
     /**
      * Lists the services tied to be closest to the student with a given rating and type
-     * O(n) time
+     * O(n) time to create and traverse
      * @param rate the rating of the services to get
      * @param type the type of services to get
      * @param studentName the name of the student to get services closest to
@@ -189,7 +190,7 @@ public interface CampusApp {
     /**
      * Lists all services with a comment with the given tag
      * O(1) to create, O(n^2) to traverse, since for each service,
-     * it also has to check if any of its comments has the tag
+     * it also has to check if any of its comments has the tag (O(n) for each review)
      * @param tagName the tag to find
      * @return an iterator through all services with the given tag
      * @throws BoundsNotDefined if no bounds are defined
@@ -197,7 +198,7 @@ public interface CampusApp {
     Iterator<ServiceRead> listServicesByTag(String tagName) throws BoundsNotDefined;
     /**
      * Finds the best service of the given type for the given student
-     * O(n) for thrifty students, O(1) otherwise
+     * O(1) time complexity
      * @param studentName the name of the student
      * @param type the type of service
      * @return the best service of the given type for the student

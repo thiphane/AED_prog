@@ -48,7 +48,7 @@ public class BoundsClass implements Bounds, Serializable {
     @Override
     public Student removeStudent(String studentName) throws StudentDoesNotExistException {
         Iterator<Service> services = this.services.listAllServices(); // O(1)
-        Student student = students.getStudent(studentName);  // O(n)
+        Student student = students.getStudent(studentName);  // O(log n)
         if(student == null) {
             throw new StudentDoesNotExistException();
         }
@@ -58,7 +58,7 @@ public class BoundsClass implements Bounds, Serializable {
                 ss.removeUser(student); // O(n)
             }
         } // O(n^2)
-        return students.removeStudent(student);
+        return students.removeStudent(student); // O(n)
     }
 
     @Override
@@ -78,7 +78,7 @@ public class BoundsClass implements Bounds, Serializable {
 
     @Override
     public ServiceRead findBestService(String studentName, ServiceType type) throws StudentDoesNotExistException {
-        Student st = students.getStudent(studentName); // O(n)
+        Student st = students.getStudent(studentName); // O(1)
         if(st.getType().equals(StudentType.THRIFTY)) {
             if ( cheapestServices[type.ordinal()] == null) { return null; }
             return cheapestServices[type.ordinal()];
@@ -87,7 +87,7 @@ public class BoundsClass implements Bounds, Serializable {
 
     /**
      * Adds a new service to the bounds
-     * O(n)
+     * O(1)
      * @param service the service to add
      * @throws AlreadyExistsException if a service with the same name already exists
      */
@@ -97,7 +97,7 @@ public class BoundsClass implements Bounds, Serializable {
                 cheapestServices[service.getType().ordinal()].getPrice() > service.getPrice() ) {
             cheapestServices[service.getType().ordinal()] = service;
         }
-        this.services.addService(service);
+        this.services.addService(service); // O(1)
     }
 
     @Override
