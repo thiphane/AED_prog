@@ -99,7 +99,7 @@ interface entity.service.Service extends entity.service.ServiceRead {
 }
 
 abstract class entity.service.AbstractStudentStoringService extends entity.service.ServiceAbstract implements entity.service.StudentStoringService {
-- DoublyLinkedList<Student> users
+- HashMapList<String, Student> users
 }
 
 abstract class entity.service.ServiceAbstract implements entity.service.Service{
