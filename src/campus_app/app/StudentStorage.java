@@ -44,9 +44,8 @@ public class StudentStorage implements Serializable {
     public Student removeStudent(Student student) throws StudentDoesNotExistException {
         Student removed = alphabeticalStudentsByName.remove(student.getName().toLowerCase()); // O(log n)
         if(removed == null) throw new StudentDoesNotExistException();
-        List<Student> cList = studentsByCountry.get(student.getCountry().toLowerCase());
-        // TODO não usar remove(indexof()), ObjectRemovalSinglyList
-        cList.remove(cList.indexOf(student)); // O(n)
+        ObjectRemovalList<Student> cList = studentsByCountry.get(student.getCountry().toLowerCase());
+        cList.remove(student); // O(n)
         return removed;
     }
 
