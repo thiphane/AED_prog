@@ -101,6 +101,13 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
         return getNode(position).getElement();
     }
 
+    /**
+     * search for a node in a given position
+     * Time complexity is O(1) for best case when position is 0,
+     * overall time complexity is O(n), where n is the number of node within the list
+     * @param position node's position
+     * @return target node
+     */
     protected SinglyListNode<E> getNode(int position) {
         SinglyListNode<E> node = head;
         for ( int i = 0; i < position; i++)
@@ -113,7 +120,8 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      * Returns the position of the first occurrence of the specified element
      * in the list, if the list contains the element.
      * Otherwise, returns -1.
-     *
+     * Time complexity is O(1) for best case when element is the head,
+     * overall time complexity is O(n).
      * @param element - element to be searched in list
      * @return position of the first occurrence of the element in the list (or -1)
      */
@@ -132,7 +140,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
 
     /**
      * Inserts the specified element at the first position in the list.
-     *
+     * time complexity is O(1) overall
      * @param element to be inserted
      */
     @Override
@@ -146,7 +154,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
 
     /**
      * Inserts the specified element at the last position in the list.
-     *
+     * time complexity is O(1) overall
      * @param element to be inserted
      */
     @Override
@@ -163,7 +171,8 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      * Range of valid positions: 0, ..., size().
      * If the specified position is 0, add corresponds to addFirst.
      * If the specified position is size(), add corresponds to addLast.
-     *
+     * time complexity is O(1) for best case, when position is 0 or position is equal size
+     * overall time complexity is O(n)
      * @param position - position where to insert element
      * @param element  - element to be inserted
      * @throws InvalidPositionException - if position is not valid in the list
@@ -191,7 +200,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
 
     /**
      * Removes and returns the element at the first position in the list.
-     *
+     * time complexity is O(1) overall
      * @return element removed from the first position of the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -208,7 +217,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
 
     /**
      * Removes and returns the element at the last position in the list.
-     *
+     * time complexity is O(n) overall
      * @return element removed from the last position of the list
      * @throws NoSuchElementException - if size() == 0
      */
@@ -229,7 +238,7 @@ public class SinglyLinkedList<E> implements List<E>, Serializable {
      * Range of valid positions: 0, ..., size()-1.
      * If the specified position is 0, remove corresponds to removeFirst.
      * If the specified position is size()-1, remove corresponds to removeLast.
-     *
+     * time complexity is O(n) overall
      * @param position - position of element to be removed
      * @return element removed at position
      * @throws InvalidPositionException - if position is not valid in the list

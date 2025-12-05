@@ -7,14 +7,16 @@ package dataStructures;
  * @param <V> Generic Value
  */
 abstract class AdvancedBSTree <K extends Comparable<K>,V> extends BSTSortedMap<K,V>{
-      /**
- 	* Performs a single left rotation rooted at z node.
- 	* Node y was a  right  child  of z before the  rotation,
- 	* then z becomes the left child of y after the rotation.
- 	* @param z - root of the rotation
-	 * @pre: z has a right child
- 	*/
-	protected void rotateLeft( BTNode<Entry<K,V>> z){
+
+    /**
+     * Performs a single left rotation rooted at z node.
+     * Node y was a  right  child  of z before the  rotation,
+     * then z becomes the left child of y after the rotation.
+     * Time complexity is O(1) since all the operations are primitive
+     * @param z - root of the rotation
+     * @pre: z has a right child
+     */
+    protected void rotateLeft( BTNode<Entry<K,V>> z){
    	 //TODO: Left as an exercise.
    	 //  a single rotation modifies a constant number of parent-child relationships,
     	// it can be implemented in O(1)time
@@ -42,6 +44,7 @@ abstract class AdvancedBSTree <K extends Comparable<K>,V> extends BSTSortedMap<K
      * Performs a single right rotation rooted at z node.
      * Node y was a left  child  of z before the  rotation,
      * then z becomes the right child of y after the rotation.
+      * the complexity is O(1) since all the operations are primitive
      * @param z - root of the rotation
      * @pre: z has a left child
      */
@@ -72,7 +75,7 @@ abstract class AdvancedBSTree <K extends Comparable<K>,V> extends BSTSortedMap<K
     /**
      * Performs a tri-node restructuring (a single or double rotation rooted at X node).
      * Assumes the nodes are in one of following configurations:
-     *
+     * time complexity is O(1) since all the operations are primitive
      * @param x - root of the rotation
      * <pre>
      *          z=c       z=c        z=a         z=a
