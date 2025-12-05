@@ -12,13 +12,33 @@ abstract class entity.student.StudentAbstract {
 - void setHome(LodgingService)
 }
 
-class app.BoundsClass {
+
+interface app.Bounds {
+    +String getName()
+    +Position getTopPosition()
+    +Position getBottomPosition()
+    +void save()
+    +boolean isInside(Position pos)
+    +Student removeStudent(String studentName)
+    +void addService(Service service)
+    +Student getStudent(String student)
+    +Iterator<Student> getAllStudents()
+    +Iterator<Student> getStudentsByCountry(String country)
+    +Iterator<Service> listAllServices()
+    +ServiceRead findBestService(String studentName, ServiceType type)
+    +void addStudent(Student student)
+    +Service getService(String service)
+    +Iterator<Service>listServicesByRating()
+    + void updateServiceRating(Service service, int oldRating)
+}
+
+class app.BoundsClass implements app.Bounds{
 - String name
 - Position topPosition
 - Position bottomPosition
 - Service[] cheapestServices;
-~ StudentStorage students
-~ ServiceStorage services
+- StudentStorage students
+- ServiceStorage services
 }
 
 
@@ -26,87 +46,115 @@ class entity.service.LeisureService extends entity.service.ServiceAbstract {
 }
 
 class entity.student.BookishStudent extends entity.student.StudentAbstract  {
-# SinglyLinkedList<Service> visited
+# SinglyLinkedList<ServiceRead> visited
 + void updatePosition(Service)
 + Iterator<Service> getVisitedServices()
 }
 
 
 class entity.student.ThriftyStudent extends entity.student.StudentAbstract {
-~ EatingService cheapestEating
+# ServiceRead cheapestEating
 + void updatePosition(Service)
 + void moveHome(LodgingService)
 + Iterator<Service> getVisitedServices()
 }
 
 class entity.student.OutgoingStudent extends entity.student.StudentAbstract {
-# SinglyLinkedList<Service> visited
+# SinglyLinkedList<ServiceRead> visited
 + public void updatePosition(Service)
 + Iterator<Service> getVisitedServices()
 }
 
+class app.StudentStorage {
+- AVLSortedMap<String, Student> alphabeticalStudents
+- SepChainHashTable<String, ObjectRemovalList<Student>> studentsByName
++ void addStudent(Student)
++ Student getStudent(String)
++ Student removeStudent(Student)
++ Iterator<Student> getAllStudents()
++ Iterator<Student> getStudentsByCountry(String)
+}
 
-interface entity.service.StudentStoringService {
+class app.ServiceStorage {
+- ObjectRemovalSinglyList<Service>[5] servicesByStar
+- LinkedHashMap<String, Service> servicesByName
++ void addService(Service)
++ void updateServiceRating(Service, int old)
++ Service getService(String)
++ Iterator<Service> listAllServices()
++ Iterator<Service> listServicesByRanking()
+}
+
+interface entity.service.ServiceRead {
+    + String getName();
+    + ServiceType getType();
+    + Position getPosition();
+    + int getRating();
+    + int getPrice();
+    + boolean hasTag(String tagName);
+}
+
+interface entity.service.Service extends entity.service.ServiceRead {
+    + void addRating(int rating, String description);
+}
+
+abstract class entity.service.AbstractStudentStoringService extends entity.service.ServiceAbstract implements entity.service.StudentStoringService {
+- DoublyLinkedList<Student> users
+}
+
+abstract class entity.service.ServiceAbstract implements entity.service.Service{
+- String name
+- Position position
+- int price
+- int value
+- int rating
+- List<String> tags
++ int getValue()
+}
+
+interface entity.service.StudentStoringService extends entity.service.StudentStoringServiceRead {
 ~ void addUser(Student)
 ~ void removeUser(Student)
+}
+
+interface entity.service.StudentStoringServiceRead extends entity.service.Service {
 ~ TwoWayIterator<Student> getUsers()
 }
 
 class entity.service.LodgingService extends entity.service.AbstractStudentStoringService {
 }
 
-class app.StudentStorage {
-# SepChainHashTable<String, Student> studentsByName
-# SepChainHashTable<String, SinglyLinkedList<Student>> studentsByCountry
-# AVLSortedMap<String, Student> alphabeticalStudents
-+ void addStudent(Student)
-+ Student getStudent(String)
-+ Student removeStudent(Student)
-+ Iterator<Student> getAllStudents()
-+ Iterator<Student> getStudentsByCountry(String)
-- void readObject(ObjectInputStream)
-}
-
-class app.ServiceStorage {
-# ListInArray<Service> services
-# SepChainHashTable<String, Service> servicesByName
-# ObjectRemovalSinglyList<Service>[MAX_RATING] servicesByStar
-+ void addService(Service)
-+ void updateServiceRating(Service, int old)
-+ Service getService(String)
-+ Iterator<Service> listAllServices()
-~ Iterator<Service> listServicesByRanking()
-- void readObject(ObjectInputStream)
-}
-
-abstract class entity.service.ServiceAbstract {
-- String name
-- Position position
-- int price
-- int value
-~ int rating
-~ SepChainHashTable<String> tags
-# int getValue()
-}
 
 class entity.service.EatingService extends entity.service.AbstractStudentStoringService {
 }
 
-class app.CampusAppClass {
-~ Bounds currentBounds
+interface app.CampusApp {
+    + void createBounds(String name, long topLatitude, long topLongitude, long bottomLatitude, long bottomLongitude )
+    + Bounds saveCurrentArea()
+    + Bounds loadArea(String areaName)
+    + void createService(String type, String serviceName, long latitude, long longitude, int price, int value)
+    + void createStudent(String type, String name, String lodging, String country)
+    + StudentRead getStudent(String student)
+    + ServiceRead getService(String serviceName)
+    + StudentRead removeStudent(String studentName)
+    + UpdatePositionResult updateStudentPosition(String student, String service)
+    + UpdatePositionResult moveHome(String studentName, String newHome)
+    + void rateService(int rate, String serviceName, String description)
+    + TwoWayIterator<StudentRead> getUsersByService(String serviceName)
+    + Iterator<StudentRead> listAllStudents()
+    + Iterator<StudentRead> listStudentsByCountry(String country)
+    + Iterator<ServiceRead> listAllServices()
+    + Iterator<ServiceRead> listServicesByRanking()
+    + Iterator<ServiceRead> listClosestServicesByStudent(int rate, String type, String studentName)
+    + Iterator<ServiceRead> listServicesByTag(String tagName)
+    + ServiceRead findBestService(String studentName, String type)
 }
 
-record app.Position {
-+ long longitude()
-+ long latitude()
-+ long getManhattanDistance(Position)
-}
-
-
-abstract class entity.service.AbstractStudentStoringService extends entity.service.ServiceAbstract implements entity.service.StudentStoringService {
-- DoublyLinkedList<Student> users
+class app.CampusAppClass implements app.CampusApp {
+- Bounds currentBounds
 }
 
 app.BoundsClass ..> app.ServiceStorage : Use
 app.BoundsClass ..> app.StudentStorage : Use
+app.CampusAppClass ..> app.Bounds : Use
 @enduml
