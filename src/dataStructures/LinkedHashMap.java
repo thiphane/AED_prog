@@ -41,7 +41,7 @@ public class LinkedHashMap<K,V> implements Map<K,V>{
     /**
      * If there is an entry in the dictionary whose key is the specified key,
      * returns its value; otherwise, returns null.
-     *
+     * Time complexity is O(1)
      * @param key whose associated value is to be returned
      * @return value of entry in the dictionary whose key is the specified key,
      * or null if the dictionary does not have an entry with that key
@@ -57,6 +57,8 @@ public class LinkedHashMap<K,V> implements Map<K,V>{
      * If there is an entry in the dictionary whose key is the specified key,
      * replaces its value by the specified value and returns the old value;
      * otherwise, inserts the entry (key, value) and returns null.
+     * Time complexity for expected case is O(1), in worst case is O(n),
+     * for when then table needs to be rehashed
      *
      * @param key   with which the specified value is to be associated
      * @param value to be associated with the specified key
@@ -65,10 +67,10 @@ public class LinkedHashMap<K,V> implements Map<K,V>{
      */
     @Override
     public V put(K key, V value) {
-        DoublyListNode<Entry<K,V>> valueToReturn = map.get(key);
+        DoublyListNode<Entry<K,V>> valueToReturn = map.get(key); //O(1)
         Entry<K,V> entry = new Entry<K,V> (key, value);
-
         if(valueToReturn==null){
+            //O(1)
             DoublyListNode<Entry<K,V>> newNode;
             if(head==null) {
                 newNode = new DoublyListNode<>(entry);
@@ -79,7 +81,7 @@ public class LinkedHashMap<K,V> implements Map<K,V>{
                 tail.setNext(newNode);
             }
             tail = newNode;
-            map.put(key, newNode);
+            map.put(key, newNode);//worst case O(n)
             return null;
         }
         else valueToReturn.setElement(entry);

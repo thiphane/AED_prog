@@ -35,7 +35,7 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
     /**
      * If there is an entry in the dictionary whose key is the specified key,
      * returns its value; otherwise, returns null.
-     *
+     * Time complexity is O(1) overall
      * @param key whose associated value is to be returned
      * @return value of entry in the dictionary whose key is the specified key,
      * or null if the dictionary does not have an entry with that key
@@ -52,7 +52,8 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
      * If there is an entry in the dictionary whose key is the specified key,
      * replaces its value by the specified value and returns the old value;
      * otherwise, inserts the entry (key, value) and returns null.
-     *
+     * Time complexity is O(1) for expected case, in worst case time complexity is O(n),
+     * for when max_load_factor is exceeded and table needs to be rehashed.
      * @param key   with which the specified value is to be associated
      * @param value to be associated with the specified key
      * @return previous value associated with key,
@@ -74,7 +75,11 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
         return old;
     }
 
-
+    /**
+     * Creates a new table when load factor is exceeded
+     * increase table size, and re-insert entries into the table using an updated new hash
+     * Time complexity is O(n), n is the amount of entries
+     */
     @SuppressWarnings("unchecked")
     private void rehash() {
         Map<K,V>[] oldTable = this.table;
@@ -101,7 +106,7 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
      * If there is an entry in the dictionary whose key is the specified key,
      * removes it from the dictionary and returns its value;
      * otherwise, returns null.
-     *
+     * time complexity is O(1)
      * @param key whose entry is to be removed from the map
      * @return previous value associated with key,
      * or null if the dictionary does not an entry with that key
@@ -122,7 +127,8 @@ public class SepChainHashTable<K,V> extends HashTable<K,V> {
 
     /**
      * Returns an iterator of the entries in the dictionary.
-     *
+     * Time complexity is O(table.length), since advance can run through
+     * all collision list until it finds a list that's not empty
      * @return iterator of the entries in the dictionary
      */
     public Iterator<Entry<K, V>> iterator() {
