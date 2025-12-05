@@ -29,8 +29,8 @@ public abstract class StudentAbstract implements Student {
 
     private void setHome(LodgingService home) throws ServiceIsFullException {
         try {
-            this.updatePosition(home); // O(n)
-            this.home.removeUser(this); // O(n)
+            this.updatePosition(home); // O(1)
+            this.home.removeUser(this); // O(1)
             this.home = home;
         } catch (StudentAlreadyThereException e) {
             throw new RuntimeException(e);
@@ -51,13 +51,12 @@ public abstract class StudentAbstract implements Student {
         if(this.home.equals(home)) {
             throw new SameHomeException(this);
         }
-        this.setHome(home); // O(n)
+        this.setHome(home); // O(1)
     }
 
     /**
      * Updates the user's position
-     * O(n) worst case (either the student's current or new position store students),
-     * O(1) best case (neither one stores students)
+     * O(1)
      * @param position the new position
      * @throws ServiceIsFullException if the given position is full
      * @return if the student got distracted by moving there
@@ -66,10 +65,10 @@ public abstract class StudentAbstract implements Student {
     public boolean updatePosition(Service position) throws ServiceIsFullException, StudentAlreadyThereException {
         Service oldLocation = this.location;
         if ( oldLocation != null && oldLocation.equals(position) ) { throw new StudentAlreadyThereException(this); }
-        if(position instanceof StudentStoringService service)service.addUser(this); // O(n)
+        if(position instanceof StudentStoringService service)service.addUser(this); // O(1)
         this.location = position;
         if(oldLocation instanceof StudentStoringService loc && !oldLocation.equals(home))
-            loc.removeUser(this); // O(n)
+            loc.removeUser(this); // O(1)
         return false;
     }
 

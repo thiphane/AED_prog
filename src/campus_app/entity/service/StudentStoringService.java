@@ -19,7 +19,7 @@ public interface StudentStoringService extends Service, StudentStoringServiceRea
 
     /**
      * Removes the given student from the service
-     * O(n)
+     * O(1)
      * @param student the student to remove
      */
     void removeUser(Student student);

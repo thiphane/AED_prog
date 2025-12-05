@@ -88,7 +88,7 @@ public interface CampusApp {
     ServiceRead getService(String serviceName) throws BoundsNotDefined, ServiceDoesNotExistException;
     /**
      * Removes a student from the bounds
-     * O(n^2)
+     * O(n)
      * @param studentName the name of the student to remove
      * @return the removed student
      * @throws BoundsNotDefined if no bounds are defined

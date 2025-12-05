@@ -55,7 +55,7 @@ public class BoundsClass implements Bounds, Serializable {
         while(services.hasNext()) { // O(n)
             Service cur = services.next();
             if(cur instanceof StudentStoringService ss) {
-                ss.removeUser(student); // O(n)
+                ss.removeUser(student); // O(1)
             }
         } // O(n^2)
         return students.removeStudent(student); // O(n)

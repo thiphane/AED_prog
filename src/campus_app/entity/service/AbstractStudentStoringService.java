@@ -9,44 +9,42 @@ import campus_app.entity.student.Student;
 import campus_app.exceptions.InvalidPriceException;
 import campus_app.exceptions.InvalidValueException;
 import campus_app.exceptions.ServiceIsFullException;
-import dataStructures.DoublyLinkedList;
-import dataStructures.TwoWayIterator;
-import dataStructures.TwoWayList;
+import dataStructures.*;
 
 public abstract class AbstractStudentStoringService extends ServiceAbstract implements StudentStoringService {
+    private static final int EXPECTED_STUDENTS_IN_SERVICE = 20;
     final private TwoWayList<Student> users;
 
     public AbstractStudentStoringService(String serviceName, Position position, int price, int value, ServiceType type) throws InvalidPriceException, InvalidValueException {
         super(serviceName, position, price, value, type);
-        this.users = new DoublyLinkedList<>();
+        this.users = new HashMapList<>(EXPECTED_STUDENTS_IN_SERVICE);
     }
 
     /**
      * Adds a new user to the service
-     * O(n) time
+     * O(1) time
      * @param student the student
      * @throws ServiceIsFullException if the service is full
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void addUser(Student student) throws ServiceIsFullException {
         if (this.getValue() <= this.users.size()) {
             throw new ServiceIsFullException(this);
         }
-        if(this.users.indexOf(student) ==-1) // O(n)
+        if(!((ContainCheckingList<Student>)this.users).contains(student)) // O(1)
             this.users.addLast(student); // O(1)
     }
 
     /**
      * Removes a user from the service
-     * O(n) time
+     * O(1) time
      * @param student the student
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void removeUser(Student student) {
-        int idx = this.users.indexOf(student); // O(n)
-        if(idx != -1) {
-            this.users.remove(idx); // O(1) best case (first or last element), O(n) worst case
-        }
+        ((ObjectRemovalList<Student>)this.users).remove(student);
     }
 
     @Override

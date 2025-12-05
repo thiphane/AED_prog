@@ -178,12 +178,12 @@ public class CampusAppClass implements CampusApp {
         if(this.currentBounds == null) {
             throw new BoundsNotDefined();
         }
-        Service newHomeService = this.getService(newHome); // O(n)
+        Service newHomeService = this.getService(newHome); // O(1)
         if(!(newHomeService instanceof LodgingService lodging)) {
             throw new ServiceDoesNotExistException();
         }
-        Student student = this.currentBounds.getStudent(studentName); // O(n)
-        student.moveHome(lodging); // O(n)
+        Student student = this.currentBounds.getStudent(studentName); // O(log n)
+        student.moveHome(lodging); // O(1)
         return new UpdatePositionResult(student, newHomeService, false);
     }
 
